@@ -22,7 +22,7 @@ import '@fontsource/montserrat';
 const Login = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [passwordShown] = useState(false);
 
   const onEmailChange = (e) => {
     setUserEmail(e.target.value);
@@ -32,9 +32,9 @@ const Login = () => {
     setUserPassword(e.target.value);
   };
 
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown);
-  };
+  // const togglePassword = () => {
+  //   setPasswordShown(!passwordShown);
+  // };
 
   const onSubmit = async (event) => {
     event.preventDefault();

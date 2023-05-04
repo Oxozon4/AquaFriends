@@ -52,7 +52,7 @@ const LandingPage = () => {
         <Login />
       </Modal>
       <Header>
-        <Logo>Bookify</Logo>
+        <Logo>AquaFriends</Logo>
         <IconStyleWrapper onClick={openModal} />
       </Header>
       <h1>Przepraszamy!</h1>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BsSquare, BsCheckSquare } from 'react-icons/bs';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Label } from 'components/atoms/Label/Label';
@@ -9,7 +8,11 @@ import CreatableSelect from 'react-select/creatable';
 import { selectCustomStyles } from 'assets/styles/selectCustomStyles';
 import Stepper from 'components/molecules/Stepper/Stepper';
 import { EyeOutline } from '@styled-icons/evaicons-outline/EyeOutline';
-import { PasswordInputWrapper, DarkEyeStyleWrapper, FileButton } from './FormField-styled';
+import {
+  PasswordInputWrapper,
+  DarkEyeStyleWrapper,
+  FileButton,
+} from './FormField-styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,7 +42,7 @@ const FormField = ({
   disabled = false,
   options,
   checked,
-  onFocus = () => {},
+  onFocus,
   maxLength,
   placeholder,
 }) => {
@@ -70,7 +73,13 @@ const FormField = ({
       {type === 'password' ? (
         <>
           <PasswordInputWrapper>
-            <Input type={passwordShown ? 'text' : 'password'} name={name} placeholder={placeholder} value={value} onChange={onChange} />
+            <Input
+              type={passwordShown ? 'text' : 'password'}
+              name={name}
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+            />
             <DarkEyeStyleWrapper onClick={togglePassword}>
               <EyeOutline size="24" />
             </DarkEyeStyleWrapper>
@@ -79,10 +88,39 @@ const FormField = ({
       ) : (
         ''
       )}
-      {type === 'checkbox' ? <Input name={name} id={id} checked={checked} type={type} onChange={onChange} disabled={disabled} /> : ''}
-      {type === 'textarea' ? <TextArea name={name} id={id} type={type} value={value} onChange={onChange} disabled={disabled} /> : ''}
+      {type === 'checkbox' ? (
+        <Input
+          name={name}
+          id={id}
+          checked={checked}
+          type={type}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      ) : (
+        ''
+      )}
+      {type === 'textarea' ? (
+        <TextArea
+          name={name}
+          id={id}
+          type={type}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      ) : (
+        ''
+      )}
       {type === 'select' ? (
-        <Select styles={selectCustomStyles} defaultValue={value} onChange={onChange} disabled={disabled} placeholder="Wybierz..." options={options} />
+        <Select
+          styles={selectCustomStyles}
+          defaultValue={value}
+          onChange={onChange}
+          disabled={disabled}
+          placeholder="Wybierz..."
+          options={options}
+        />
       ) : (
         ''
       )}
@@ -100,11 +138,27 @@ const FormField = ({
         ''
       )}
       {type === 'creatableSelect' ? (
-        <CreatableSelect isMulti defaultValue={value} styles={selectCustomStyles} onChange={onChange} placeholder="Wybierz..." options={options} />
+        <CreatableSelect
+          isMulti
+          defaultValue={value}
+          styles={selectCustomStyles}
+          onChange={onChange}
+          placeholder="Wybierz..."
+          options={options}
+        />
       ) : (
         ''
       )}
-      {type === 'stepper' ? <Stepper title="" value={value} updateValue={onChange} minValue={0}></Stepper> : ''}
+      {type === 'stepper' ? (
+        <Stepper
+          title=""
+          value={value}
+          updateValue={onChange}
+          minValue={0}
+        ></Stepper>
+      ) : (
+        ''
+      )}
       {type === 'file' ? (
         <>
           <FileButton htmlFor={id}>Wybierz</FileButton>

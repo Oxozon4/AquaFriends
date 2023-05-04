@@ -1,6 +1,5 @@
 import { SyncLoader } from 'react-spinners';
 import styled from 'styled-components';
-import React from 'react';
 
 const LoaderContainer = styled.div`
   width: 100vw;
@@ -14,7 +13,11 @@ const LoaderContainer = styled.div`
   opacity: 0.99;
 `;
 
-const Loader = ({ isLoading }) => {
+interface LoaderProps {
+  isLoading: boolean;
+}
+
+const Loader = ({ isLoading }: LoaderProps) => {
   return (
     <LoaderContainer>
       <SyncLoader size={50} color={'#1ED760'} loading={isLoading} />

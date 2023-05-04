@@ -1,11 +1,11 @@
 import { useRef, useEffect, useCallback } from 'react';
-import ModalFooter from '../../atoms/ModalFooter/ModalFooter.jsx';
+import ModalFooter from '../../atoms/ModalFooter/ModalFooter';
 import {
   Background,
   ModalWrapper,
   ModalContent,
   CloseModalButton,
-} from './Modal-styled.js';
+} from './Modal-styled';
 
 const Modal = ({ showModal, setShowModal, children }) => {
   const modalRef = useRef();
