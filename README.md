@@ -12,4 +12,4 @@ AquaFriends is a water quality monitoring web system that aims to provide a low-
 
 -
 
-* To copilot jak pisał jak coś
+To copilot jak pisał jak coś
