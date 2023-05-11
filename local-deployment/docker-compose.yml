@@ -2,7 +2,7 @@ version: '3'
 services:
   database:
     image: "postgres:14.2"
-    container_name: database
+    container_name: database-aqua-friends
     ports:
       - "5432:5432"
     environment:
