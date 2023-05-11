@@ -1,0 +1,12 @@
+*.iml
+/.idea/
+/.vscode/
+/app-react/node_modules/
+/app-react/target/
+/app-react/node/
+/app-react/package-lock.json
+/app-react/build/
+/app-react/.env
+/app-java/target/
+/target/
+/local-deployment/*.jar
