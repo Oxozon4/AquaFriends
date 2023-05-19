@@ -23,7 +23,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Api(tags = {"Users"})
+@Api(tags = {"Knowledge"})
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
