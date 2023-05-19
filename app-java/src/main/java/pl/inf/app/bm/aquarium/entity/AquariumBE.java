@@ -3,7 +3,7 @@ package pl.inf.app.bm.aquarium.entity;
 import lombok.Getter;
 import lombok.Setter;
 import pl.inf.app.bm.accessorytype.entity.AccessoryTypeBE;
-import pl.inf.app.bm.decoratiortype.entity.DecoratorTypeBE;
+import pl.inf.app.bm.decoratortype.entity.DecoratorTypeBE;
 import pl.inf.app.bm.user.entity.UserBE;
 
 import javax.persistence.Entity;

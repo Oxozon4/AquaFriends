@@ -1,6 +1,9 @@
-package pl.inf.app.bm.decoratiortype.entity;
+package pl.inf.app.bm.decoratortype.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 
@@ -17,8 +20,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "decorator_type", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class DecoratorTypeBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
