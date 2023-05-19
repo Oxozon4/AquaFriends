@@ -6,6 +6,7 @@ import pl.inf.app.api.user.entity.UiUser;
 import pl.inf.app.bm.user.control.UiUserToEntityMapper;
 import pl.inf.app.bm.user.control.UserRepositoryBA;
 import pl.inf.app.bm.user.entity.UserBE;
+import pl.inf.app.error.ErrorType;
 import pl.inf.app.error.ProcessException;
 import pl.inf.app.utils.Filler;
 import pl.inf.app.utils.Mapper;
@@ -27,5 +28,11 @@ public class UserBF {
 		return Optional.of(userRepositoryBA.save(userBE))
 				.map(uiMapper::map)
 				.orElseThrow(() -> new ProcessException(REGISTER_ERROR, userBE));
+	}
+
+	public <T> T getById(final int id, final Mapper<UserBE, T> uiMapper) {
+		return userRepositoryBA.findById(id)
+				.map(uiMapper::map)
+				.orElseThrow(() -> new ProcessException(ErrorType.NOT_FOUND_ERROR));
 	}
 }

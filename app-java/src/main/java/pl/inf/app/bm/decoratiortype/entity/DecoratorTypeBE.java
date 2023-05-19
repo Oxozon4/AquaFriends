@@ -29,7 +29,7 @@ public class DecoratorTypeBE {
 	@ManyToMany(mappedBy = "decorators")
 	private Set<AquariumBE> aquariums = new HashSet<>();
 
-	enum Type {
+	public enum Type {
 		SUBSTRATE,
 		PLANT,
 		DECORATION

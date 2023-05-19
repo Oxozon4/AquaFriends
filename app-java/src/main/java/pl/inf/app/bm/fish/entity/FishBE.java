@@ -34,7 +34,7 @@ public class FishBE {
 	@JoinColumn(name = "fish_type_id")
 	private FishTypeBE fishType;
 
-	enum HealthStatus {
+	public enum HealthStatus {
 		HEALTHY,
 		SICK,
 		DEAD

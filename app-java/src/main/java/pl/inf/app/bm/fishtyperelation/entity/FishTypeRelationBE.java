@@ -31,7 +31,7 @@ public class FishTypeRelationBE {
 	@JoinColumn(name = "fish2_id")
 	private FishTypeBE fish2;
 
-	enum Relation {
+	public enum Relation {
 		FRIEND,
 		ENEMY
 	}

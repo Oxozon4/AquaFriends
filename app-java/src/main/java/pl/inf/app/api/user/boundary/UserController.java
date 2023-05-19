@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,12 @@ public class UserController {
 		final UiUser user = userBF.create(uiUser, userToUiMapper);
 		return ResponseEntity.ok(
 				EntityModel.of(user).add(linkTo(methodOn(UserController.class).registerUser(null)).withSelfRel()));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<EntityModel<UiUser>> findUser(@PathVariable Integer id) {
+		final UiUser user = userBF.getById(id, userToUiMapper);
+		return ResponseEntity.ok(EntityModel.of(user).add(linkTo(methodOn(UserController.class).findUser(id)).withSelfRel()));
 	}
 
 }

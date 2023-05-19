@@ -1,6 +1,9 @@
 package pl.inf.app.bm.knowledge.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -13,8 +16,11 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "knowledge", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class KnowledgeBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +29,7 @@ public class KnowledgeBE {
 	private ProblemType problemType;
 	private String info;
 
-	enum ProblemType {
+	public enum ProblemType {
 		WATER,
 		NO2
 	}
