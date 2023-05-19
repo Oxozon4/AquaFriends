@@ -1,6 +1,9 @@
 package pl.inf.app.bm.fishtype.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -11,8 +14,11 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "fish_type", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class FishTypeBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
