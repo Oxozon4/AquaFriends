@@ -11,7 +11,8 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @RequiredArgsConstructor
 public enum ErrorType {
 	USER_NOT_FOUND("B001 | User not found. User id: {}", NOT_FOUND),
-	REGISTER_ERROR("B002 | Cannot register user : {}", UNPROCESSABLE_ENTITY);
+	REGISTER_ERROR("B002 | Cannot register user : {}", UNPROCESSABLE_ENTITY),
+	NOT_FOUND_ERROR("B003 | Not found.", NOT_FOUND);
 
 	private final String description;
 	private final HttpStatus defaultStatus;
