@@ -1,6 +1,9 @@
 package pl.inf.app.bm.fish.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 import pl.inf.app.bm.fishtype.entity.FishTypeBE;
@@ -18,8 +21,11 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "fish", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class FishBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
