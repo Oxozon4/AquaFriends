@@ -3,9 +3,11 @@ package pl.inf.app.bm.fish.entity;
 import lombok.Getter;
 import lombok.Setter;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
-import pl.inf.app.bm.fish_type.entity.FishTypeBE;
+import pl.inf.app.bm.fishtype.entity.FishTypeBE;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ public class FishBE {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private Timestamp birthDay;
+	@Enumerated(EnumType.STRING)
 	private HealthStatus healthStatus;
 	@ManyToOne
 	@JoinColumn(name = "aquarium_id")

@@ -1,9 +1,9 @@
-package pl.inf.app.bm.fish_type.boundary;
+package pl.inf.app.bm.fishtype.boundary;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.inf.app.bm.fish_type.control.FishTypeRepositoryBA;
-import pl.inf.app.bm.fish_type.entity.FishTypeBE;
+import pl.inf.app.bm.fishtype.control.FishTypeRepositoryBA;
+import pl.inf.app.bm.fishtype.entity.FishTypeBE;
 import pl.inf.app.error.ErrorType;
 import pl.inf.app.error.ProcessException;
 

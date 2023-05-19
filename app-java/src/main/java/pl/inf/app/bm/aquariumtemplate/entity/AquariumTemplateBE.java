@@ -1,4 +1,4 @@
-package pl.inf.app.bm.fish_type.entity;
+package pl.inf.app.bm.aquariumtemplate.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,20 +12,14 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "fish_type", schema = "public")
-public class FishTypeBE {
+@Table(name = "aquarium_template", schema = "public")
+public class AquariumTemplateBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	private float maxNo2;
-	private float minNo2;
-	private float maxNo3;
-	private float minNo3;
-	private float maxGh;
-	private float minGh;
-	private float maxKh;
-	private float minKh;
-	private float maxPh;
-	private float minPh;
+	private float length;
+	private float width;
+	private float height;
+	//TODO add relation of accesoriess
 }
