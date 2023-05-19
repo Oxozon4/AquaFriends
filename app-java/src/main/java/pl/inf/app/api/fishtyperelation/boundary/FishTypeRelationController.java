@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/fish-type- relation", produces = "application/hal+json")
+@RequestMapping(value = "/api/fish-type-relation", produces = "application/hal+json")
 public class FishTypeRelationController {
 	private final FishTypeRelationBF fishTypeRelationBF;
 	private final FishTypeRelationToUiMapper fishTypeRelationToUiMapper;
