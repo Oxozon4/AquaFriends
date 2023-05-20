@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdControlPoint } from 'react-icons/md';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
 import {
   MdFastForward,
@@ -129,5 +129,21 @@ export const GithubIcon = styled(FaGithub)<IconProps>`
 
   &:hover {
     opacity: ${({ withhover }) => (withhover === 'true' ? '0.75' : '1')};
+  }
+`;
+
+export const AddIcon = styled(MdControlPoint)<IconProps>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  color: ${({ theme }) => theme.colors.primary};
+  border: 2px solid transparent;
+  transition: all 300ms;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid
+      ${({ theme, withhover }) =>
+        withhover === 'true' ? theme.colors.primary : 'transparent'};
   }
 `;

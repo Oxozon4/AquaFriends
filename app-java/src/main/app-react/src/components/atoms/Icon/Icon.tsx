@@ -7,6 +7,7 @@ import {
   GoogleIcon,
   FacebookIcon,
   GithubIcon,
+  AddIcon,
 } from './Icon-styled';
 
 interface IconProps {
@@ -18,7 +19,8 @@ interface IconProps {
     | 'Close'
     | 'Google'
     | 'Facebook'
-    | 'Github';
+    | 'Github'
+    | 'Add';
   size?: string;
   withhover?: 'true' | 'false';
 }
@@ -40,6 +42,7 @@ const Icon = ({ variant, size = '128px', withhover = 'true' }: IconProps) => {
         <FacebookIcon size={size} withhover={withhover} />
       )}
       {variant === 'Github' && <GithubIcon size={size} withhover={withhover} />}
+      {variant === 'Add' && <AddIcon size={size} withhover={withhover} />}
     </>
   );
 };
