@@ -1,6 +1,9 @@
 package pl.inf.app.bm.accessorytype.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 import pl.inf.app.bm.aquariumtemplate.entity.AquariumTemplateBE;
@@ -16,8 +19,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "accessory_type", schema = "public")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccessoryTypeBE {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
