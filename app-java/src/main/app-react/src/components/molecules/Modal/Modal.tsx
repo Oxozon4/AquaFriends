@@ -1,23 +1,28 @@
 import { useRef, useEffect, useCallback } from 'react';
-import ModalFooter from '../../atoms/ModalFooter/ModalFooter';
 import {
   Background,
   ModalWrapper,
   ModalContent,
   CloseModalButton,
-} from './Modal-styled';
+} from './Modal-styled.js';
 
-const Modal = ({ showModal, setShowModal, children }) => {
-  const modalRef = useRef();
+interface ModalProps {
+  showModal: boolean;
+  setShowModal: (prev: any) => void;
+  children: React.ReactNode;
+}
 
-  const closeModal = (e) => {
+const Modal = ({ showModal, setShowModal, children }: ModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const closeModal = (e: any) => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }
   };
 
   const keyPress = useCallback(
-    (e) => {
+    (e: any) => {
       if (e.key === 'Escape' && showModal) {
         setShowModal(false);
       }
@@ -35,14 +40,13 @@ const Modal = ({ showModal, setShowModal, children }) => {
   return (
     <>
       {showModal ? (
-        <Background ref={modalRef} onClick={closeModal}>
-          <ModalWrapper showModal={showModal}>
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper>
             <ModalContent>{children}</ModalContent>
             <CloseModalButton
               aria-label="close modal"
-              onClick={() => setShowModal((prev) => !prev)}
+              onClick={() => setShowModal((prev: any) => !prev)}
             />
-            <ModalFooter></ModalFooter>
           </ModalWrapper>
         </Background>
       ) : null}

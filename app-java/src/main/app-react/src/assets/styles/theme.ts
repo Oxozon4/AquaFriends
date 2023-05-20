@@ -8,9 +8,9 @@ const size = {
 
 export const theme = {
   colors: {
-    primary: '#1ED760',
-    secondary: '#222222',
-    tertiary: '#E9E9E9',
+    primary: '#3185FC', // Do zmiany
+    secondary: '#FFFFFF', // OK - biel
+    tertiary: '#F3F3F3', // OK - jasnoszary
     white: '#FFFFFF',
     lightGrey: '#F7F8FA',
     grey: '#C0C7D6',
@@ -20,6 +20,8 @@ export const theme = {
     warning: '#E1D888',
     placeholder: '#626262',
     red: '#ff0033',
+    transparent: 'rgba(0, 0, 0, 0)',
+    danger: '#ff0000',
   },
   fontSize: {
     logo: '70px',
