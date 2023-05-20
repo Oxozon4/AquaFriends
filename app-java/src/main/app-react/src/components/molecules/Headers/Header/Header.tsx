@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from '../../../atoms/Link/Link';
-import Icon from '../../../atoms/Icon/Icon';
+// import Icon from '../../../atoms/Icon/Icon';
 import {
   HeaderWrapper,
   HeaderLogo,
