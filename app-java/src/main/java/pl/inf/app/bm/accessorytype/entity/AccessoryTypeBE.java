@@ -3,6 +3,7 @@ package pl.inf.app.bm.accessorytype.entity;
 import lombok.Getter;
 import lombok.Setter;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
+import pl.inf.app.bm.aquariumtemplate.entity.AquariumTemplateBE;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,4 +25,6 @@ public class AccessoryTypeBE {
 	private String name;
 	@ManyToMany(mappedBy = "accessories")
 	private Set<AquariumBE> aquariums = new HashSet<>();
+	@ManyToMany(mappedBy = "accessories")
+	private Set<AquariumTemplateBE> aquariumTemplates;
 }
