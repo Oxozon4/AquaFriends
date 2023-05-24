@@ -10,7 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,4 +39,8 @@ public class FishTypeBE {
 	private float minKh;
 	private float maxPh;
 	private float minPh;
+	@OneToMany
+	@JoinTable(name = "fish_hostile", joinColumns = @JoinColumn(name = "fish_type_id"),
+			   inverseJoinColumns = @JoinColumn(name = "hostile_fish_id"))
+	private Set<FishTypeBE> enemies = new HashSet<>();
 }

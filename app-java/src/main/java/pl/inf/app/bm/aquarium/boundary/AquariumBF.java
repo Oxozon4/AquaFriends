@@ -30,11 +30,6 @@ public class AquariumBF {
 
 	public <T> T save(UiAquarium aquarium, final Mapper<AquariumBE, T> uiMapper) {
 		final AquariumBE aquariumBE = AquariumBE.builder()
-				.gh(aquarium.getGh())
-				.kh(aquarium.getKh())
-				.ph(aquarium.getPh())
-				.no2(aquarium.getNo2())
-				.no3(aquarium.getNo3())
 				.length(aquarium.getLength())
 				.width(aquarium.getWidth())
 				.height(aquarium.getHeight())
@@ -47,11 +42,6 @@ public class AquariumBF {
 	public <T> T update(Integer id, UiAquarium aquarium, Mapper<AquariumBE, T> uiMapper) {
 		return aquariumRepositoryBA.findById(id).map(aquariumBE -> {
 			aquariumBE.setName(aquarium.getName());
-			aquariumBE.setKh(aquarium.getKh());
-			aquariumBE.setGh(aquarium.getGh());
-			aquariumBE.setPh(aquarium.getPh());
-			aquariumBE.setNo2(aquarium.getNo2());
-			aquariumBE.setNo3(aquarium.getNo3());
 			aquariumBE.setHeight(aquarium.getHeight());
 			aquariumBE.setWidth(aquarium.getWidth());
 			aquariumBE.setLength(aquarium.getLength());

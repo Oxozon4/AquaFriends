@@ -1,0 +1,10 @@
+ALTER TABLE aquarium
+    DROP column gh;
+ALTER TABLE aquarium
+    DROP column kh;
+ALTER TABLE aquarium
+    DROP column no2;
+ALTER TABLE aquarium
+    DROP column no3;
+ALTER TABLE aquarium
+    DROP column ph;
