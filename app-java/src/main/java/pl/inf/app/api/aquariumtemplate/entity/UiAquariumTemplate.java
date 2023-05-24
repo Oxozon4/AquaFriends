@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.api.accessorytype.entity.UiAccessoryType;
-import pl.inf.app.bm.accessorytype.entity.AccessoryTypeBE;
 
 import java.util.HashSet;
 import java.util.Set;
