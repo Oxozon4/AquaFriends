@@ -15,11 +15,6 @@ public class AquariumToUiMapper implements Mapper<AquariumBE, UiAquarium> {
 		uiAquarium.setHeight(source.getHeight());
 		uiAquarium.setLength(source.getLength());
 		uiAquarium.setWidth(source.getWidth());
-		uiAquarium.setGh(source.getGh());
-		uiAquarium.setKh(source.getKh());
-		uiAquarium.setPh(source.getPh());
-		uiAquarium.setNo2(source.getNo2());
-		uiAquarium.setNo3(source.getNo3());
 		return uiAquarium;
 	}
 }

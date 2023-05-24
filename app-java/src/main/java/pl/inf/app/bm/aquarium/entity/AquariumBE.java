@@ -19,7 +19,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -37,11 +36,6 @@ public class AquariumBE {
 	private float length;
 	private float width;
 	private float height;
-	private float no2;
-	private float no3;
-	private float gh;
-	private float kh;
-	private float ph;
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private UserBE user;
@@ -52,6 +46,6 @@ public class AquariumBE {
 	@ManyToMany
 	@JoinTable(name = "aquarium_accessory", joinColumns = @JoinColumn(name = "aquarium_id"),
 			   inverseJoinColumns = @JoinColumn(name = "accessory_id"))
-	private Set<AccessoryTypeBE> accessories = new LinkedHashSet<>();
+	private Set<AccessoryTypeBE> accessories = new HashSet<>();
 
 }
