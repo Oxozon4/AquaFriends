@@ -1,12 +1,22 @@
 package pl.inf.app.api.aquarium.control;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.inf.app.api.accessorytype.control.AccessoryTypeToUiMapper;
 import pl.inf.app.api.aquarium.entity.UiAquarium;
+import pl.inf.app.api.decoratortype.control.DecoratorTypeToUiMapper;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 import pl.inf.app.utils.Mapper;
 
+import java.util.stream.Collectors;
+
 @Component
+@RequiredArgsConstructor
 public class AquariumToUiMapper implements Mapper<AquariumBE, UiAquarium> {
+
+	private final AccessoryTypeToUiMapper accessoryTypeToUiMapper;
+	private final DecoratorTypeToUiMapper decoratorTypeToUiMapper;
+
 	@Override
 	public UiAquarium map(final AquariumBE source) {
 		final UiAquarium uiAquarium = new UiAquarium();
@@ -15,6 +25,8 @@ public class AquariumToUiMapper implements Mapper<AquariumBE, UiAquarium> {
 		uiAquarium.setHeight(source.getHeight());
 		uiAquarium.setLength(source.getLength());
 		uiAquarium.setWidth(source.getWidth());
+		uiAquarium.setAccessories(source.getAccessories().stream().map(accessoryTypeToUiMapper::map).collect(Collectors.toSet()));
+		uiAquarium.setDecorators(source.getDecorators().stream().map(decoratorTypeToUiMapper::map).collect(Collectors.toSet()));
 		return uiAquarium;
 	}
 }
