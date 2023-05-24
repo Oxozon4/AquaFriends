@@ -1,6 +1,7 @@
 package pl.inf.app.bm.aquarium.boundary;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.inf.app.api.accessorytype.entity.UiAccessoryType;
@@ -10,6 +11,8 @@ import pl.inf.app.bm.accessorytype.control.AccessoryTypeRepositoryBA;
 import pl.inf.app.bm.aquarium.control.AquariumRepositoryBA;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 import pl.inf.app.bm.decoratortype.control.DecoratorTypeRepositoryBA;
+import pl.inf.app.bm.user.control.UserRepositoryBA;
+import pl.inf.app.bm.user.entity.UserBE;
 import pl.inf.app.error.ErrorType;
 import pl.inf.app.error.ProcessException;
 import pl.inf.app.utils.Mapper;
@@ -22,8 +25,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AquariumBF {
 	private final AquariumRepositoryBA aquariumRepositoryBA;
+	private final UserRepositoryBA userRepositoryBA;
 	private final AccessoryTypeRepositoryBA accessoryTypeRepositoryBA;
 	private final DecoratorTypeRepositoryBA decoratorTypeRepositoryBA;
+
+	private static int getLoggedUserId() {
+		final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserBE) {
+			return ((UserBE) principal).getId();
+		} else {
+			throw new ProcessException(ErrorType.USER_NOT_FOUND);
+		}
+	}
 
 	@Transactional
 	public <T> T getById(final int id, final Mapper<AquariumBE, T> uiMapper) {
@@ -38,6 +51,11 @@ public class AquariumBF {
 	}
 
 	@Transactional
+	public <T> List<T> getAllByUserId(final Mapper<AquariumBE, T> uiMapper) {
+		return aquariumRepositoryBA.findByUser_Id(getLoggedUserId()).stream().map(uiMapper::map).collect(Collectors.toList());
+	}
+
+	@Transactional
 	public <T> T save(UiAquarium aquarium, final Mapper<AquariumBE, T> uiMapper) {
 		final AquariumBE aquariumBE = AquariumBE.builder()
 				.name(aquarium.getName())
@@ -48,6 +66,7 @@ public class AquariumBF {
 						aquarium.getAccessories().stream().map(UiAccessoryType::getId).collect(Collectors.toList()))))
 				.decorators(new HashSet<>(decoratorTypeRepositoryBA.findAllById(
 						aquarium.getDecorators().stream().map(UiDecoratorType::getId).collect(Collectors.toList()))))
+				.user(userRepositoryBA.getById(getLoggedUserId()))
 				.build();
 		return uiMapper.map(aquariumRepositoryBA.save(aquariumBE));
 	}
