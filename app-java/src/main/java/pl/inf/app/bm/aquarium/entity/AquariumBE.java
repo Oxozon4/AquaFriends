@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.bm.accessorytype.entity.AccessoryTypeBE;
 import pl.inf.app.bm.decoratortype.entity.DecoratorTypeBE;
+import pl.inf.app.bm.fish.entity.FishBE;
 import pl.inf.app.bm.user.entity.UserBE;
 
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,5 +49,6 @@ public class AquariumBE {
 	@JoinTable(name = "aquarium_accessory", joinColumns = @JoinColumn(name = "aquarium_id"),
 			   inverseJoinColumns = @JoinColumn(name = "accessory_id"))
 	private Set<AccessoryTypeBE> accessories = new HashSet<>();
-
+	@OneToMany(mappedBy = "aquariumBE")
+	private Set<FishBE> fishes = new HashSet<>();
 }
