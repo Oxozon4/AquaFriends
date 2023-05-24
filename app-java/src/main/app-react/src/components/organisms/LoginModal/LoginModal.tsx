@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useForm, FormProvider, set } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 import Modal from '../../molecules/Modal/Modal';
@@ -32,15 +32,8 @@ interface LoginModalProps {
 
 const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
   const formMethods = useForm();
-  const {
-    register,
-    control,
-    handleSubmit,
-    watch,
-    resetField,
-    setFocus,
-    formState: { errors },
-  } = formMethods;
+  const { register, control, handleSubmit, watch, resetField, setFocus } =
+    formMethods;
   const [localVariant, setLocalVariant] = useState<'login' | 'register'>(
     variant
   );
@@ -81,6 +74,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
     setFocus('passwordConfirm');
     resetField('passwordConfirm');
     (document.activeElement as HTMLElement).blur();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localVariant]);
 
   return (

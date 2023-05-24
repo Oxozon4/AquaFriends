@@ -1,12 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { AriaButtonProps, useButton } from 'react-aria';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  DangerButton,
-  CopyButton,
-} from './Button-styled';
-import Icon from '../Icon/Icon';
+import { PrimaryButton, SecondaryButton, DangerButton } from './Button-styled';
 
 interface ButtonProps extends AriaButtonProps {
   text: string;
@@ -17,23 +11,10 @@ interface ButtonProps extends AriaButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { text, onClick, variant = 'primary', type, copyLink } = props;
-
-  const [copyText, setCopyText] = useState<string>('Skopiuj link');
+  const { text, onClick, variant = 'primary', type } = props;
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { buttonProps } = useButton(props, buttonRef);
-
-  const onCopyClickHandler = () => {
-    if (!copyLink) {
-      return;
-    }
-    navigator.clipboard.writeText(copyLink);
-    setCopyText('Skopiowano!');
-    if (onClick) {
-      onClick();
-    }
-  };
 
   return (
     <>
@@ -69,19 +50,6 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
         >
           {text}
         </DangerButton>
-      )}
-      {variant === 'copy' && (
-        <CopyButton
-          {...buttonProps}
-          variant={variant}
-          onClick={onCopyClickHandler}
-          onBlur={() => setCopyText('Skopiuj link')}
-          type={type}
-          ref={buttonRef}
-        >
-          <Icon variant="ContentCopy" withhover="false" size="20px" />
-          {copyText}
-        </CopyButton>
       )}
     </>
   );

@@ -10,7 +10,7 @@ import { useFormContext } from 'react-hook-form';
 interface TextInputProps {
   label: string;
   register: any;
-  validators: Object;
+  validators: any;
   id: string;
   autocomplete?: string;
   type?: string;

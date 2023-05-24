@@ -1,5 +1,4 @@
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useState, useRef } from 'react';
 
 import Modal from '../../molecules/Modal/Modal';
 import Button from '../../atoms/Button/Button';
