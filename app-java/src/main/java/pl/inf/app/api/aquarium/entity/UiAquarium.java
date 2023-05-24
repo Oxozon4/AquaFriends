@@ -17,9 +17,4 @@ public class UiAquarium {
 	private float length;
 	private float width;
 	private float height;
-	private float no2;
-	private float no3;
-	private float gh;
-	private float kh;
-	private float ph;
 }
