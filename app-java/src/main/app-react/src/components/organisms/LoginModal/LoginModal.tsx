@@ -39,7 +39,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
   );
 
   const loginUser = async (data: any) => {
-    const response = await axios.post(`/auth/login`, data);
+    const response = await axios.post(`/api/perform_login`, data);
     if (response.data.redirect) {
       window.location.href = response.data.redirect;
       toast.success('Zalogowano pomyślnie', { toastId: 'loginSuccess' });

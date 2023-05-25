@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		// @formatter:off
-        http.csrf().disable()
+        http.csrf().and().cors().disable()
                 .authorizeRequests()
 				.antMatchers("/admin", "/api/admin-links/**").hasAuthority(ROLE_ADMIN.getAuthority())
 				.antMatchers("/user", "/api/user-links/**").hasAuthority(ROLE_USER.getAuthority())
