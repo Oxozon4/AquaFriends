@@ -5,9 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.inf.app.bm.knowledge.entity.KnowledgeBE;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 @Getter
 @Setter
 @NoArgsConstructor

@@ -5,6 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.inf.app.api.accessorytype.entity.UiAccessoryType;
+import pl.inf.app.api.decoratortype.entity.UiDecoratorType;
+import pl.inf.app.api.fish.entity.UiFish;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,9 +23,7 @@ public class UiAquarium {
 	private float length;
 	private float width;
 	private float height;
-	private float no2;
-	private float no3;
-	private float gh;
-	private float kh;
-	private float ph;
+	private Set<UiDecoratorType> decorators = new HashSet<>();
+	private Set<UiAccessoryType> accessories = new HashSet<>();
+	private Set<UiFish> fishes = new HashSet<>();
 }

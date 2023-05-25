@@ -31,8 +31,8 @@ export const ModalContent = styled.div`
   justify-content: center;
   align-items: center;
   line-height: 1.8;
-  padding: 15px 10px 5px 10px;
-  color: ${({ theme }) => theme.colors.white};
+  padding: 50px 10px 5px 10px;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const CloseModalButton = styled(MdClose)`
@@ -44,5 +44,10 @@ export const CloseModalButton = styled(MdClose)`
   height: 32px;
   padding: 0;
   z-index: 10;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.black};
+  transition: all 300ms;
+
+  :hover {
+    transform: rotate(90deg);
+  }
 `;

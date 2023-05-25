@@ -38,7 +38,16 @@ const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log(new FormData(event.target));
+    const requestBody = new FormData(event.target);
+    const requestOptions = {
+      method: 'POST',
+      body: new URLSearchParams(requestBody),
+    };
+    const authUrl = 'http://localhost:8080/api/perform_login';
+    const response = await fetch(authUrl, requestOptions);
+    if (response.redirected) {
+      window.location = response.url;
+    }
   };
 
   return (

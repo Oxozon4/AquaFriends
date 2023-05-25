@@ -1,16 +1,10 @@
-import { Wrapper, GreenTextWrapper, About } from './Footer-styled';
+import { FooterWrapper, FooterText } from './Footer-styled';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <Wrapper>
-      <About>
-        <span>Więcej informacji</span>
-      </About>
-      <span>
-        &copy;2022 <GreenTextWrapper>B</GreenTextWrapper>ookify
-      </span>
-      <span>Polityka prywatności</span>
-    </Wrapper>
+    <FooterWrapper>
+      <FooterText>© 2023 AquaFriends Inc. All rights reserved.</FooterText>
+    </FooterWrapper>
   );
 };
 
