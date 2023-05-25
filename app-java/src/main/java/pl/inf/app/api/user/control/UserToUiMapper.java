@@ -11,8 +11,8 @@ public class UserToUiMapper implements Mapper<UserBE, UiUser> {
 	public UiUser map(final UserBE source) {
 		final UiUser uiUser = new UiUser();
 		uiUser.setId(source.getId());
-		uiUser.setFirstName(source.getFirstName());
-		uiUser.setLastName(source.getLastName());
+		uiUser.setFirst_name(source.getFirstName());
+		uiUser.setLast_name(source.getLastName());
 		uiUser.setEmail(source.getEmail());
 		uiUser.setAge(source.getAge());
 		return uiUser;

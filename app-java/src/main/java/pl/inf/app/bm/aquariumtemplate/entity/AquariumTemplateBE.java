@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -36,5 +35,5 @@ public class AquariumTemplateBE {
 	@ManyToMany
 	@JoinTable(name = "aquarium_template_accessory", joinColumns = @JoinColumn(name = "aquarium_template_id"),
 			   inverseJoinColumns = @JoinColumn(name = "accessory_id"))
-	private Set<AccessoryTypeBE> accessories = new HashSet<>();
+	private Set<AccessoryTypeBE> accessories;
 }

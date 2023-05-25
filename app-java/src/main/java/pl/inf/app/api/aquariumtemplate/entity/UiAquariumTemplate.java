@@ -5,10 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.inf.app.api.accessorytype.entity.UiAccessoryType;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -21,5 +17,4 @@ public class UiAquariumTemplate {
 	private float length;
 	private float width;
 	private float height;
-	private Set<UiAccessoryType> accessories = new HashSet<>();
 }

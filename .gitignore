@@ -12,5 +12,3 @@
 /local-deployment/*.jar
 /app-java/src/main/app-react/node_modules/
 /app-java/src/main/app-react/node/
-/app-java/src/main/resources/static/
-

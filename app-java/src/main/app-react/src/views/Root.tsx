@@ -4,7 +4,6 @@ import { theme } from '../assets/styles/theme';
 import { Wrapper } from './Root-styled';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from '../components/templates/LandingPage/LandingPage';
-import Dashboard from '../components/templates/Dashboard/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,7 +27,6 @@ const Root = () => {
           />
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </Wrapper>
       </ThemeProvider>

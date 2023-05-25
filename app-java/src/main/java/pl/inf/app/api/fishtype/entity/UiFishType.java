@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Builder
@@ -27,5 +24,4 @@ public class UiFishType {
 	private float minKh;
 	private float maxPh;
 	private float minPh;
-	private Set<UiFishType> enemies = new HashSet<>();
 }

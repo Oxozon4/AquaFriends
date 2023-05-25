@@ -17,8 +17,6 @@ declare module 'styled-components' {
       warning: string;
       placeholder: string;
       red: string;
-      danger: string;
-      transparent: string;
     };
     fontSize: {
       logo: string;

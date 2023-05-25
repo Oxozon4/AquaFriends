@@ -39,13 +39,6 @@ public class AquariumController {
 				CollectionModel.of(uiAquariumArrayList).add(linkTo(methodOn(AquariumController.class).findAll()).withSelfRel()));
 	}
 
-	@GetMapping("/user")
-	public ResponseEntity<CollectionModel<UiAquarium>> findByUserId() {
-		final List<UiAquarium> uiAquariumArrayList = aquariumBF.getAllByUserId(aquariumToUiMapper);
-		return ResponseEntity.ok(
-				CollectionModel.of(uiAquariumArrayList).add(linkTo(methodOn(AquariumController.class).findAll()).withSelfRel()));
-	}
-
 	@PostMapping
 	public ResponseEntity<EntityModel<UiAquarium>> add(@RequestBody final UiAquarium aquarium) {
 		final UiAquarium uiAquarium = aquariumBF.save(aquarium, aquariumToUiMapper);

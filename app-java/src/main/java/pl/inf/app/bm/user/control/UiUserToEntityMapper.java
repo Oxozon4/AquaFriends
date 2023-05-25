@@ -26,8 +26,8 @@ public class UiUserToEntityMapper implements Mapper<Filler<UiUser, UserBE>, User
 		if (StringUtils.isNotBlank(source.getPassword())) {
 			target.setPassword(passwordEncoder.encode(source.getPassword()));
 		}
-		target.setFirstName(source.getFirstName());
-		target.setLastName(source.getLastName());
+		target.setFirstName(source.getFirst_name());
+		target.setLastName(source.getLast_name());
 		target.setAge(source.getAge());
 
 		return target;
