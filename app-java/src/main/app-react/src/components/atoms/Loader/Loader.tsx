@@ -18,7 +18,6 @@ interface LoaderProps {
 }
 
 const Loader = ({ isLoading }: LoaderProps) => {
-  if (!isLoading) return null;
   return (
     <LoaderContainer>
       <SyncLoader size={50} color={'#1ED760'} loading={isLoading} />
