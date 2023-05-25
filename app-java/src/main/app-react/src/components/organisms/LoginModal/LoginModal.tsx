@@ -39,11 +39,24 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
   );
 
   const loginUser = async (data: any) => {
-    const response = await axios.post(`/api/perform_login`, data);
-    if (response.data.redirect) {
-      window.location.href = response.data.redirect;
-      toast.success('Zalogowano pomyślnie', { toastId: 'loginSuccess' });
+    const bodyFormData = new URLSearchParams();
+    bodyFormData.append("username", "admin@admin");
+    bodyFormData.append("password", "admin");
+    const requestOptions = {
+      method: "POST",
+      body: bodyFormData,
+    };
+    const authUrl = "http://localhost:8080/api/perform_login";
+    const response = await fetch(authUrl, requestOptions);
+    if (response.redirected) {
+      window.location.href = response.url;
     }
+
+    // const response = await axios.post(`/api/perform_login`, data);
+    // if (response.data.redirect) {
+    //   window.location.href = response.data.redirect;
+    //   toast.success('Zalogowano pomyślnie', { toastId: 'loginSuccess' });
+    // }
   };
 
   const registerUser = async (data: any) => {
