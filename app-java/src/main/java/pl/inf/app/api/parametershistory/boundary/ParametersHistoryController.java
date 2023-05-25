@@ -27,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/{aquariumId}/parameters-history", produces = "application/hal+json")
+@RequestMapping(value = "/api/parameters-history/{aquariumId}", produces = "application/hal+json")
 public class ParametersHistoryController {
 	private final ParametersHistoryBF parametersHistoryBF;
 	private final ParametersHistoryToUiMapper parametersHistoryToUiMapper;
