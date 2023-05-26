@@ -14,3 +14,7 @@
 /app-java/src/main/app-react/node/
 /app-java/src/main/resources/static/
 
+package-lock.json
+node_modules
+node
+static
