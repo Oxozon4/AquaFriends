@@ -40,23 +40,22 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
 
   const loginUser = async (data: any) => {
     const bodyFormData = new URLSearchParams();
-    bodyFormData.append("username", "admin@admin");
-    bodyFormData.append("password", "admin");
+    bodyFormData.append('username', data.username);
+    bodyFormData.append('password', data.password);
     const requestOptions = {
-      method: "POST",
+      method: 'POST',
       body: bodyFormData,
     };
-    const authUrl = "http://localhost:8080/api/perform_login";
+    const authUrl = '/api/perform_login';
     const response = await fetch(authUrl, requestOptions);
     if (response.redirected) {
       window.location.href = response.url;
+    } else {
+      toast.error(
+        'Wystąpił problem z twoim żądaniem! Spróbuj ponownie później',
+        { toastId: 'loginError' }
+      );
     }
-
-    // const response = await axios.post(`/api/perform_login`, data);
-    // if (response.data.redirect) {
-    //   window.location.href = response.data.redirect;
-    //   toast.success('Zalogowano pomyślnie', { toastId: 'loginSuccess' });
-    // }
   };
 
   const registerUser = async (data: any) => {
@@ -105,7 +104,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
             <FormField
               type="text"
               title="Login"
-              id="login"
+              id="username"
               register={register}
               validators={{
                 required: {
