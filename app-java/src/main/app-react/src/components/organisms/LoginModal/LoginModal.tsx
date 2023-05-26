@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { LinksContext } from '../../../providers/LinksProvider';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 import Modal from '../../molecules/Modal/Modal';
@@ -31,6 +32,7 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
+  const LinksCtx = useContext(LinksContext);
   const formMethods = useForm();
   const { register, control, handleSubmit, watch, resetField, setFocus } =
     formMethods;
@@ -39,6 +41,9 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
   );
 
   const loginUser = async (data: any) => {
+    if (!LinksCtx) {
+      return;
+    }
     const bodyFormData = new URLSearchParams();
     bodyFormData.append('username', data.username);
     bodyFormData.append('password', data.password);
@@ -46,7 +51,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
       method: 'POST',
       body: bodyFormData,
     };
-    const authUrl = '/api/perform_login';
+    const authUrl = LinksCtx.auth.login;
     const response = await fetch(authUrl, requestOptions);
     if (response.redirected) {
       window.location.href = response.url;
