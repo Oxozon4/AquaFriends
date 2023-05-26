@@ -5,14 +5,12 @@ import FormCreationModal from '../../organisms/FormCreationModal/FormCreationMod
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
 import { createPortal } from 'react-dom';
-import axios from 'axios';
 
 const Dashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const onLogoutHandler = async () => {
-    const data = await axios.get('/api/logout');
-    window.location.href = data.data.redirect;
+    window.location.href = '/';
   };
 
   const onEditHandler = () => {
