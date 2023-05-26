@@ -5,6 +5,7 @@ import { Wrapper } from './Root-styled';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from '../components/templates/LandingPage/LandingPage';
 import Dashboard from '../components/templates/Dashboard/Dashboard';
+import AdminPanel from '../components/templates/AdminPanel/AdminPanel';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,7 +29,8 @@ const Root = () => {
           />
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/user" element={<Dashboard />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </Wrapper>
       </ThemeProvider>
