@@ -98,7 +98,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <LoginModalContainer>
         <LoginModalHeader>
-          Witaj w <span style={{ color: '#5A24EC' }}>e</span>formify!
+          Witaj w <span style={{ color: '#3185FC' }}>AquaFriends</span>!
         </LoginModalHeader>
         <LoginModalParagraph>
           {isLoginVariant ? 'Zaloguj się' : 'Zarejestruj się'}, aby uzyskać
