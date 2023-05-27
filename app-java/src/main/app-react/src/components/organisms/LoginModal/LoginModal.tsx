@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { LinksContext } from '../../../providers/LinksProvider';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 import Modal from '../../molecules/Modal/Modal';
@@ -31,6 +32,7 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
+  const LinksCtx = useContext(LinksContext);
   const formMethods = useForm();
   const { register, control, handleSubmit, watch, resetField, setFocus } =
     formMethods;
@@ -39,24 +41,26 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
   );
 
   const loginUser = async (data: any) => {
+    if (!LinksCtx) {
+      return;
+    }
     const bodyFormData = new URLSearchParams();
-    bodyFormData.append("username", "admin@admin");
-    bodyFormData.append("password", "admin");
+    bodyFormData.append('username', data.username);
+    bodyFormData.append('password', data.password);
     const requestOptions = {
-      method: "POST",
+      method: 'POST',
       body: bodyFormData,
     };
-    const authUrl = "http://localhost:8080/api/perform_login";
+    const authUrl = LinksCtx.auth.login;
     const response = await fetch(authUrl, requestOptions);
     if (response.redirected) {
       window.location.href = response.url;
+    } else {
+      toast.error(
+        'Wystąpił problem z twoim żądaniem! Spróbuj ponownie później',
+        { toastId: 'loginError' }
+      );
     }
-
-    // const response = await axios.post(`/api/perform_login`, data);
-    // if (response.data.redirect) {
-    //   window.location.href = response.data.redirect;
-    //   toast.success('Zalogowano pomyślnie', { toastId: 'loginSuccess' });
-    // }
   };
 
   const registerUser = async (data: any) => {
@@ -105,7 +109,7 @@ const LoginModal = ({ showModal, setShowModal, variant }: LoginModalProps) => {
             <FormField
               type="text"
               title="Login"
-              id="login"
+              id="username"
               register={register}
               validators={{
                 required: {

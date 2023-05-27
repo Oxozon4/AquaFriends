@@ -12,6 +12,7 @@ import BackToTopIcon from '../../atoms/BackToTopIcon/BackToTopIcon';
 import LoginModal from '../../organisms/LoginModal/LoginModal';
 import { Wrapper } from './LandingPage-styled';
 import 'aos/dist/aos.css';
+import { toast } from 'react-toastify';
 
 const LandingPage: React.FC = () => {
   const [isLoading] = useState(false);
@@ -31,6 +32,14 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     Aos.init({ duration: 1000, once: true });
+
+    const queryParams = window.location.search;
+    if (queryParams.includes('?login=true')) {
+      setShowModal(true);
+    } else if (window.location.search.includes('?error=true')) {
+      toast.error('Nieprawidłowy login lub hasło!', { toastId: 'loginError' });
+      setShowModal(true);
+    }
   }, []);
 
   return (
