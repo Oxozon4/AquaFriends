@@ -24,9 +24,8 @@ const TextInput = ({
   type = 'text',
   autocomplete = 'off',
 }: TextInputProps) => {
-  const { trigger, getValues } = useFormContext();
+  const { trigger, getValues, getFieldState } = useFormContext();
   const [isFocused, setIsFocused] = useState(getValues(id) ? true : false);
-  const { getFieldState } = useFormContext();
   const { error } = getFieldState(id);
 
   const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
