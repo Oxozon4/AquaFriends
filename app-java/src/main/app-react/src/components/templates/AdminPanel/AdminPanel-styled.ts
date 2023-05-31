@@ -54,3 +54,11 @@ export const AdminPanelContentListNoItems = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.l};
   text-align: center;
 `;
+
+export const AdminPanelContentActions = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+`;

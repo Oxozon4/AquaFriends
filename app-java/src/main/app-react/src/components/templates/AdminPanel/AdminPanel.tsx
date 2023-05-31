@@ -8,6 +8,7 @@ import ListItem from '../../molecules/ListItem/ListItem';
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
 import Select from '../../atoms/Select/Select';
+import Button from '../../atoms/Button/Button';
 import {
   AdminPanelWrapper,
   AdminPanelContent,
@@ -16,6 +17,7 @@ import {
   AdminPanelContentHeaderDescription,
   AdminPanelContentList,
   AdminPanelContentListNoItems,
+  AdminPanelContentActions,
 } from './AdminPanel-styled';
 
 type SelectOptionType =
@@ -83,8 +85,12 @@ const AdminPanel = () => {
     window.location.href = '/';
   };
 
-  const onItemEditHandler = async (variant: SelectOptionType) => {
+  const onItemEditHandler = (variant: SelectOptionType) => {
     console.log('onEditDecoratorHandler', variant);
+  };
+
+  const onItemCreateClickHandler = (variant: SelectOptionType) => {
+    console.log('onItemCreateClickHandler');
   };
 
   useEffect(() => {
@@ -182,6 +188,14 @@ const AdminPanel = () => {
               Nie znaleziono żadnych danych z wybranej kolekcji.
             </AdminPanelContentListNoItems>
           )}
+          <AdminPanelContentActions>
+            <Button
+              type="button"
+              text="Dodaj nową pozycje"
+              variant="primary"
+              onClick={onItemCreateClickHandler}
+            />
+          </AdminPanelContentActions>
         </AdminPanelContentList>
       </AdminPanelContent>
       <Footer />
