@@ -1,10 +1,4 @@
-import {
-  useFormContext,
-  FieldError,
-  FieldErrorsImpl,
-  Merge,
-} from 'react-hook-form';
-import { useEffect } from 'react';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import {
   StyledSelect,
   StyledOption,
@@ -25,14 +19,6 @@ interface SelectProps {
 }
 
 const Select = ({ options, register, validators, error, id }: SelectProps) => {
-  const { setValue, getValues } = useFormContext();
-
-  useEffect(() => {
-    if (!getValues(id)) {
-      setValue(id, options[0].value);
-    }
-  }, [getValues, id, options, setValue]);
-
   return (
     <StyledWrapper>
       <StyledSelect

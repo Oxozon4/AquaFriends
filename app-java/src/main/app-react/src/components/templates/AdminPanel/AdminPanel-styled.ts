@@ -10,7 +10,7 @@ export const AdminPanelWrapper = styled.div`
   position: relative;
 `;
 
-export const AdminPanelContent = styled.div`
+export const AdminPanelContent = styled.form`
   width: 100%;
   display: flex;
   justify-content: center;

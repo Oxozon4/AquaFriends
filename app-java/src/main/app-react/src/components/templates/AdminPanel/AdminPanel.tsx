@@ -1,20 +1,59 @@
 import { useState, useEffect, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
+import Select from '../../atoms/Select/Select';
 import { AdminPanelWrapper, AdminPanelContent } from './AdminPanel-styled';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+type SelectOptionType =
+  | 'aquariumTemplate'
+  | 'knowledgeBase'
+  | 'fishType'
+  | 'accessoryType'
+  | 'decoratorType';
+
 const AdminPanel = () => {
   const LinksCtx = useContext(LinksContext);
-
+  const [selectedDataType, setSelectedDataType] =
+    useState<SelectOptionType>('fishType');
   const [aquariumTemplates, setAquariumTemplates] = useState<any[]>([]);
   const [knowledgeBase, setKnowledgeBase] = useState<any[]>([]);
   const [fishTypes, setFishTypes] = useState<any[]>([]);
   const [accessoryTypes, setAccessoryTypes] = useState<any[]>([]);
   const [decoratorTypes, setDecoratorTypes] = useState<any[]>([]);
+
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const selectComponentOptions = [
+    {
+      label: 'Szablony akwarium',
+      value: 'aquariumTemplate',
+    },
+    {
+      label: 'Baza wiedzy',
+      value: 'knowledgeBase',
+    },
+    {
+      label: 'Typy ryb',
+      value: 'fishType',
+    },
+    {
+      label: 'Typy akcesoriów',
+      value: 'accessoryType',
+    },
+    {
+      label: 'Typy dekoracji',
+      value: 'decoratorType',
+    },
+  ];
 
   const onLogoutHandler = async () => {
     window.location.href = '/';
@@ -87,7 +126,15 @@ const AdminPanel = () => {
         logoHref="/dashboard"
         text="wyloguj się"
       />
-      <AdminPanelContent>Sudo!</AdminPanelContent>
+      <AdminPanelContent>
+        <Select
+          options={selectComponentOptions}
+          register={register}
+          error={errors}
+          id="dataType"
+          validators={{}}
+        />
+      </AdminPanelContent>
       <Footer />
     </AdminPanelWrapper>
   );
