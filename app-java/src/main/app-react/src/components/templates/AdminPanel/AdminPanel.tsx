@@ -4,6 +4,7 @@ import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import ListItem from '../../molecules/ListItem/ListItem';
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
 import Select from '../../atoms/Select/Select';
@@ -14,6 +15,7 @@ import {
   AdminPanelContentHeaderTitle,
   AdminPanelContentHeaderDescription,
   AdminPanelContentList,
+  AdminPanelContentListNoItems,
 } from './AdminPanel-styled';
 
 type SelectOptionType =
@@ -38,8 +40,6 @@ const AdminPanel = () => {
   } = useForm();
 
   const selectedDataType: SelectOptionType = watch('dataType');
-  console.log(selectedDataType);
-
   const selectComponentOptions = [
     {
       label: 'Szablony akwarium',
@@ -63,8 +63,28 @@ const AdminPanel = () => {
     },
   ];
 
+  const getActiveDataType = () => {
+    if (selectedDataType === 'aquariumTemplate') {
+      return aquariumTemplates;
+    }
+    if (selectedDataType === 'knowledgeBase') {
+      return knowledgeBase;
+    }
+    if (selectedDataType === 'fishType') {
+      return fishTypes;
+    }
+    if (selectedDataType === 'accessoryType') {
+      return accessoryTypes;
+    }
+    return null;
+  };
+
   const onLogoutHandler = async () => {
     window.location.href = '/';
+  };
+
+  const onItemEditHandler = async (variant: SelectOptionType) => {
+    console.log('onEditDecoratorHandler', variant);
   };
 
   useEffect(() => {
@@ -73,7 +93,7 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllAquariumTemplate);
-      setAquariumTemplates(response.data);
+      setAquariumTemplates(response.data.content);
     };
 
     const getAllFishTypes = async () => {
@@ -81,7 +101,7 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllFishType);
-      setFishTypes(response.data);
+      setFishTypes(response.data.content);
     };
 
     const getAllKnowledgeBase = async () => {
@@ -89,7 +109,7 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllKnowledge);
-      setKnowledgeBase(response.data);
+      setKnowledgeBase(response.data.content);
     };
 
     const getAllAccessoryTypes = async () => {
@@ -97,7 +117,7 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllAccessoryType);
-      setAccessoryTypes(response.data);
+      setAccessoryTypes(response.data.content);
     };
 
     const getAllDecoratorTypes = async () => {
@@ -105,7 +125,7 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllDecoratorType);
-      setDecoratorTypes(response.data);
+      setDecoratorTypes(response.data.content);
     };
 
     if (!LinksCtx || !LinksCtx.admin || LinksCtx.getAdminLinks === null) {
@@ -142,7 +162,6 @@ const AdminPanel = () => {
           <AdminPanelContentHeaderDescription>
             Wybierz typ danych, które chcesz edytować
           </AdminPanelContentHeaderDescription>
-
           <Select
             options={selectComponentOptions}
             register={register}
@@ -151,7 +170,19 @@ const AdminPanel = () => {
             validators={{}}
           />
         </AdminPanelContentHeader>
-        <AdminPanelContentList></AdminPanelContentList>
+        <AdminPanelContentList>
+          {getActiveDataType()?.length ? (
+            <ListItem
+              variant={selectedDataType}
+              data={getActiveDataType()}
+              onEditClick={onItemEditHandler}
+            />
+          ) : (
+            <AdminPanelContentListNoItems>
+              Nie znaleziono żadnych danych z wybranej kolekcji.
+            </AdminPanelContentListNoItems>
+          )}
+        </AdminPanelContentList>
       </AdminPanelContent>
       <Footer />
     </AdminPanelWrapper>

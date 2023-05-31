@@ -12,11 +12,17 @@ import {
 import Button from '../../atoms/Button/Button';
 
 interface ListItemProps {
-  onClick: any;
-  onFormPreviewHandler: any;
+  variant:
+    | 'aquariumTemplate'
+    | 'knowledgeBase'
+    | 'fishType'
+    | 'accessoryType'
+    | 'decoratorType';
+  onEditClick: any;
+  data: any;
 }
 
-const ListItem = ({ onClick, onFormPreviewHandler }: ListItemProps) => {
+const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
@@ -36,13 +42,7 @@ const ListItem = ({ onClick, onFormPreviewHandler }: ListItemProps) => {
         </ListItemActionsDescriptionWrapper>
 
         <ListItemActionsButtonWrapper>
-          <Button text="Edytuj" onClick={() => onClick()} />
-          <Button
-            text="Podgląd"
-            variant="secondary"
-            onClick={() => onFormPreviewHandler()}
-            type="button"
-          />
+          <Button text="Edytuj" onClick={onEditClick} />
         </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper
           style={{ paddingTop: '5px' }}
