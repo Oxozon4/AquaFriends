@@ -1,13 +1,19 @@
 import { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
 import Select from '../../atoms/Select/Select';
-import { AdminPanelWrapper, AdminPanelContent } from './AdminPanel-styled';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import {
+  AdminPanelWrapper,
+  AdminPanelContent,
+  AdminPanelContentHeader,
+  AdminPanelContentHeaderTitle,
+  AdminPanelContentHeaderDescription,
+} from './AdminPanel-styled';
 
 type SelectOptionType =
   | 'aquariumTemplate'
@@ -127,13 +133,22 @@ const AdminPanel = () => {
         text="wyloguj się"
       />
       <AdminPanelContent>
-        <Select
-          options={selectComponentOptions}
-          register={register}
-          error={errors}
-          id="dataType"
-          validators={{}}
-        />
+        <AdminPanelContentHeader>
+          <AdminPanelContentHeaderTitle>
+            Witaj w panelu Administratora!
+          </AdminPanelContentHeaderTitle>
+          <AdminPanelContentHeaderDescription>
+            Wybierz typ danych, które chcesz edytować
+          </AdminPanelContentHeaderDescription>
+
+          <Select
+            options={selectComponentOptions}
+            register={register}
+            error={errors}
+            id="dataType"
+            validators={{}}
+          />
+        </AdminPanelContentHeader>
       </AdminPanelContent>
       <Footer />
     </AdminPanelWrapper>

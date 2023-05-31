@@ -3,9 +3,11 @@ import styled from 'styled-components';
 export const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
+  max-width: 800px;
   margin: 15px 0 10px;
+  position: relative;
 `;
 
 export const StyledSelect = styled.select`
@@ -18,6 +20,7 @@ export const StyledSelect = styled.select`
 
   @media ${({ theme }) => theme.breakpoints.sm} {
     min-width: 50%;
+    margin-left: 32px;
   }
 `;
 
@@ -28,7 +31,11 @@ export const StyledOption = styled.option`
 `;
 
 export const StyledIconWrapper = styled.div`
-  position: relative;
-  right: 30px;
+  position: absolute;
+  right: 3%;
   top: 3px;
+
+  @media ${({ theme }) => theme.breakpoints.sm} {
+    right: 25%;
+  }
 `;
