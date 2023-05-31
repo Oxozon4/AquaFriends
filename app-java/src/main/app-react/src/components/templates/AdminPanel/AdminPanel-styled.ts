@@ -10,30 +10,42 @@ export const AdminPanelWrapper = styled.div`
   position: relative;
 `;
 
-export const AdminPanelContent = styled.form`
+export const AdminPanelContent = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
-  padding: 0 20px;
 `;
 
-export const AdminPanelContentHeader = styled.div`
+export const AdminPanelContentHeader = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  padding: 15px 0;
 `;
 
 export const AdminPanelContentHeaderTitle = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: bold;
+  text-align: center;
 `;
 
 export const AdminPanelContentHeaderDescription = styled.h2`
-  margin: 10px 0 0 0;
+  margin: 15px 0 10px;
   font-size: ${({ theme }) => theme.fontSize.l};
   font-weight: normal;
+  text-align: center;
+`;
+
+export const AdminPanelContentList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
 `;

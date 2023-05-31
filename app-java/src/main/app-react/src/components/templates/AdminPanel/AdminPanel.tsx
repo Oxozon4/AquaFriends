@@ -13,6 +13,7 @@ import {
   AdminPanelContentHeader,
   AdminPanelContentHeaderTitle,
   AdminPanelContentHeaderDescription,
+  AdminPanelContentList,
 } from './AdminPanel-styled';
 
 type SelectOptionType =
@@ -24,8 +25,6 @@ type SelectOptionType =
 
 const AdminPanel = () => {
   const LinksCtx = useContext(LinksContext);
-  const [selectedDataType, setSelectedDataType] =
-    useState<SelectOptionType>('fishType');
   const [aquariumTemplates, setAquariumTemplates] = useState<any[]>([]);
   const [knowledgeBase, setKnowledgeBase] = useState<any[]>([]);
   const [fishTypes, setFishTypes] = useState<any[]>([]);
@@ -38,6 +37,9 @@ const AdminPanel = () => {
     formState: { errors },
   } = useForm();
 
+  const selectedDataType: SelectOptionType = watch('dataType');
+  console.log(selectedDataType);
+
   const selectComponentOptions = [
     {
       label: 'Szablony akwarium',
@@ -48,11 +50,11 @@ const AdminPanel = () => {
       value: 'knowledgeBase',
     },
     {
-      label: 'Typy ryb',
+      label: 'Rodzaje ryb',
       value: 'fishType',
     },
     {
-      label: 'Typy akcesoriów',
+      label: 'Rodzaje akcesoriów',
       value: 'accessoryType',
     },
     {
@@ -149,6 +151,7 @@ const AdminPanel = () => {
             validators={{}}
           />
         </AdminPanelContentHeader>
+        <AdminPanelContentList></AdminPanelContentList>
       </AdminPanelContent>
       <Footer />
     </AdminPanelWrapper>
