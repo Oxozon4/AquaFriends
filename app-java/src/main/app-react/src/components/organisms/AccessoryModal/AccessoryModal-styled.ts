@@ -28,3 +28,10 @@ export const AccessoryModalActions = styled.div`
   gap: 25px;
   margin: 25px;
 `;
+
+export const AccessoryModalInputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 25%;
+`;
