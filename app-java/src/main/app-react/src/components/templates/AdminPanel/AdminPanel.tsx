@@ -244,17 +244,19 @@ const AdminPanel = () => {
     if (!LinksCtx || !LinksCtx.admin) {
       return;
     }
-    if (selectedDataType === 'aquariumTemplate') {
-      getAllAquariumTemplates();
-    } else if (selectedDataType === 'knowledgeBase') {
-      getAllKnowledgeBase();
-    } else if (selectedDataType === 'fishType') {
-      getAllFishTypes();
-    } else if (selectedDataType === 'accessoryType') {
-      getAllAccessoryTypes();
-    } else if (selectedDataType === 'decoratorType') {
-      getAllDecoratorTypes();
-    }
+    setTimeout(() => {
+      if (selectedDataType === 'aquariumTemplate') {
+        getAllAquariumTemplates();
+      } else if (selectedDataType === 'knowledgeBase') {
+        getAllKnowledgeBase();
+      } else if (selectedDataType === 'fishType') {
+        getAllFishTypes();
+      } else if (selectedDataType === 'accessoryType') {
+        getAllAccessoryTypes();
+      } else if (selectedDataType === 'decoratorType') {
+        getAllDecoratorTypes();
+      }
+    }, 150);
   }, [
     LinksCtx,
     getAllAccessoryTypes,
