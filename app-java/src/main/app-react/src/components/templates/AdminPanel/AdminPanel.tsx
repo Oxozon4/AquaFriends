@@ -9,6 +9,11 @@ import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
 import Select from '../../atoms/Select/Select';
 import Button from '../../atoms/Button/Button';
+import KnowledgeBaseModal from '../../organisms/KnowledgeBaseModal/KnowledgeBaseModal';
+import FishTypeModal from '../../organisms/FishTypeModal/FishTypeModal';
+import AquariumTemplateModal from '../../organisms/AquariumTemplateModal/AquariumTemplateModal';
+import AccessoryTypeModal from '../../organisms/AccessoryModal/AccessoryModal';
+import DecoratorTypeModal from '../../organisms/DecoratorModal/DecoratorModal';
 import {
   AdminPanelWrapper,
   AdminPanelContent,
@@ -19,6 +24,7 @@ import {
   AdminPanelContentListNoItems,
   AdminPanelContentActions,
 } from './AdminPanel-styled';
+import { createPortal } from 'react-dom';
 
 type SelectOptionType =
   | 'aquariumTemplate'
@@ -34,6 +40,7 @@ const AdminPanel = () => {
   const [fishTypes, setFishTypes] = useState<any[]>([]);
   const [accessoryTypes, setAccessoryTypes] = useState<any[]>([]);
   const [decoratorTypes, setDecoratorTypes] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const {
     register,
@@ -52,7 +59,7 @@ const AdminPanel = () => {
       value: 'knowledgeBase',
     },
     {
-      label: 'Rodzaje ryb',
+      label: 'Gatunek ryb',
       value: 'fishType',
     },
     {
@@ -64,6 +71,18 @@ const AdminPanel = () => {
       value: 'decoratorType',
     },
   ];
+
+  const onLogoutHandler = async () => {
+    window.location.href = '/';
+  };
+
+  const onItemEditHandler = (variant: SelectOptionType) => {
+    console.log('onEditDecoratorHandler', variant);
+  };
+
+  const onItemCreateClickHandler = (variant: SelectOptionType) => {
+    setShowModal(true);
+  };
 
   const getActiveDataType = () => {
     if (selectedDataType === 'aquariumTemplate') {
@@ -78,19 +97,59 @@ const AdminPanel = () => {
     if (selectedDataType === 'accessoryType') {
       return accessoryTypes;
     }
+    if (selectedDataType === 'decoratorType') {
+      return decoratorTypes;
+    }
     return null;
   };
 
-  const onLogoutHandler = async () => {
-    window.location.href = '/';
-  };
-
-  const onItemEditHandler = (variant: SelectOptionType) => {
-    console.log('onEditDecoratorHandler', variant);
-  };
-
-  const onItemCreateClickHandler = (variant: SelectOptionType) => {
-    console.log('onItemCreateClickHandler');
+  const renderModal = () => {
+    if (selectedDataType === 'aquariumTemplate') {
+      return (
+        <AquariumTemplateModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          data={getActiveDataType()}
+        />
+      );
+    }
+    if (selectedDataType === 'knowledgeBase') {
+      return (
+        <KnowledgeBaseModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          data={getActiveDataType()}
+        />
+      );
+    }
+    if (selectedDataType === 'fishType') {
+      return (
+        <FishTypeModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          data={getActiveDataType()}
+        />
+      );
+    }
+    if (selectedDataType === 'accessoryType') {
+      return (
+        <AccessoryTypeModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          data={getActiveDataType()}
+        />
+      );
+    }
+    if (selectedDataType === 'decoratorType') {
+      return (
+        <DecoratorTypeModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          data={getActiveDataType()}
+        />
+      );
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -154,52 +213,56 @@ const AdminPanel = () => {
   }, [LinksCtx]);
 
   return (
-    <AdminPanelWrapper>
-      <Header
-        onClickHandler={onLogoutHandler}
-        logoHref="/dashboard"
-        text="wyloguj się"
-      />
-      <AdminPanelContent>
-        <AdminPanelContentHeader>
-          <AdminPanelContentHeaderTitle>
-            Witaj w panelu Administratora!
-          </AdminPanelContentHeaderTitle>
-          <AdminPanelContentHeaderDescription>
-            Wybierz typ danych, które chcesz edytować
-          </AdminPanelContentHeaderDescription>
-          <Select
-            options={selectComponentOptions}
-            register={register}
-            error={errors}
-            id="dataType"
-            validators={{}}
-          />
-        </AdminPanelContentHeader>
-        <AdminPanelContentList>
-          {getActiveDataType()?.length ? (
-            <ListItem
-              variant={selectedDataType}
-              data={getActiveDataType()}
-              onEditClick={onItemEditHandler}
+    <>
+      <AdminPanelWrapper>
+        <Header
+          onClickHandler={onLogoutHandler}
+          logoHref="/dashboard"
+          text="wyloguj się"
+        />
+        <AdminPanelContent>
+          <AdminPanelContentHeader>
+            <AdminPanelContentHeaderTitle>
+              Witaj w panelu Administratora!
+            </AdminPanelContentHeaderTitle>
+            <AdminPanelContentHeaderDescription>
+              Wybierz typ danych, które chcesz edytować
+            </AdminPanelContentHeaderDescription>
+            <Select
+              options={selectComponentOptions}
+              register={register}
+              error={errors}
+              id="dataType"
+              validators={{}}
             />
-          ) : (
-            <AdminPanelContentListNoItems>
-              Nie znaleziono żadnych danych z wybranej kolekcji.
-            </AdminPanelContentListNoItems>
-          )}
-          <AdminPanelContentActions>
-            <Button
-              type="button"
-              text="Dodaj nową pozycje"
-              variant="primary"
-              onClick={onItemCreateClickHandler}
-            />
-          </AdminPanelContentActions>
-        </AdminPanelContentList>
-      </AdminPanelContent>
-      <Footer />
-    </AdminPanelWrapper>
+          </AdminPanelContentHeader>
+          <AdminPanelContentList>
+            {getActiveDataType()?.length ? (
+              <ListItem
+                variant={selectedDataType}
+                data={getActiveDataType()}
+                onEditClick={onItemEditHandler}
+              />
+            ) : (
+              <AdminPanelContentListNoItems>
+                Nie znaleziono żadnych danych z wybranej kolekcji.
+              </AdminPanelContentListNoItems>
+            )}
+            <AdminPanelContentActions>
+              <Button
+                type="button"
+                text="Dodaj nową pozycje"
+                variant="primary"
+                onClick={onItemCreateClickHandler}
+              />
+            </AdminPanelContentActions>
+          </AdminPanelContentList>
+        </AdminPanelContent>
+        <Footer />
+      </AdminPanelWrapper>
+      {showModal &&
+        createPortal(renderModal(), document.getElementById('modal-root')!)}
+    </>
   );
 };
 
