@@ -25,9 +25,9 @@ const AquariumTemplateModal = ({
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <AquariumTemplateModalContainer>
         <AquariumTemplateModalHeader>
-          {isNewAquariumTemplate ? 'Zdefiniuj nowe ' : 'Edytuj istniejące '}
+          {isNewAquariumTemplate ? 'Zdefiniuj nowy ' : 'Edytuj istniejący '}
           <AquariumTemplateModalHeaderColor>
-            gotowe akwarium!
+            szablon akwarium!
           </AquariumTemplateModalHeaderColor>
         </AquariumTemplateModalHeader>
         <AquariumTemplateModalParagraph>
