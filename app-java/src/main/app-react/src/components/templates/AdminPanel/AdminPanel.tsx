@@ -55,7 +55,7 @@ const AdminPanel = () => {
       value: 'aquariumTemplate',
     },
     {
-      label: 'Baza wiedzy',
+      label: 'Podpowiedzi',
       value: 'knowledgeBase',
     },
     {
@@ -80,7 +80,7 @@ const AdminPanel = () => {
     console.log('onEditDecoratorHandler', variant);
   };
 
-  const onItemCreateClickHandler = (variant: SelectOptionType) => {
+  const onItemCreateClickHandler = () => {
     setShowModal(true);
   };
 

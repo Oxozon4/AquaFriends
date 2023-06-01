@@ -19,7 +19,7 @@ const AccessoryModal = ({
   setShowModal,
   data,
 }: AccessoryModalProps) => {
-  const isNewAccessory = !data;
+  const isNewAccessory = !data.length;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>

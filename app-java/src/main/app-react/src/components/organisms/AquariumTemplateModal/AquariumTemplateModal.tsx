@@ -19,7 +19,7 @@ const AquariumTemplateModal = ({
   setShowModal,
   data,
 }: AquariumTemplateModalProps) => {
-  const isNewAquariumTemplate = !data;
+  const isNewAquariumTemplate = !data.length;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>

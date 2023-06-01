@@ -19,7 +19,7 @@ const DecoratorModal = ({
   setShowModal,
   data,
 }: DecoratorModalProps) => {
-  const isNewDecorator = !data;
+  const isNewDecorator = !data.length;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
