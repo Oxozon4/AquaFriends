@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { LinksContext } from '../../../providers/LinksProvider';
 
 import Header from '../../molecules/Headers/Header/Header';
-import FormsListSection from '../../organisms/FormsListSection/FormsListSection';
+import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
 
@@ -45,6 +45,7 @@ const Dashboard: React.FC = () => {
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
+          data={{}}
         />
         <Footer />
       </DashboardWrapper>

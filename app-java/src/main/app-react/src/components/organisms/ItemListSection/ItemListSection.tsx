@@ -4,23 +4,27 @@ import Button from '../../atoms/Button/Button';
 import Link from '../../atoms/Link/Link';
 import Icon from '../../atoms/Icon/Icon';
 import {
-  FormsListSectionWrapper,
-  FormsListSectionHeader,
-  FormsListSectionHeaderTitle,
-  FormsListSectionContent,
-} from './FormsListSection-styled';
+  ItemListSectionWrapper,
+  ItemListSectionHeader,
+  ItemListSectionHeaderTitle,
+  ItemListSectionContent,
+} from './ItemListSection-styled';
 
-interface FormsListSectionProps {
+interface ItemListSectionProps {
   onEditHandler: any;
   onCreateNewHandler: any;
+  data: any;
 }
 
-const FormsListSection = ({
+const ItemListSection = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onEditHandler,
   onCreateNewHandler,
-}: FormsListSectionProps) => {
+  data,
+}: ItemListSectionProps) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 576);
+
+  const isDataEmpty = !data || !data.length;
 
   const handleResize = () => {
     setIsMobileView(window.innerWidth < 576);
@@ -35,11 +39,11 @@ const FormsListSection = ({
   }, []);
 
   return (
-    <FormsListSectionWrapper>
-      <FormsListSectionHeader>
-        <FormsListSectionHeaderTitle>
-          Nie masz obecnie żadnych stworzonych akwariów.
-        </FormsListSectionHeaderTitle>
+    <ItemListSectionWrapper>
+      <ItemListSectionHeader>
+        <ItemListSectionHeaderTitle>
+          {isDataEmpty ? 'Brak rekordów' : 'Lista rekordów'}
+        </ItemListSectionHeaderTitle>
         {isMobileView ? (
           <Link onClick={onCreateNewHandler}>
             <Icon variant="Add" size="64px" withhover="false" />
@@ -47,10 +51,12 @@ const FormsListSection = ({
         ) : (
           <Button onClick={onCreateNewHandler} text="Stwórz nowy" />
         )}
-      </FormsListSectionHeader>
-      <FormsListSectionContent>content</FormsListSectionContent>
-    </FormsListSectionWrapper>
+      </ItemListSectionHeader>
+      <ItemListSectionContent>
+        {!isDataEmpty && 'Rekord istnieje! Zmapuj mnie!'}
+      </ItemListSectionContent>
+    </ItemListSectionWrapper>
   );
 };
 
-export default FormsListSection;
+export default ItemListSection;

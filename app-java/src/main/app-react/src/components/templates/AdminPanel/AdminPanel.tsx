@@ -1,9 +1,11 @@
+import { createPortal } from 'react-dom';
 import { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import ItemListSection from '../../organisms/ItemListSection/ItemListSection';
 import ListItem from '../../molecules/ListItem/ListItem';
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
@@ -24,7 +26,6 @@ import {
   AdminPanelContentListNoItems,
   AdminPanelContentActions,
 } from './AdminPanel-styled';
-import { createPortal } from 'react-dom';
 
 type SelectOptionType =
   | 'aquariumTemplate'
@@ -237,25 +238,11 @@ const AdminPanel = () => {
             />
           </AdminPanelContentHeader>
           <AdminPanelContentList>
-            {getActiveDataType()?.length ? (
-              <ListItem
-                variant={selectedDataType}
-                data={getActiveDataType()}
-                onEditClick={onItemEditHandler}
-              />
-            ) : (
-              <AdminPanelContentListNoItems>
-                Nie znaleziono żadnych danych z wybranej kolekcji.
-              </AdminPanelContentListNoItems>
-            )}
-            <AdminPanelContentActions>
-              <Button
-                type="button"
-                text="Dodaj nową pozycje"
-                variant="primary"
-                onClick={onItemCreateClickHandler}
-              />
-            </AdminPanelContentActions>
+            <ItemListSection
+              data={getActiveDataType()}
+              onEditHandler={onItemEditHandler}
+              onCreateNewHandler={onItemCreateClickHandler}
+            />
           </AdminPanelContentList>
         </AdminPanelContent>
         <Footer />
