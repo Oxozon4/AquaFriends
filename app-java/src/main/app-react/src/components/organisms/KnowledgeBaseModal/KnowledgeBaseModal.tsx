@@ -19,13 +19,13 @@ const KnowledgeBaseModal = ({
   setShowModal,
   data,
 }: KnowledgeBaseModalProps) => {
-  const isNewForm = !data.length;
+  const isNewKnowledgeBase = !data || !data.length;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <KnowledgeBaseModalContainer>
         <KnowledgeBaseModalHeader>
-          {isNewForm ? 'Dodaj nową ' : 'Edytuj istniejącą '}
+          {isNewKnowledgeBase ? 'Dodaj nową ' : 'Edytuj istniejącą '}
           <KnowledgeBaseModalHeaderColor>
             podpowiedź!
           </KnowledgeBaseModalHeaderColor>
@@ -34,7 +34,10 @@ const KnowledgeBaseModal = ({
           Uzupełnij poniższe dane.
         </KnowledgeBaseModalParagraph>
         <KnowledgeBaseModalActions>
-          <Button text={isNewForm ? 'Stwórz' : 'Aktualizuj'} type="submit" />
+          <Button
+            text={isNewKnowledgeBase ? 'Stwórz' : 'Aktualizuj'}
+            type="submit"
+          />
         </KnowledgeBaseModalActions>
       </KnowledgeBaseModalContainer>
     </Modal>

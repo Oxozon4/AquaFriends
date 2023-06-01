@@ -19,7 +19,7 @@ const FishTypeModal = ({
   setShowModal,
   data,
 }: FishTypeModalProps) => {
-  const isNewForm = !data.length;
+  const isNewForm = !data || !data.length;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
