@@ -1,16 +1,14 @@
 import { createPortal } from 'react-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 import ItemListSection from '../../organisms/ItemListSection/ItemListSection';
-import ListItem from '../../molecules/ListItem/ListItem';
 import Header from '../../molecules/Headers/Header/Header';
 import Footer from '../../molecules/Footer/Footer';
 import Select from '../../atoms/Select/Select';
-import Button from '../../atoms/Button/Button';
 import KnowledgeBaseModal from '../../organisms/KnowledgeBaseModal/KnowledgeBaseModal';
 import FishTypeModal from '../../organisms/FishTypeModal/FishTypeModal';
 import AquariumTemplateModal from '../../organisms/AquariumTemplateModal/AquariumTemplateModal';
@@ -23,8 +21,6 @@ import {
   AdminPanelContentHeaderTitle,
   AdminPanelContentHeaderDescription,
   AdminPanelContentList,
-  AdminPanelContentListNoItems,
-  AdminPanelContentActions,
 } from './AdminPanel-styled';
 
 type SelectOptionType =
@@ -42,6 +38,8 @@ const AdminPanel = () => {
   const [accessoryTypes, setAccessoryTypes] = useState<any[]>([]);
   const [decoratorTypes, setDecoratorTypes] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
+
+  const modalVariantRef = useRef<'create' | 'edit'>('create');
 
   const {
     register,
@@ -105,12 +103,14 @@ const AdminPanel = () => {
   };
 
   const renderModal = () => {
+    const mappedData =
+      modalVariantRef.current === 'create' ? [] : getActiveDataType();
     if (selectedDataType === 'aquariumTemplate') {
       return (
         <AquariumTemplateModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -119,7 +119,7 @@ const AdminPanel = () => {
         <KnowledgeBaseModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -128,7 +128,7 @@ const AdminPanel = () => {
         <FishTypeModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -137,7 +137,7 @@ const AdminPanel = () => {
         <AccessoryTypeModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -183,7 +183,13 @@ const AdminPanel = () => {
         return;
       }
       const response = await axios.get(LinksCtx.admin.getAllAccessoryType);
-      setAccessoryTypes(response.data.content);
+      if (
+        response.data &&
+        response.data._embedded &&
+        response.data._embedded.uiAccessoryTypeList
+      ) {
+        setAccessoryTypes(response.data._embedded.uiAccessoryTypeList);
+      }
     };
 
     const getAllDecoratorTypes = async () => {
