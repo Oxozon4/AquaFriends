@@ -11,21 +11,21 @@ import {
 interface AquariumTemplateModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  aquariumTemplateData: any;
+  data: any;
 }
 
 const AquariumTemplateModal = ({
   showModal,
   setShowModal,
-  aquariumTemplateData,
+  data,
 }: AquariumTemplateModalProps) => {
-  const isNewForm = !aquariumTemplateData;
+  const isNewAquariumTemplate = !data;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <AquariumTemplateModalContainer>
         <AquariumTemplateModalHeader>
-          {isNewForm ? 'Zdefiniuj nowe ' : 'Edytuj istniejące '}
+          {isNewAquariumTemplate ? 'Zdefiniuj nowe ' : 'Edytuj istniejące '}
           <AquariumTemplateModalHeaderColor>
             gotowe akwarium!
           </AquariumTemplateModalHeaderColor>
@@ -34,7 +34,10 @@ const AquariumTemplateModal = ({
           Uzupełnij poniższe dane.
         </AquariumTemplateModalParagraph>
         <AquariumTemplateModalActions>
-          <Button text={isNewForm ? 'Stwórz' : 'Aktualizuj'} type="submit" />
+          <Button
+            text={isNewAquariumTemplate ? 'Stwórz' : 'Aktualizuj'}
+            type="submit"
+          />
         </AquariumTemplateModalActions>
       </AquariumTemplateModalContainer>
     </Modal>

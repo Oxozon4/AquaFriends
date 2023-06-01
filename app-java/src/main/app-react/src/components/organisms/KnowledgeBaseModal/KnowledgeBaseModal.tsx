@@ -11,23 +11,23 @@ import {
 interface KnowledgeBaseModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  knowledgeBaseData: any;
+  data: any;
 }
 
 const KnowledgeBaseModal = ({
   showModal,
   setShowModal,
-  knowledgeBaseData,
+  data,
 }: KnowledgeBaseModalProps) => {
-  const isNewForm = !knowledgeBaseData;
+  const isNewForm = !data;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <KnowledgeBaseModalContainer>
         <KnowledgeBaseModalHeader>
-          {isNewForm ? 'Dodaj nowy ' : 'Edytuj istniejący '}
+          {isNewForm ? 'Dodaj nową ' : 'Edytuj istniejącą '}
           <KnowledgeBaseModalHeaderColor>
-            gatunek ryb!
+            podpowiedź!
           </KnowledgeBaseModalHeaderColor>
         </KnowledgeBaseModalHeader>
         <KnowledgeBaseModalParagraph>

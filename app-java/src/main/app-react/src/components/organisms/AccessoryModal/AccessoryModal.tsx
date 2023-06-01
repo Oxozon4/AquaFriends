@@ -11,21 +11,21 @@ import {
 interface AccessoryModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  accessoryData: any;
+  data: any;
 }
 
 const AccessoryModal = ({
   showModal,
   setShowModal,
-  accessoryData,
+  data,
 }: AccessoryModalProps) => {
-  const isNewForm = !accessoryData;
+  const isNewAccessory = !data;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <AccessoryModalContainer>
         <AccessoryModalHeader>
-          {isNewForm ? 'Dodaj nowy ' : 'Edytuj istniejący '}
+          {isNewAccessory ? 'Dodaj nowy ' : 'Edytuj istniejący '}
           <AccessoryModalHeaderColor>
             rodzaj akcesorium!
           </AccessoryModalHeaderColor>
@@ -34,7 +34,10 @@ const AccessoryModal = ({
           Uzupełnij poniższe dane.
         </AccessoryModalParagraph>
         <AccessoryModalActions>
-          <Button text={isNewForm ? 'Stwórz' : 'Aktualizuj'} type="submit" />
+          <Button
+            text={isNewAccessory ? 'Stwórz' : 'Aktualizuj'}
+            type="submit"
+          />
         </AccessoryModalActions>
       </AccessoryModalContainer>
     </Modal>

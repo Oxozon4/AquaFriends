@@ -11,15 +11,15 @@ import {
 interface FishTypeModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  fishTypeData: any;
+  data: any;
 }
 
 const FishTypeModal = ({
   showModal,
   setShowModal,
-  fishTypeData,
+  data,
 }: FishTypeModalProps) => {
-  const isNewForm = !fishTypeData;
+  const isNewForm = !data;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>

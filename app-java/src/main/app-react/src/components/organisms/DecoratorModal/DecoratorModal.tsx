@@ -11,30 +11,31 @@ import {
 interface DecoratorModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  aquariumTemplateData: any;
+  data: any;
 }
 
 const DecoratorModal = ({
   showModal,
   setShowModal,
-  aquariumTemplateData,
+  data,
 }: DecoratorModalProps) => {
-  const isNewForm = !aquariumTemplateData;
+  const isNewDecorator = !data;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <DecoratorModalContainer>
         <DecoratorModalHeader>
-          {isNewForm ? 'Zdefiniuj nowe ' : 'Edytuj istniejące '}
-          <DecoratorModalHeaderColor>
-            gotowe akwarium!
-          </DecoratorModalHeaderColor>
+          {isNewDecorator ? 'Zdefiniuj nowy ' : 'Edytuj istniejący '}
+          <DecoratorModalHeaderColor>dekorator!</DecoratorModalHeaderColor>
         </DecoratorModalHeader>
         <DecoratorModalParagraph>
           Uzupełnij poniższe dane.
         </DecoratorModalParagraph>
         <DecoratorModalActions>
-          <Button text={isNewForm ? 'Stwórz' : 'Aktualizuj'} type="submit" />
+          <Button
+            text={isNewDecorator ? 'Stwórz' : 'Aktualizuj'}
+            type="submit"
+          />
         </DecoratorModalActions>
       </DecoratorModalContainer>
     </Modal>
