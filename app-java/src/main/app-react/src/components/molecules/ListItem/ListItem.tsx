@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ListItemWrapper,
   ListItemContent,
@@ -26,20 +27,20 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
-        <ListItemContentTitle>Tytuł</ListItemContentTitle>
-        <ListItemContentDescription>
+        <ListItemContentTitle>{data.name}</ListItemContentTitle>
+        {/* <ListItemContentDescription>
           <ListItemContentDescriptionItem>
             Formularz nie został jeszcze wypełniony
           </ListItemContentDescriptionItem>
-        </ListItemContentDescription>
+        </ListItemContentDescription> */}
       </ListItemContent>
       <ListItemActions>
-        <ListItemActionsDescriptionWrapper>
+        {/* <ListItemActionsDescriptionWrapper>
           <ListItemActionsDescription>
             Ostatnia edycja
           </ListItemActionsDescription>
           <ListItemActionsDescription>data</ListItemActionsDescription>
-        </ListItemActionsDescriptionWrapper>
+        </ListItemActionsDescriptionWrapper> */}
 
         <ListItemActionsButtonWrapper>
           <Button text="Edytuj" onClick={onEditClick} />

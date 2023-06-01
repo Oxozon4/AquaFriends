@@ -35,17 +35,37 @@ const AccessoryModal = ({
   const { register, handleSubmit } = formMethods;
   const LinksCtx = useContext(LinksContext);
 
-  const isNewAccessory = !data || !data.length;
+  const isNewAccessory = !data || !data.id;
 
   const onSubmitHandler = async (data: any) => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
       return;
     }
-    data.id = 0;
-    axios.post(LinksCtx.admin.saveAccessoryType, data);
-    toast.success('Pomyślnie stworzono akcesorium!', {
-      toastId: 'AccessoryModal',
-    });
+    data.id ??= 0;
+    if (isNewAccessory) {
+      try {
+        axios.post(LinksCtx.admin.saveAccessoryType, data);
+        toast.success('Pomyślnie stworzono akcesorium!', {
+          toastId: 'AccessoryModal',
+        });
+      } catch {
+        toast.error('Wystąpił błąd podczas tworzenia akcesorium!', {
+          toastId: 'AccessoryModal',
+        });
+      }
+    } else {
+      try {
+        axios.put(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
+        toast.success('Pomyślnie zaktualizowano akcesorium!', {
+          toastId: 'AccessoryModal',
+        });
+      } catch {
+        toast.error('Wystąpił błąd podczas aktualizacji akcesorium!', {
+          toastId: 'AccessoryModal',
+        });
+      }
+    }
+
     setShowModal(false);
   };
 
@@ -54,7 +74,20 @@ const AccessoryModal = ({
   };
 
   const onAccessoryDeleteHandler = () => {
-    console.log('delete');
+    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.deleteAccessoryType) {
+      return;
+    }
+    try {
+      axios.delete(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
+      toast.success('Pomyślnie stworzono akcesorium!', {
+        toastId: 'AccessoryModal',
+      });
+    } catch {
+      toast.error('Wystąpił błąd podczas tworzenia akcesorium!', {
+        toastId: 'AccessoryModal',
+      });
+    }
+    setShowModal(false);
   };
 
   return (

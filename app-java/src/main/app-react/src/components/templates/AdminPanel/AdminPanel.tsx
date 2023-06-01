@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
-import { useState, useRef, useEffect, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState, useRef, useEffect, useContext, useCallback } from 'react';
+import { set, useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -23,7 +23,7 @@ import {
   AdminPanelContentList,
 } from './AdminPanel-styled';
 
-type SelectOptionType =
+export type SelectOptionType =
   | 'aquariumTemplate'
   | 'knowledgeBase'
   | 'fishType'
@@ -40,6 +40,7 @@ const AdminPanel = () => {
   const [showModal, setShowModal] = useState(false);
 
   const modalVariantRef = useRef<'create' | 'edit'>('create');
+  const itemIdRef = useRef<number>(0);
 
   const {
     register,
@@ -75,15 +76,19 @@ const AdminPanel = () => {
     window.location.href = '/';
   };
 
-  const onItemEditHandler = (variant: SelectOptionType) => {
-    console.log('onEditDecoratorHandler', variant);
-  };
-
-  const onItemCreateClickHandler = () => {
+  const onItemEditHandler = (id: number) => {
+    console.log('onEditDecoratorHandler', id);
+    modalVariantRef.current = 'edit';
+    itemIdRef.current = id;
     setShowModal(true);
   };
 
-  const getActiveDataType = () => {
+  const onItemCreateClickHandler = () => {
+    modalVariantRef.current = 'create';
+    setShowModal(true);
+  };
+
+  const getActiveDataType = useCallback(() => {
     if (selectedDataType === 'aquariumTemplate') {
       return aquariumTemplates;
     }
@@ -100,11 +105,20 @@ const AdminPanel = () => {
       return decoratorTypes;
     }
     return null;
-  };
+  }, [
+    accessoryTypes,
+    aquariumTemplates,
+    decoratorTypes,
+    fishTypes,
+    knowledgeBase,
+    selectedDataType,
+  ]);
 
-  const renderModal = () => {
+  const renderModal = useCallback(() => {
     const mappedData =
-      modalVariantRef.current === 'create' ? [] : getActiveDataType();
+      modalVariantRef.current === 'create'
+        ? []
+        : getActiveDataType()?.find((item) => item.id === itemIdRef.current);
     if (selectedDataType === 'aquariumTemplate') {
       return (
         <AquariumTemplateModal
@@ -150,56 +164,56 @@ const AdminPanel = () => {
         />
       );
     }
-    return null;
-  };
+    return [];
+  }, [getActiveDataType, selectedDataType, showModal]);
+
+  const getAllAquariumTemplates = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.admin.getAllAquariumTemplate);
+    setAquariumTemplates(response.data.content);
+  }, [LinksCtx]);
+
+  const getAllFishTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.admin.getAllFishType);
+    setFishTypes(response.data.content);
+  }, [LinksCtx]);
+
+  const getAllKnowledgeBase = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.admin.getAllKnowledge);
+    setKnowledgeBase(response.data.content);
+  }, [LinksCtx]);
+
+  const getAllAccessoryTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.admin.getAllAccessoryType);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiAccessoryTypeList
+    ) {
+      setAccessoryTypes(response.data._embedded.uiAccessoryTypeList);
+    }
+  }, [LinksCtx]);
+
+  const getAllDecoratorTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.admin.getAllDecoratorType);
+    setDecoratorTypes(response.data.content);
+  }, [LinksCtx]);
 
   useEffect(() => {
-    const getAllAquariumTemplates = async () => {
-      if (!LinksCtx || !LinksCtx.admin) {
-        return;
-      }
-      const response = await axios.get(LinksCtx.admin.getAllAquariumTemplate);
-      setAquariumTemplates(response.data.content);
-    };
-
-    const getAllFishTypes = async () => {
-      if (!LinksCtx || !LinksCtx.admin) {
-        return;
-      }
-      const response = await axios.get(LinksCtx.admin.getAllFishType);
-      setFishTypes(response.data.content);
-    };
-
-    const getAllKnowledgeBase = async () => {
-      if (!LinksCtx || !LinksCtx.admin) {
-        return;
-      }
-      const response = await axios.get(LinksCtx.admin.getAllKnowledge);
-      setKnowledgeBase(response.data.content);
-    };
-
-    const getAllAccessoryTypes = async () => {
-      if (!LinksCtx || !LinksCtx.admin) {
-        return;
-      }
-      const response = await axios.get(LinksCtx.admin.getAllAccessoryType);
-      if (
-        response.data &&
-        response.data._embedded &&
-        response.data._embedded.uiAccessoryTypeList
-      ) {
-        setAccessoryTypes(response.data._embedded.uiAccessoryTypeList);
-      }
-    };
-
-    const getAllDecoratorTypes = async () => {
-      if (!LinksCtx || !LinksCtx.admin) {
-        return;
-      }
-      const response = await axios.get(LinksCtx.admin.getAllDecoratorType);
-      setDecoratorTypes(response.data.content);
-    };
-
     if (!LinksCtx || !LinksCtx.admin || LinksCtx.getAdminLinks === null) {
       return;
     }
@@ -217,7 +231,40 @@ const AdminPanel = () => {
     } else {
       LinksCtx.getAdminLinks();
     }
-  }, [LinksCtx]);
+  }, [
+    LinksCtx,
+    getAllAccessoryTypes,
+    getAllAquariumTemplates,
+    getAllDecoratorTypes,
+    getAllFishTypes,
+    getAllKnowledgeBase,
+  ]);
+
+  useEffect(() => {
+    if (!LinksCtx || !LinksCtx.admin) {
+      return;
+    }
+    if (selectedDataType === 'aquariumTemplate') {
+      getAllAquariumTemplates();
+    } else if (selectedDataType === 'knowledgeBase') {
+      getAllKnowledgeBase();
+    } else if (selectedDataType === 'fishType') {
+      getAllFishTypes();
+    } else if (selectedDataType === 'accessoryType') {
+      getAllAccessoryTypes();
+    } else if (selectedDataType === 'decoratorType') {
+      getAllDecoratorTypes();
+    }
+  }, [
+    LinksCtx,
+    getAllAccessoryTypes,
+    getAllAquariumTemplates,
+    getAllDecoratorTypes,
+    getAllFishTypes,
+    getAllKnowledgeBase,
+    selectedDataType,
+    showModal,
+  ]);
 
   return (
     <>
@@ -248,6 +295,7 @@ const AdminPanel = () => {
               data={getActiveDataType()}
               onEditHandler={onItemEditHandler}
               onCreateNewHandler={onItemCreateClickHandler}
+              itemVariant={selectedDataType}
             />
           </AdminPanelContentList>
         </AdminPanelContent>
