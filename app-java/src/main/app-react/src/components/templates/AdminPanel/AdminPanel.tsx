@@ -180,7 +180,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllFishType);
-    setFishTypes(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiFishTypeList
+    ) {
+      setFishTypes(response.data._embedded.uiFishTypeList);
+    }
   }, [LinksCtx]);
 
   const getAllKnowledgeBase = useCallback(async () => {
