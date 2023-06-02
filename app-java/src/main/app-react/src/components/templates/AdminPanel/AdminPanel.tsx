@@ -125,6 +125,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
+          allData={aquariumTemplates}
         />
       );
     }
@@ -172,7 +173,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllAquariumTemplate);
-    setAquariumTemplates(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiAquariumTemplateList
+    ) {
+      setAquariumTemplates(response.data._embedded.uiAquariumTemplateList);
+    }
   }, [LinksCtx]);
 
   const getAllFishTypes = useCallback(async () => {
