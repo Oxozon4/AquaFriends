@@ -1,18 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { LinksContext } from '../../../providers/LinksProvider';
+
 import Header from '../../molecules/Headers/Header/Header';
-import FormsListSection from '../../organisms/FormsListSection/FormsListSection';
-import FormCreationModal from '../../organisms/FormCreationModal/FormCreationModal';
+import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
-import { createPortal } from 'react-dom';
-import axios from 'axios';
 
 const Dashboard: React.FC = () => {
+  const LinksCtx = useContext(LinksContext);
   const [showModal, setShowModal] = useState(false);
 
   const onLogoutHandler = async () => {
-    const data = await axios.get('/api/logout');
-    window.location.href = data.data.redirect;
+    window.location.href = '/';
   };
 
   const onEditHandler = () => {
@@ -22,6 +21,18 @@ const Dashboard: React.FC = () => {
   const onCreateNewHandler = () => {
     setShowModal(true);
   };
+
+  useEffect(() => {
+    if (
+      !LinksCtx ||
+      !LinksCtx.user ||
+      LinksCtx.user.isSet ||
+      LinksCtx.getUserLinks === null
+    ) {
+      return;
+    }
+    LinksCtx.getUserLinks();
+  }, [LinksCtx]);
 
   return (
     <>
@@ -34,17 +45,10 @@ const Dashboard: React.FC = () => {
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
+          data={{}}
         />
         <Footer />
       </DashboardWrapper>
-      {showModal &&
-        createPortal(
-          <FormCreationModal
-            showModal={showModal}
-            setShowModal={setShowModal}
-          />,
-          document.getElementById('modal-root')!
-        )}
     </>
   );
 };

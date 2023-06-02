@@ -21,7 +21,10 @@ const FormField = ({
   const formattedLabel = title + (validators?.required?.value ? ' *' : '');
   return (
     <>
-      {(type === 'text' || type === 'password') && (
+      {(type === 'text' ||
+        type === 'password' ||
+        type === 'number' ||
+        type === 'email') && (
         <TextInput
           label={formattedLabel}
           register={register}

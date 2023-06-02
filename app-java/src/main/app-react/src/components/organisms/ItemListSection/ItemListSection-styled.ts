@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const FormsListSectionWrapper = styled.div`
+export const ItemListSectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +15,7 @@ export const FormsListSectionWrapper = styled.div`
   }
 `;
 
-export const FormsListSectionHeader = styled.div`
+export const ItemListSectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,11 +23,11 @@ export const FormsListSectionHeader = styled.div`
   width: 100%;
 `;
 
-export const FormsListSectionHeaderTitle = styled.h2`
+export const ItemListSectionHeaderTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.xl};
 `;
 
-export const FormsListSectionContent = styled.div`
+export const ItemListSectionContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

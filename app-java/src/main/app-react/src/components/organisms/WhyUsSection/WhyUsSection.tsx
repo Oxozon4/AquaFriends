@@ -13,12 +13,12 @@ const WhyUsSection: React.FC = () => {
         <Card
           image="Fast"
           title="Szybko"
-          description="Nasza aplikacja nie tylko pozawala na szybkie i łatwe tworzenie formularzy, ale również jest szybka w działaniu!"
+          description="Nasza aplikacja nie tylko pozwala na szybkie i łatwe tworzenie akwarium, ale również jest szybka w działaniu!"
         />
         <Card
           image="Efficient"
           title="Sprawnie"
-          description="Stworzenie formularza nigdy nie było tak proste! Wystarczy kilka kliknięć, aby stworzyć formularz i udostępnić go innym."
+          description="Zarządzanie akwarium nigdy nie było tak proste!"
         />
         <Card
           image="Free"

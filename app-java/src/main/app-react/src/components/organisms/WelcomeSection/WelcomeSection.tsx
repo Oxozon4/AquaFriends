@@ -8,11 +8,10 @@ const WelcomeSection = () => {
   return (
     <SectionWrapper>
       <SectionTitle>
-        Proste, zoptymalizowane formularze gotowe na zawołanie!
+        Proste, zoptymalizowane narzędzie do obsługi akwarium do Twojej dyspozycji!
       </SectionTitle>
       <SectionContent>
-        Rewolucyjne rozwiązanie dzięki któremu tworzenie formularzy
-        internetowych jeszcze nigdy nie było takie proste.
+        Rewolucyjne rozwiązanie, dzięki któremu zarządzanie akwarium jeszcze nigdy nie było takie proste.
       </SectionContent>
     </SectionWrapper>
   );

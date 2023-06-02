@@ -19,8 +19,7 @@ const TryForFreeSection = ({
       </TryForFreeSectionHeader>
       <TryForFreeSectionParagraph data-aos="fade-up">
         Stworzenie konta w AquaFriends nic nie kosztuje! Naszej aplikacji
-        zaufało już wiele użytkowników, którzy tworzą formularze i udostępniają
-        je innym.
+        zaufało już wiele użytkowników.
       </TryForFreeSectionParagraph>
       <Button
         text="Zarejestruj się teraz!"

@@ -8,9 +8,9 @@ const size = {
 
 export const theme = {
   colors: {
-    primary: '#3185FC', // Do zmiany
-    secondary: '#FFFFFF', // OK - biel
-    tertiary: '#F3F3F3', // OK - jasnoszary
+    primary: '#3185FC',
+    secondary: '#FFFFFF',
+    tertiary: '#F3F3F3',
     white: '#FFFFFF',
     lightGrey: '#F7F8FA',
     grey: '#C0C7D6',
