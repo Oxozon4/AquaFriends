@@ -28,3 +28,16 @@ export const FishTypeModalActions = styled.div`
   gap: 25px;
   margin: 25px;
 `;
+
+export const FishTypeModalInputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 25%;
+`;
+
+export const FishTypeModalTwoInputs = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
