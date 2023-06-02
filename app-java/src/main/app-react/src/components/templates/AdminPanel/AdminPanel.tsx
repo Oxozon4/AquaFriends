@@ -55,11 +55,7 @@ const AdminPanel = () => {
       value: 'aquariumTemplate',
     },
     {
-      label: 'Podpowiedzi',
-      value: 'knowledgeBase',
-    },
-    {
-      label: 'Gatunek ryb',
+      label: 'Gatunki ryb',
       value: 'fishType',
     },
     {
@@ -69,6 +65,10 @@ const AdminPanel = () => {
     {
       label: 'Rodzaje dekoracji',
       value: 'decoratorType',
+    },
+    {
+      label: 'Podpowiedzi',
+      value: 'knowledgeBase',
     },
   ];
 
@@ -188,7 +188,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllKnowledge);
-    setKnowledgeBase(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiKnowledgeList
+    ) {
+      setKnowledgeBase(response.data._embedded.uiKnowledgeList);
+    }
   }, [LinksCtx]);
 
   const getAllAccessoryTypes = useCallback(async () => {
