@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { DevTool } from '@hookform/devtools';
-import axios from 'axios';
 import Modal from '../../molecules/Modal/Modal';
 import FormField from '../../molecules/FormField/FormField';
 import Button from '../../atoms/Button/Button';

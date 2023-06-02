@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ListItemWrapper,
   ListItemContent,
@@ -12,37 +13,37 @@ import {
 import Button from '../../atoms/Button/Button';
 
 interface ListItemProps {
-  onClick: any;
-  onFormPreviewHandler: any;
+  variant:
+    | 'aquariumTemplate'
+    | 'knowledgeBase'
+    | 'fishType'
+    | 'accessoryType'
+    | 'decoratorType';
+  onEditClick: any;
+  data: any;
 }
 
-const ListItem = ({ onClick, onFormPreviewHandler }: ListItemProps) => {
+const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
-        <ListItemContentTitle>Tytuł</ListItemContentTitle>
-        <ListItemContentDescription>
+        <ListItemContentTitle>{data.name}</ListItemContentTitle>
+        {/* <ListItemContentDescription>
           <ListItemContentDescriptionItem>
             Formularz nie został jeszcze wypełniony
           </ListItemContentDescriptionItem>
-        </ListItemContentDescription>
+        </ListItemContentDescription> */}
       </ListItemContent>
       <ListItemActions>
-        <ListItemActionsDescriptionWrapper>
+        {/* <ListItemActionsDescriptionWrapper>
           <ListItemActionsDescription>
             Ostatnia edycja
           </ListItemActionsDescription>
           <ListItemActionsDescription>data</ListItemActionsDescription>
-        </ListItemActionsDescriptionWrapper>
+        </ListItemActionsDescriptionWrapper> */}
 
         <ListItemActionsButtonWrapper>
-          <Button text="Edytuj" onClick={() => onClick()} />
-          <Button
-            text="Podgląd"
-            variant="secondary"
-            onClick={() => onFormPreviewHandler()}
-            type="button"
-          />
+          <Button text="Edytuj" onClick={onEditClick} />
         </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper
           style={{ paddingTop: '5px' }}

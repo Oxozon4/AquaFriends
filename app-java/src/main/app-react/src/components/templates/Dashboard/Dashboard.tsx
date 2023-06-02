@@ -2,11 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import { LinksContext } from '../../../providers/LinksProvider';
 
 import Header from '../../molecules/Headers/Header/Header';
-import FormsListSection from '../../organisms/FormsListSection/FormsListSection';
-import FormCreationModal from '../../organisms/FormCreationModal/FormCreationModal';
+import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
-import { createPortal } from 'react-dom';
 
 const Dashboard: React.FC = () => {
   const LinksCtx = useContext(LinksContext);
@@ -47,17 +45,10 @@ const Dashboard: React.FC = () => {
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
+          data={{}}
         />
         <Footer />
       </DashboardWrapper>
-      {showModal &&
-        createPortal(
-          <FormCreationModal
-            showModal={showModal}
-            setShowModal={setShowModal}
-          />,
-          document.getElementById('modal-root')!
-        )}
     </>
   );
 };
