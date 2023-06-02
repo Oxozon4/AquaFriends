@@ -124,7 +124,6 @@ const AccessoryModal = ({
                 }}
               />
             </AccessoryModalInputs>
-
             <AccessoryModalActions>
               {!isNewAccessory && (
                 <Button

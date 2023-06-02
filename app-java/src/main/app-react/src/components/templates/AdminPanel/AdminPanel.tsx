@@ -12,8 +12,8 @@ import Select from '../../atoms/Select/Select';
 import KnowledgeBaseModal from '../../organisms/KnowledgeBaseModal/KnowledgeBaseModal';
 import FishTypeModal from '../../organisms/FishTypeModal/FishTypeModal';
 import AquariumTemplateModal from '../../organisms/AquariumTemplateModal/AquariumTemplateModal';
-import AccessoryTypeModal from '../../organisms/AccessoryModal/AccessoryModal';
-import DecoratorTypeModal from '../../organisms/DecoratorModal/DecoratorModal';
+import AccessoryModal from '../../organisms/AccessoryModal/AccessoryModal';
+import DecoratorModal from '../../organisms/DecoratorModal/DecoratorModal';
 import {
   AdminPanelWrapper,
   AdminPanelContent,
@@ -67,7 +67,7 @@ const AdminPanel = () => {
       value: 'accessoryType',
     },
     {
-      label: 'Typy dekoracji',
+      label: 'Rodzaje dekoracji',
       value: 'decoratorType',
     },
   ];
@@ -148,7 +148,7 @@ const AdminPanel = () => {
     }
     if (selectedDataType === 'accessoryType') {
       return (
-        <AccessoryTypeModal
+        <AccessoryModal
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
@@ -157,10 +157,10 @@ const AdminPanel = () => {
     }
     if (selectedDataType === 'decoratorType') {
       return (
-        <DecoratorTypeModal
+        <DecoratorModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -210,7 +210,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllDecoratorType);
-    setDecoratorTypes(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiDecoratorTypeList
+    ) {
+      setDecoratorTypes(response.data._embedded.uiDecoratorTypeList);
+    }
   }, [LinksCtx]);
 
   useEffect(() => {

@@ -28,3 +28,10 @@ export const DecoratorModalActions = styled.div`
   gap: 25px;
   margin: 25px;
 `;
+
+export const DecoratorModalInputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 25%;
+`;
