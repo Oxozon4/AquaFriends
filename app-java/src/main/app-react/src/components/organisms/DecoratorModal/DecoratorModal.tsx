@@ -47,7 +47,7 @@ const DecoratorModal = ({
     data.type ??= 'DECORATION';
     if (isNewDecorator) {
       try {
-        axios.post(LinksCtx.admin.saveDecoratorType, data);
+        await axios.post(LinksCtx.admin.saveDecoratorType, data);
         toast.success('Pomyślnie stworzono dekorator!', {
           toastId: 'AccessoryModal',
         });
@@ -58,7 +58,7 @@ const DecoratorModal = ({
       }
     } else {
       try {
-        axios.put(`${LinksCtx.admin.saveDecoratorType}/${data.id}`, data);
+        await axios.put(`${LinksCtx.admin.saveDecoratorType}/${data.id}`, data);
         toast.success('Pomyślnie zaktualizowano dekorator!', {
           toastId: 'AccessoryModal',
         });
@@ -76,12 +76,12 @@ const DecoratorModal = ({
     console.log(error);
   };
 
-  const onDecoratorDeleteHandler = () => {
+  const onDecoratorDeleteHandler = async () => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.deleteDecoratorType) {
       return;
     }
     try {
-      axios.delete(`${LinksCtx.admin.saveDecoratorType}/${data.id}`);
+      await axios.delete(`${LinksCtx.admin.saveDecoratorType}/${data.id}`);
       toast.success('Pomyślnie stworzono dekorator!', {
         toastId: 'AccessoryModal',
       });

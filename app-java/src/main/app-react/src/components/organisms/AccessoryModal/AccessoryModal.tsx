@@ -6,6 +6,7 @@ import axios from 'axios';
 import Button from '../../atoms/Button/Button';
 import Modal from '../../molecules/Modal/Modal';
 import FormField from '../../molecules/FormField/FormField';
+import { toast } from 'react-toastify';
 import {
   AccessoryModalContainer,
   AccessoryModalHeader,
@@ -14,7 +15,6 @@ import {
   AccessoryModalActions,
   AccessoryModalInputs,
 } from './AccessoryModal-styled';
-import { toast } from 'react-toastify';
 
 interface AccessoryModalProps {
   showModal: boolean;
@@ -44,7 +44,7 @@ const AccessoryModal = ({
     data.id ??= 0;
     if (isNewAccessory) {
       try {
-        axios.post(LinksCtx.admin.saveAccessoryType, data);
+        await axios.post(LinksCtx.admin.saveAccessoryType, data);
         toast.success('Pomyślnie stworzono akcesorium!', {
           toastId: 'AccessoryModal',
         });
@@ -55,7 +55,7 @@ const AccessoryModal = ({
       }
     } else {
       try {
-        axios.put(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
+        await axios.put(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
         toast.success('Pomyślnie zaktualizowano akcesorium!', {
           toastId: 'AccessoryModal',
         });
@@ -73,12 +73,15 @@ const AccessoryModal = ({
     console.log(error);
   };
 
-  const onAccessoryDeleteHandler = () => {
+  const onAccessoryDeleteHandler = async () => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.deleteAccessoryType) {
       return;
     }
     try {
-      axios.delete(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
+      await axios.delete(
+        `${LinksCtx.admin.saveAccessoryType}/${data.id}`,
+        data
+      );
       toast.success('Pomyślnie stworzono akcesorium!', {
         toastId: 'AccessoryModal',
       });
