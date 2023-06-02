@@ -24,15 +24,17 @@ const TextInput = ({
   type = 'text',
   autocomplete = 'off',
 }: TextInputProps) => {
-  const { trigger, getValues, getFieldState } = useFormContext();
+  const { trigger, getValues, getFieldState, formState } = useFormContext();
   const [isFocused, setIsFocused] = useState(getValues(id) ? true : false);
-  const { error } = getFieldState(id);
+  const [forceRerender, setForceRerender] = useState(false);
+  const { error } = getFieldState(id, formState);
 
   const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       setIsFocused(false);
     } else if (error?.message) {
       trigger(id);
+      setForceRerender(!forceRerender);
     }
   };
 

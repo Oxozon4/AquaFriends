@@ -1,3 +1,9 @@
+import { useContext } from 'react';
+import { LinksContext } from '../../../providers/LinksProvider';
+import { useForm, FormProvider } from 'react-hook-form';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 import Button from '../../atoms/Button/Button';
 import Modal from '../../molecules/Modal/Modal';
 import {
@@ -6,7 +12,9 @@ import {
   DecoratorModalHeaderColor,
   DecoratorModalParagraph,
   DecoratorModalActions,
+  DecoratorModalInputs,
 } from './DecoratorModal-styled';
+import FormField from '../../molecules/FormField/FormField';
 
 interface DecoratorModalProps {
   showModal: boolean;
@@ -19,7 +27,71 @@ const DecoratorModal = ({
   setShowModal,
   data,
 }: DecoratorModalProps) => {
-  const isNewDecorator = !data || !data.length;
+  const formMethods = useForm({
+    defaultValues: data || {
+      name: '',
+      type: 'DECORATION',
+      id: 0,
+    },
+  });
+  const { register, handleSubmit } = formMethods;
+  const LinksCtx = useContext(LinksContext);
+
+  const isNewDecorator = !data || !data.id;
+
+  const onSubmitHandler = async (data: any) => {
+    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
+      return;
+    }
+    data.id ??= 0;
+    data.type ??= 'DECORATION';
+    if (isNewDecorator) {
+      try {
+        await axios.post(LinksCtx.admin.saveDecoratorType, data);
+        toast.success('Pomyślnie stworzono dekorator!', {
+          toastId: 'AccessoryModal',
+        });
+      } catch {
+        toast.error('Wystąpił błąd podczas tworzenia dekoratora!', {
+          toastId: 'AccessoryModal',
+        });
+      }
+    } else {
+      try {
+        await axios.put(`${LinksCtx.admin.saveDecoratorType}/${data.id}`, data);
+        toast.success('Pomyślnie zaktualizowano dekorator!', {
+          toastId: 'AccessoryModal',
+        });
+      } catch {
+        toast.error('Wystąpił błąd podczas aktualizacji dekoratora!', {
+          toastId: 'AccessoryModal',
+        });
+      }
+    }
+
+    setShowModal(false);
+  };
+
+  const onCreateClickErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const onDecoratorDeleteHandler = async () => {
+    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.deleteDecoratorType) {
+      return;
+    }
+    try {
+      await axios.delete(`${LinksCtx.admin.saveDecoratorType}/${data.id}`);
+      toast.success('Pomyślnie stworzono dekorator!', {
+        toastId: 'AccessoryModal',
+      });
+    } catch {
+      toast.error('Wystąpił błąd podczas tworzenia dekoratora!', {
+        toastId: 'AccessoryModal',
+      });
+    }
+    setShowModal(false);
+  };
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
@@ -31,12 +103,44 @@ const DecoratorModal = ({
         <DecoratorModalParagraph>
           Uzupełnij poniższe dane.
         </DecoratorModalParagraph>
-        <DecoratorModalActions>
-          <Button
-            text={isNewDecorator ? 'Stwórz' : 'Aktualizuj'}
-            type="submit"
-          />
-        </DecoratorModalActions>
+        <FormProvider {...formMethods}>
+          <form
+            onSubmit={handleSubmit(onSubmitHandler, onCreateClickErrorHandler)}
+          >
+            <DecoratorModalInputs>
+              <FormField
+                type="text"
+                title="Nazwa dekoratora"
+                id="name"
+                register={register}
+                validators={{
+                  required: {
+                    value: true,
+                    message: 'To pole jest wymagane!',
+                  },
+                  maxLength: {
+                    value: 60,
+                    message: 'To pole może zawierać maksymalnie 35 znaków!',
+                  },
+                }}
+              />
+            </DecoratorModalInputs>
+            <DecoratorModalActions>
+              {!isNewDecorator && (
+                <Button
+                  text="Usuń dekorator"
+                  onClick={onDecoratorDeleteHandler}
+                  type="button"
+                  variant="danger"
+                />
+              )}
+              <Button
+                text={isNewDecorator ? 'Stwórz' : 'Aktualizuj'}
+                type="submit"
+              />
+            </DecoratorModalActions>
+          </form>
+        </FormProvider>
       </DecoratorModalContainer>
     </Modal>
   );

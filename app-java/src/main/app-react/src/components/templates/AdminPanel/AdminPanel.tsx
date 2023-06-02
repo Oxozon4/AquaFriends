@@ -12,8 +12,8 @@ import Select from '../../atoms/Select/Select';
 import KnowledgeBaseModal from '../../organisms/KnowledgeBaseModal/KnowledgeBaseModal';
 import FishTypeModal from '../../organisms/FishTypeModal/FishTypeModal';
 import AquariumTemplateModal from '../../organisms/AquariumTemplateModal/AquariumTemplateModal';
-import AccessoryTypeModal from '../../organisms/AccessoryModal/AccessoryModal';
-import DecoratorTypeModal from '../../organisms/DecoratorModal/DecoratorModal';
+import AccessoryModal from '../../organisms/AccessoryModal/AccessoryModal';
+import DecoratorModal from '../../organisms/DecoratorModal/DecoratorModal';
 import {
   AdminPanelWrapper,
   AdminPanelContent,
@@ -55,11 +55,7 @@ const AdminPanel = () => {
       value: 'aquariumTemplate',
     },
     {
-      label: 'Podpowiedzi',
-      value: 'knowledgeBase',
-    },
-    {
-      label: 'Gatunek ryb',
+      label: 'Gatunki ryb',
       value: 'fishType',
     },
     {
@@ -67,8 +63,12 @@ const AdminPanel = () => {
       value: 'accessoryType',
     },
     {
-      label: 'Typy dekoracji',
+      label: 'Rodzaje dekoracji',
       value: 'decoratorType',
+    },
+    {
+      label: 'Podpowiedzi',
+      value: 'knowledgeBase',
     },
   ];
 
@@ -125,6 +125,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
+          allData={aquariumTemplates}
         />
       );
     }
@@ -148,7 +149,7 @@ const AdminPanel = () => {
     }
     if (selectedDataType === 'accessoryType') {
       return (
-        <AccessoryTypeModal
+        <AccessoryModal
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
@@ -157,10 +158,10 @@ const AdminPanel = () => {
     }
     if (selectedDataType === 'decoratorType') {
       return (
-        <DecoratorTypeModal
+        <DecoratorModal
           setShowModal={setShowModal}
           showModal={showModal}
-          data={getActiveDataType()}
+          data={mappedData}
         />
       );
     }
@@ -172,7 +173,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllAquariumTemplate);
-    setAquariumTemplates(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiAquariumTemplateList
+    ) {
+      setAquariumTemplates(response.data._embedded.uiAquariumTemplateList);
+    }
   }, [LinksCtx]);
 
   const getAllFishTypes = useCallback(async () => {
@@ -180,7 +187,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllFishType);
-    setFishTypes(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiFishTypeList
+    ) {
+      setFishTypes(response.data._embedded.uiFishTypeList);
+    }
   }, [LinksCtx]);
 
   const getAllKnowledgeBase = useCallback(async () => {
@@ -188,7 +201,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllKnowledge);
-    setKnowledgeBase(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiKnowledgeList
+    ) {
+      setKnowledgeBase(response.data._embedded.uiKnowledgeList);
+    }
   }, [LinksCtx]);
 
   const getAllAccessoryTypes = useCallback(async () => {
@@ -210,7 +229,13 @@ const AdminPanel = () => {
       return;
     }
     const response = await axios.get(LinksCtx.admin.getAllDecoratorType);
-    setDecoratorTypes(response.data.content);
+    if (
+      response.data &&
+      response.data._embedded &&
+      response.data._embedded.uiDecoratorTypeList
+    ) {
+      setDecoratorTypes(response.data._embedded.uiDecoratorTypeList);
+    }
   }, [LinksCtx]);
 
   useEffect(() => {

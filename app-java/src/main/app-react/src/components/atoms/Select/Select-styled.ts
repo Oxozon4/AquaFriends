@@ -33,9 +33,9 @@ export const StyledOption = styled.option`
 export const StyledIconWrapper = styled.div`
   position: absolute;
   right: 3%;
-  top: 3px;
+  top: 0px;
 
-  @media ${({ theme }) => theme.breakpoints.sm} {
-    right: 25%;
+  @media ${({ theme }) => theme.breakpoints.md} {
+    right: 23%;
   }
 `;
