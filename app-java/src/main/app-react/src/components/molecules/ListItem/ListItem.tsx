@@ -27,12 +27,16 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
-        <ListItemContentTitle>{data.name}</ListItemContentTitle>
-        {/* <ListItemContentDescription>
-          <ListItemContentDescriptionItem>
-            Formularz nie został jeszcze wypełniony
-          </ListItemContentDescriptionItem>
-        </ListItemContentDescription> */}
+        <ListItemContentTitle>
+          {data.name || `${data.problemType}`}
+        </ListItemContentTitle>
+        {data.info && (
+          <ListItemContentDescription>
+            <ListItemContentDescriptionItem>
+              {data.info}
+            </ListItemContentDescriptionItem>
+          </ListItemContentDescription>
+        )}
       </ListItemContent>
       <ListItemActions>
         {/* <ListItemActionsDescriptionWrapper>
