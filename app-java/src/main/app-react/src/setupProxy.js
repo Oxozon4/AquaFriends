@@ -1,9 +1,9 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
 export default function (app) {
   app.use(
-    ['/api', '/auth/google', '/auth/facebook', '/auth/github', '/auth/login'],
+    ['/api', '/api/perform_login'],
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'http://localhost:8080',
     })
   );
 }
