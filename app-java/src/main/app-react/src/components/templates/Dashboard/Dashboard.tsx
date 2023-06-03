@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
           itemVariant={'aquariumTemplate'}
-          data={{}}
+          data={[]}
         />
         <Footer />
       </DashboardWrapper>
