@@ -9,6 +9,7 @@ import pl.inf.app.api.fish.control.FishToUiMapper;
 import pl.inf.app.bm.aquarium.entity.AquariumBE;
 import pl.inf.app.utils.Mapper;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,9 +28,15 @@ public class AquariumToUiMapper implements Mapper<AquariumBE, UiAquarium> {
 		uiAquarium.setHeight(source.getHeight());
 		uiAquarium.setLength(source.getLength());
 		uiAquarium.setWidth(source.getWidth());
-		uiAquarium.setAccessories(source.getAccessories().stream().map(accessoryTypeToUiMapper::map).collect(Collectors.toSet()));
-		uiAquarium.setDecorators(source.getDecorators().stream().map(decoratorTypeToUiMapper::map).collect(Collectors.toSet()));
-		uiAquarium.setFishes(source.getFishes().stream().map(fishToUiMapper::map).collect(Collectors.toSet()));
+		Optional.ofNullable(source.getAccessories())
+				.ifPresent(accessoryTypeBES -> uiAquarium.setAccessories(
+						accessoryTypeBES.stream().map(accessoryTypeToUiMapper::map).collect(Collectors.toSet())));
+		Optional.ofNullable(source.getDecorators())
+				.ifPresent(decoratorTypeBES -> uiAquarium.setDecorators(
+						decoratorTypeBES.stream().map(decoratorTypeToUiMapper::map).collect(Collectors.toSet())));
+		Optional.ofNullable(source.getFishes())
+				.ifPresent(
+						fishBES -> uiAquarium.setFishes(fishBES.stream().map(fishToUiMapper::map).collect(Collectors.toSet())));
 		return uiAquarium;
 	}
 }

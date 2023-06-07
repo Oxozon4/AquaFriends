@@ -12,4 +12,6 @@ public class UiKnowledge {
 	private int id;
 	private KnowledgeBE.ProblemType problemType;
 	private String info;
+	private float min;
+	private float max;
 }
