@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
       );
       return;
     }
-    setFishTypes(response.data._embedded.uiAquariumTemplateList);
+    setAquariumTemplates(response.data._embedded.uiAquariumTemplateList);
   }, [LinksCtx]);
 
   const getAllDecoratorTypes = useCallback(async () => {
