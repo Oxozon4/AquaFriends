@@ -146,23 +146,26 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       <AquariumModalContainer ref={modalContainerRef}>
         <AquariumModalHeader>Stwórz nowe akwarium</AquariumModalHeader>
         <ProgressBar activeStep={activeStep} stepsNumber={3} />
-        <Swiper
-          spaceBetween={50}
-          slidesPerView={1}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          onTouchEnd={onSwiperTouchEndHandler}
-          allowSlideNext={isAllowSwipeNext}
-          allowSlidePrev={isAllowSwipePrev}
-          autoHeight={true}
-        >
-          <SwiperSlide>
-            <AquariumContentWrapper>
-              <AquariumContentHeader>Wymiary akwarium</AquariumContentHeader>
-              {/* <AquariumContentDescription>
+        <AquariumForm onSubmit={handleSubmit(() => {})}>
+          <FormProvider {...formMethods}>
+            <Swiper
+              spaceBetween={50}
+              slidesPerView={1}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onTouchEnd={onSwiperTouchEndHandler}
+              allowSlideNext={isAllowSwipeNext}
+              allowSlidePrev={isAllowSwipePrev}
+              autoHeight={true}
+            >
+              <SwiperSlide>
+                <AquariumContentWrapper>
+                  <AquariumContentHeader>
+                    Wymiary akwarium
+                  </AquariumContentHeader>
+                  {/* <AquariumContentDescription>
                 Podaj wymiary akwarium.
               </AquariumContentDescription> */}
-              <AquariumForm onSubmit={handleSubmit(() => {})}>
-                <FormProvider {...formMethods}>
+
                   <FormField
                     title="Nazwa akwarium"
                     type="text"
@@ -227,13 +230,37 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                       },
                     }}
                   />
-                </FormProvider>
-              </AquariumForm>
-            </AquariumContentWrapper>
-          </SwiperSlide>
-          <SwiperSlide></SwiperSlide>
-          <SwiperSlide></SwiperSlide>
-        </Swiper>
+                  <FormField
+                    type="select"
+                    title="Akcesoria"
+                    id="sections.0.accessories"
+                    register={register}
+                    validators={{}}
+                    options={[
+                      { label: 'testt', value: '1' },
+                      { label: 'testt2', value: '2' },
+                      { label: 'testt3', value: 'test3' },
+                    ]}
+                    defaultValues={[{ label: 'testt', value: '1' }]}
+                  />
+                </AquariumContentWrapper>
+              </SwiperSlide>
+              <SwiperSlide>
+                <AquariumContentWrapper>
+                  <AquariumContentHeader>
+                    Dekoracje akwarium
+                  </AquariumContentHeader>
+                </AquariumContentWrapper>
+              </SwiperSlide>
+              <SwiperSlide>
+                <AquariumContentWrapper>
+                  <AquariumContentHeader>Ryby w akwarium</AquariumContentHeader>
+                </AquariumContentWrapper>
+              </SwiperSlide>
+            </Swiper>
+          </FormProvider>
+        </AquariumForm>
+
         <AquariumModalFooter>
           {activeStep > 0 ? (
             <Button variant="secondary" onClick={goToPrevStep} text="Wstecz" />
