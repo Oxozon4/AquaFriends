@@ -73,7 +73,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           length: '',
           width: '',
           height: '',
-          aquariumTemplate: 'Wybierz opcje',
         },
         {},
       ],
@@ -180,7 +179,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     if (
       !activeTemplate ||
       !aquariumTemplates ||
-      activeTemplate === 'Wybierz opcje'
+      activeTemplate.includes('Wybierz')
     ) {
       setIsSelectedTemplate(false);
       setValue('sections.0.name', '');
@@ -236,10 +235,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Wymiary akwarium
                   </AquariumContentHeader>
-                  {/* <AquariumContentDescription>
-                Podaj wymiary akwarium.
-              </AquariumContentDescription> */}
-                  <p style={{ textAlign: 'center' }}>Wybierz z szablonu:</p>
                   <Select
                     id="sections.0.aquariumTemplate"
                     register={register}
@@ -323,7 +318,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     validators={{}}
                     options={mappedAccessories}
                     error={{}}
-                    title="Akcesoria"
+                    title="Wybierz akcesoria"
                     isDisabled={isSelectedTemplate}
                   />
                   {/* <FormField

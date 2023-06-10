@@ -29,6 +29,7 @@ const Select = ({
   id,
   defaultValue,
   isDisabled,
+  title,
 }: SelectProps) => {
   return (
     <StyledWrapper>
@@ -37,11 +38,11 @@ const Select = ({
         name="selectInput"
         error={error}
         defaultValue={defaultValue}
-        placeholder="Wybierz opcje"
+        placeholder={title || 'Wybierz opcje'}
         disabled={isDisabled}
         {...register(id, validators)}
       >
-        <StyledOption>Wybierz opcje</StyledOption>
+        <StyledOption>{title || 'Wybierz opcje'}</StyledOption>
         {options.map(({ value, label }) => {
           return (
             <StyledOption key={value} value={value}>
