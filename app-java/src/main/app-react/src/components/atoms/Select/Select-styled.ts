@@ -35,7 +35,7 @@ export const StyledIconWrapper = styled.div`
   right: 3%;
   top: 0px;
 
-  @media ${({ theme }) => theme.breakpoints.md} {
+  @media ${({ theme }) => theme.breakpoints.sm} {
     right: 23%;
   }
 `;

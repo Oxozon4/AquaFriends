@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, set } from 'react-hook-form';
 
+import Select from '../../atoms/Select/Select';
 import { DevTool } from '@hookform/devtools';
 import Modal from '../../molecules/Modal/Modal';
 import ProgressBar from '../../atoms/ProgressBar/ProgressBar';
@@ -19,11 +20,21 @@ import {
   AquariumForm,
 } from './AquariumModal-styled';
 import { toast } from 'react-toastify';
+import {
+  FishType,
+  AccessoryType,
+  DecoratorType,
+  AquariumType,
+} from '../../templates/Dashboard/Dashboard';
 
 interface FormCreationModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
   aquariumData: any | null;
+  aquariumTemplates: any[];
+  fishTypes: FishType[];
+  accessories: AccessoryType[];
+  decorators: DecoratorType[];
 }
 
 type SectionValues = {
@@ -34,16 +45,38 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   showModal,
   setShowModal,
   aquariumData: formData,
+  aquariumTemplates,
+  fishTypes,
+  accessories,
+  decorators,
 }: FormCreationModalProps) => {
+  const mappedAccessories = accessories.map(({ name, volume }) => {
+    return { label: name, value: `${volume}` };
+  });
+  const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
+
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
   const [isAllowSwipePrev, setIsAllowSwipePrev] = useState(false);
+  const [isSelectedTemplate, setIsSelectedTemplate] = useState(false);
 
   const swiperRef = useRef<any>(null);
   const modalContainerRef = useRef<HTMLDivElement | null>(null);
 
   const formMethods = useForm<any>({
-    defaultValues: {},
+    defaultValues: {
+      sections: [
+        {
+          name: '',
+          length: '',
+          width: '',
+          height: '',
+        },
+        {},
+      ],
+    },
   });
   const {
     control,
@@ -51,10 +84,15 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     handleSubmit,
     getValues,
     trigger,
+    watch,
+    setValue,
+    setFocus,
     formState: { errors },
   } = formMethods;
 
-  console.log(formData);
+  const activeTemplate = watch('sections.0.aquariumTemplate');
+
+  console.log(activeTemplate);
 
   const validateStep = async () => {
     if (!formData) {
@@ -137,7 +175,42 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }
   }, [isAllowSwipePrev]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (
+      !activeTemplate ||
+      !aquariumTemplates ||
+      activeTemplate.includes('Wybierz')
+    ) {
+      setIsSelectedTemplate(false);
+      setValue('sections.0.name', '');
+      setValue('sections.0.length', '');
+      setValue('sections.0.width', '');
+      setValue('sections.0.height', '');
+      return;
+    }
+
+    const [activeAquariumTemplate] = aquariumTemplates.filter(
+      ({ name }) => name === activeTemplate
+    );
+    if (activeAquariumTemplate) {
+      setFocus('sections.0.name');
+      setValue('sections.0.name', activeAquariumTemplate.name);
+      setFocus('sections.0.length');
+      setValue('sections.0.length', activeAquariumTemplate.length);
+      setFocus('sections.0.width');
+      setValue('sections.0.width', activeAquariumTemplate.width);
+      setFocus('sections.0.height');
+      setValue('sections.0.height', activeAquariumTemplate.height);
+      setFocus('sections.0.accessories');
+      setValue(
+        'sections.0.accessories',
+        activeAquariumTemplate.accessories.map(({ volume }: any) => {
+          return volume;
+        })[0]
+      );
+      setIsSelectedTemplate(true);
+    }
+  }, [activeTemplate, aquariumTemplates, setFocus, setValue]);
 
   if (!formData) return null;
 
@@ -162,10 +235,15 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Wymiary akwarium
                   </AquariumContentHeader>
-                  {/* <AquariumContentDescription>
-                Podaj wymiary akwarium.
-              </AquariumContentDescription> */}
-
+                  <Select
+                    id="sections.0.aquariumTemplate"
+                    register={register}
+                    validators={{}}
+                    options={mappedAquariumTemplates}
+                    error={{}}
+                    title="Wybierz szablon"
+                    defaultValue="Wybierz szablon"
+                  />
                   <FormField
                     title="Nazwa akwarium"
                     type="text"
@@ -181,6 +259,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole może zawierać maksymalnie 35 znaków!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -197,6 +276,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -213,6 +293,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -229,20 +310,26 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
-                  <FormField
+                  <Select
+                    id="sections.0.accessories"
+                    register={register}
+                    validators={{}}
+                    options={mappedAccessories}
+                    error={{}}
+                    title="Wybierz akcesoria"
+                    isDisabled={isSelectedTemplate}
+                  />
+                  {/* <FormField
                     type="select"
                     title="Akcesoria"
                     id="sections.0.accessories"
                     register={register}
                     validators={{}}
-                    options={[
-                      { label: 'testt', value: '1' },
-                      { label: 'testt2', value: '2' },
-                      { label: 'testt3', value: 'test3' },
-                    ]}
-                    defaultValues={[{ label: 'testt', value: '1' }]}
-                  />
+                    options={mappedAccessories}
+                    // defaultValues={[{ label: 'testt', value: '1' }]}
+                  /> */}
                 </AquariumContentWrapper>
               </SwiperSlide>
               <SwiperSlide>

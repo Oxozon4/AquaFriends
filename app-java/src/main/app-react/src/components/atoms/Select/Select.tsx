@@ -16,17 +16,33 @@ interface SelectProps {
   validators: any;
   error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   id: string;
+  title?: string;
+  defaultValue?: any;
+  isDisabled?: boolean;
 }
 
-const Select = ({ options, register, validators, error, id }: SelectProps) => {
+const Select = ({
+  options,
+  register,
+  validators,
+  error,
+  id,
+  defaultValue,
+  isDisabled,
+  title,
+}: SelectProps) => {
   return (
     <StyledWrapper>
       <StyledSelect
         id={id}
         name="selectInput"
-        {...register(id, validators)}
         error={error}
+        defaultValue={defaultValue}
+        placeholder={title || 'Wybierz opcje'}
+        disabled={isDisabled}
+        {...register(id, validators)}
       >
+        <StyledOption>{title || 'Wybierz opcje'}</StyledOption>
         {options.map(({ value, label }) => {
           return (
             <StyledOption key={value} value={value}>

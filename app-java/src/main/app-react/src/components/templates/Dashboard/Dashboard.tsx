@@ -10,7 +10,7 @@ import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
 
-type AquariumType = {
+export type AquariumType = {
   accessories: any[];
   decorators: any[];
   fishes: any[];
@@ -21,9 +21,40 @@ type AquariumType = {
   name: string;
 }[];
 
+export type DecoratorType = {
+  id: number;
+  name: string;
+  type: string;
+};
+
+export type FishType = {
+  enemies: any[];
+  id: number;
+  name: string;
+  maxGh: number;
+  maxKh: number;
+  maxNo2: number;
+  maxNo3: number;
+  maxPh: number;
+  minGh: number;
+  minKh: number;
+  minNo2: number;
+  minNo3: number;
+};
+
+export type AccessoryType = {
+  id: number;
+  name: string;
+  volume: number;
+};
+
 const Dashboard: React.FC = () => {
   const LinksCtx = useContext(LinksContext);
   const [allAquariums, setAllAquariums] = useState<AquariumType | []>([]);
+  const [aquariumTemplates, setAquariumTemplates] = useState<AquariumType>([]);
+  const [decorator, setDecorators] = useState<DecoratorType[]>([]);
+  const [fishTypes, setFishTypes] = useState<FishType[]>([]);
+  const [accessories, setAccessories] = useState<AccessoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   const modalVariantRef = useRef<'create' | 'edit'>('create');
@@ -51,6 +82,10 @@ const Dashboard: React.FC = () => {
         showModal={showModal}
         setShowModal={setShowModal}
         aquariumData={mappedAquariumData}
+        aquariumTemplates={aquariumTemplates}
+        fishTypes={fishTypes}
+        accessories={accessories}
+        decorators={decorator}
       />
     );
   };
@@ -73,6 +108,78 @@ const Dashboard: React.FC = () => {
     setAllAquariums(response.data._embedded.uiAquariumList);
   }, [LinksCtx]);
 
+  const getAllFishTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.getAllFishType) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.user.getAllFishType);
+    if (
+      !response.data ||
+      !response.data._embedded ||
+      !response.data._embedded.uiFishTypeList
+    ) {
+      toast.error(
+        'Wystąpił problem z pobraniem listy akwariów. Spróbuj ponownie później!'
+      );
+      return;
+    }
+    setFishTypes(response.data._embedded.uiFishTypeList);
+  }, [LinksCtx]);
+
+  const getAllAquariumTemplates = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.getAllAquariumTemplate) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.user.getAllAquariumTemplate);
+    if (
+      !response.data ||
+      !response.data._embedded ||
+      !response.data._embedded.uiAquariumTemplateList
+    ) {
+      toast.error(
+        'Wystąpił problem z pobraniem listy akwariów. Spróbuj ponownie później!'
+      );
+      return;
+    }
+    setAquariumTemplates(response.data._embedded.uiAquariumTemplateList);
+  }, [LinksCtx]);
+
+  const getAllDecoratorTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.getAllDecoratorType) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.user.getAllDecoratorType);
+    if (
+      !response.data ||
+      !response.data._embedded ||
+      !response.data._embedded.uiDecoratorTypeList
+    ) {
+      toast.error(
+        'Wystąpił problem z pobraniem listy akwariów. Spróbuj ponownie później!'
+      );
+      return;
+    }
+    setDecorators(response.data._embedded.uiDecoratorTypeList);
+  }, [LinksCtx]);
+
+  const getAllAccessoryTypes = useCallback(async () => {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.getAllAccessoryType) {
+      return;
+    }
+    const response = await axios.get(LinksCtx.user.getAllAccessoryType);
+    if (
+      !response.data ||
+      !response.data._embedded ||
+      !response.data._embedded.uiAccessoryTypeList
+    ) {
+      toast.error(
+        'Wystąpił problem z pobraniem listy akwariów. Spróbuj ponownie później!'
+      );
+      return;
+    }
+    setAccessories(response.data._embedded.uiAccessoryTypeList);
+  }, [LinksCtx]);
+
   useEffect(() => {
     if (
       !LinksCtx ||
@@ -90,7 +197,18 @@ const Dashboard: React.FC = () => {
       return;
     }
     getAllAquariums();
-  }, [LinksCtx, getAllAquariums]);
+    getAllFishTypes();
+    getAllDecoratorTypes();
+    getAllAccessoryTypes();
+    getAllAquariumTemplates();
+  }, [
+    LinksCtx,
+    getAllAccessoryTypes,
+    getAllAquariumTemplates,
+    getAllAquariums,
+    getAllDecoratorTypes,
+    getAllFishTypes,
+  ]);
 
   return (
     <>

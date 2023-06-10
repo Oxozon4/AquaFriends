@@ -11,6 +11,7 @@ interface FormFieldProps {
   variant?: string;
   options?: { value: string; label: string }[];
   defaultValues?: any;
+  isDisabled?: boolean;
 }
 
 const FormField = ({
@@ -22,6 +23,7 @@ const FormField = ({
   autocomplete,
   options,
   defaultValues,
+  isDisabled,
 }: FormFieldProps) => {
   const formattedLabel = title + (validators?.required?.value ? ' *' : '');
   return (
@@ -37,6 +39,7 @@ const FormField = ({
           validators={validators}
           autocomplete={autocomplete}
           type={type}
+          isDisabled={isDisabled}
         />
       )}
       {type === 'select' && (
