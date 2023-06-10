@@ -1,17 +1,33 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { useState, useRef, useEffect, useContext, useCallback } from 'react';
 import { LinksContext } from '../../../providers/LinksProvider';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
+import AquariumModal from '../../organisms/AquariumModal/AquariumModal';
 import Header from '../../molecules/Headers/Header/Header';
 import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+
+type AquariumType = {
+  accessories: any[];
+  decorators: any[];
+  fishes: any[];
+  id: number;
+  height: number;
+  width: number;
+  length: number;
+  name: string;
+}[];
 
 const Dashboard: React.FC = () => {
   const LinksCtx = useContext(LinksContext);
-  const [allAquariums, setAllAquariums] = useState([]);
+  const [allAquariums, setAllAquariums] = useState<AquariumType | []>([]);
   const [showModal, setShowModal] = useState(false);
+
+  const modalVariantRef = useRef<'create' | 'edit'>('create');
+  const itemIdRef = useRef<number>(0);
 
   const onLogoutHandler = async () => {
     window.location.href = '/';
@@ -23,6 +39,20 @@ const Dashboard: React.FC = () => {
 
   const onCreateNewHandler = () => {
     setShowModal(true);
+  };
+
+  const renderModal = () => {
+    const mappedAquariumData =
+      modalVariantRef.current === 'create'
+        ? []
+        : allAquariums?.find((item) => item.id === itemIdRef.current);
+    return (
+      <AquariumModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        aquariumData={mappedAquariumData}
+      />
+    );
   };
 
   const getAllAquariums = useCallback(async () => {
@@ -78,6 +108,8 @@ const Dashboard: React.FC = () => {
         />
         <Footer />
       </DashboardWrapper>
+      {showModal &&
+        createPortal(renderModal(), document.getElementById('modal-root')!)}
     </>
   );
 };
