@@ -32,12 +32,17 @@ export const FishTypeModalActions = styled.div`
 export const FishTypeModalInputs = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
-  margin: 0 25%;
+  margin: 0 20%;
 `;
 
 export const FishTypeModalTwoInputs = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 `;

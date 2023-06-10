@@ -37,14 +37,23 @@ interface FishTypeModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
   data: FishType;
-  allData?: FishType[];
+  allFishTypes?: FishType[];
 }
 
 const FishTypeModal = ({
   showModal,
   setShowModal,
   data,
+  allFishTypes,
 }: FishTypeModalProps) => {
+  const mappedFishTypes = allFishTypes
+    ?.map(({ name }) => {
+      return { label: name, value: name };
+    })
+    ?.filter(({ label }) => label !== data?.name);
+  const defaultMappedFishTypes = data?.enemies?.map(({ name }: any) => {
+    return { label: name, value: name };
+  });
   const formMethods = useForm({
     defaultValues: data || {
       id: 0,
@@ -67,15 +76,21 @@ const FishTypeModal = ({
 
   const isNewFishType = !data || !data.id;
 
-  const onSubmitHandler = async (data: any) => {
+  const onSubmitHandler = async (formData: any) => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveFishType) {
       return;
     }
-    data.id ??= 0;
-    data.enemies ??= [];
+    formData.id ??= 0;
+    formData.enemies ??= [];
+    formData.enemies = allFishTypes?.filter(({ name }) =>
+      formData.enemies.includes(name)
+    );
+    // formData.enemies.forEach((enemy: any) => {
+    //   enemy.enemies = [];
+    // });
     if (isNewFishType) {
       try {
-        await axios.post(LinksCtx.admin.saveFishType, data);
+        await axios.post(LinksCtx.admin.saveFishType, formData);
         toast.success('Pomyślnie dodano gatunek ryb!', {
           toastId: 'FishTypeModal',
         });
@@ -86,7 +101,10 @@ const FishTypeModal = ({
       }
     } else {
       try {
-        await axios.put(`${LinksCtx.admin.saveFishType}/${data.id}`, data);
+        await axios.put(
+          `${LinksCtx.admin.saveFishType}/${formData.id}`,
+          formData
+        );
         toast.success('Pomyślnie zaktualizowano gatunek ryb!', {
           toastId: 'FishTypeModal',
         });
@@ -151,6 +169,15 @@ const FishTypeModal = ({
                     message: 'To pole może zawierać maksymalnie 35 znaków!',
                   },
                 }}
+              />
+              <FormField
+                title="Wrogie gatunki ryb"
+                type="select"
+                id="enemies"
+                register={register}
+                validators={{}}
+                defaultValues={defaultMappedFishTypes || []}
+                options={mappedFishTypes}
               />
               <FishTypeModalTwoInputs>
                 <FormField
