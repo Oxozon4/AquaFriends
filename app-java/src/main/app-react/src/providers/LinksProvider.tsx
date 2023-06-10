@@ -43,7 +43,7 @@ export interface LinksContextInterface {
     isSet: boolean;
   };
   user: {
-    getAllAccesoryType: string;
+    getAllAccessoryType: string;
     getAccesoryType: string;
 
     getAllAquarium: string;
@@ -125,7 +125,7 @@ const linkNames: LinksContextInterface = {
     isSet: false,
   },
   user: {
-    getAllAccesoryType: 'GET_ALL_ACCESSORY_TYPE',
+    getAllAccessoryType: 'GET_ALL_ACCESSORY_TYPE',
     getAccesoryType: 'GET_ACCESSORY_TYPE',
 
     getAllAquarium: 'GET_ALL_AQUARIUM',
@@ -203,7 +203,7 @@ const defaultLinksValue: LinksContextInterface = {
     isSet: false,
   },
   user: {
-    getAllAccesoryType: '',
+    getAllAccessoryType: '',
     getAccesoryType: '',
     getAllAquarium: '',
     getAquarium: '',
@@ -402,6 +402,15 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
             break;
           case linkNames.user.getKnowledge:
             newLinksContext.user.getKnowledge = href;
+            break;
+          case linkNames.user.getAllFishType:
+            newLinksContext.user.getAllFishType = href;
+            break;
+          case linkNames.user.getAllDecoratorType:
+            newLinksContext.user.getAllDecoratorType = href;
+            break;
+          case linkNames.user.getAllAccessoryType:
+            newLinksContext.user.getAllAccessoryType = href;
             break;
           default:
             break;

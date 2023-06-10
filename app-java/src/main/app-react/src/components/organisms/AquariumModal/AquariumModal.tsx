@@ -19,11 +19,21 @@ import {
   AquariumForm,
 } from './AquariumModal-styled';
 import { toast } from 'react-toastify';
+import {
+  FishType,
+  AccessoryType,
+  DecoratorType,
+  AquariumType,
+} from '../../templates/Dashboard/Dashboard';
 
 interface FormCreationModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
   aquariumData: any | null;
+  aquariumTemplates: any[];
+  fishTypes: FishType[];
+  accessories: AccessoryType[];
+  decorators: DecoratorType[];
 }
 
 type SectionValues = {
@@ -34,6 +44,10 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   showModal,
   setShowModal,
   aquariumData: formData,
+  aquariumTemplates,
+  fishTypes,
+  accessories,
+  decorators,
 }: FormCreationModalProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
