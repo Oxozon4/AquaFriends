@@ -125,7 +125,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
-          allData={aquariumTemplates}
+          accessories={accessoryTypes}
         />
       );
     }
@@ -144,6 +144,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
+          allFishTypes={fishTypes}
         />
       );
     }
