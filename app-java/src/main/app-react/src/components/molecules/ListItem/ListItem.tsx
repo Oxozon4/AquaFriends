@@ -18,7 +18,8 @@ interface ListItemProps {
     | 'knowledgeBase'
     | 'fishType'
     | 'accessoryType'
-    | 'decoratorType';
+    | 'decoratorType'
+    | 'aquarium';
   onEditClick: any;
   data: any;
 }
@@ -30,13 +31,28 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
         <ListItemContentTitle>
           {data.name || `${data.problemType}`}
         </ListItemContentTitle>
-        {data.info && (
-          <ListItemContentDescription>
+        <ListItemContentDescription>
+          {data.info && (
             <ListItemContentDescriptionItem>
               {data.info}
             </ListItemContentDescriptionItem>
-          </ListItemContentDescription>
-        )}
+          )}
+          {data.accessories && data.accessories.length && (
+            <ListItemContentDescriptionItem>
+              Liczba akcesoriów: {data.accessories.length}
+            </ListItemContentDescriptionItem>
+          )}
+          {data.decorators && data.decorators.length && (
+            <ListItemContentDescriptionItem>
+              Liczba dekoracji: {data.decorators.length}
+            </ListItemContentDescriptionItem>
+          )}
+          {data.fishes && data.fishes.length && (
+            <ListItemContentDescriptionItem>
+              Liczba ryb: {data.fishes.length}
+            </ListItemContentDescriptionItem>
+          )}
+        </ListItemContentDescription>
       </ListItemContent>
       <ListItemActions>
         {/* <ListItemActionsDescriptionWrapper>
