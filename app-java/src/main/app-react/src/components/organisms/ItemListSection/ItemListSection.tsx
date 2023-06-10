@@ -11,8 +11,8 @@ import {
 } from './ItemListSection-styled';
 
 interface ItemListSectionProps {
-  onEditHandler: any;
-  onCreateNewHandler: any;
+  onEditHandler: (arg0: number) => void;
+  onCreateNewHandler: () => void;
   itemVariant:
     | 'aquariumTemplate'
     | 'knowledgeBase'

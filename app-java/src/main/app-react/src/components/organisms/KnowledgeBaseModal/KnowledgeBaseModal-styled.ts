@@ -33,5 +33,14 @@ export const KnowledgeBaseModalInputs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 0 25%;
+  margin: 0 20%;
+`;
+
+export const KnowledgeBaseModalTwoInputs = styled.div`
+  width: 100%;
+  gap: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
