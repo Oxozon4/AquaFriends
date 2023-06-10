@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, set } from 'react-hook-form';
 
 import Select from '../../atoms/Select/Select';
 import { DevTool } from '@hookform/devtools';
@@ -60,6 +60,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
   const [isAllowSwipePrev, setIsAllowSwipePrev] = useState(false);
+  const [isSelectedTemplate, setIsSelectedTemplate] = useState(false);
 
   const swiperRef = useRef<any>(null);
   const modalContainerRef = useRef<HTMLDivElement | null>(null);
@@ -176,13 +177,23 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   }, [isAllowSwipePrev]);
 
   useEffect(() => {
-    if (!activeTemplate || !aquariumTemplates) return;
+    if (
+      !activeTemplate ||
+      !aquariumTemplates ||
+      activeTemplate === 'Wybierz opcje'
+    ) {
+      setIsSelectedTemplate(false);
+      setValue('sections.0.name', '');
+      setValue('sections.0.length', '');
+      setValue('sections.0.width', '');
+      setValue('sections.0.height', '');
+      return;
+    }
 
     const [activeAquariumTemplate] = aquariumTemplates.filter(
       ({ name }) => name === activeTemplate
     );
     if (activeAquariumTemplate) {
-      console.log(activeAquariumTemplate);
       setFocus('sections.0.name');
       setValue('sections.0.name', activeAquariumTemplate.name);
       setFocus('sections.0.length');
@@ -198,6 +209,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           return volume;
         })[0]
       );
+      setIsSelectedTemplate(true);
     }
   }, [activeTemplate, aquariumTemplates, setFocus, setValue]);
 
@@ -252,6 +264,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole może zawierać maksymalnie 35 znaków!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -268,6 +281,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -284,6 +298,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -300,6 +315,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
+                    isDisabled={isSelectedTemplate}
                   />
                   <Select
                     id="sections.0.accessories"
@@ -308,6 +324,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     options={mappedAccessories}
                     error={{}}
                     title="Akcesoria"
+                    isDisabled={isSelectedTemplate}
                   />
                   {/* <FormField
                     type="select"

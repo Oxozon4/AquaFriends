@@ -18,6 +18,7 @@ interface SelectProps {
   id: string;
   title?: string;
   defaultValue?: any;
+  isDisabled?: boolean;
 }
 
 const Select = ({
@@ -27,6 +28,7 @@ const Select = ({
   error,
   id,
   defaultValue,
+  isDisabled,
 }: SelectProps) => {
   return (
     <StyledWrapper>
@@ -36,6 +38,7 @@ const Select = ({
         error={error}
         defaultValue={defaultValue}
         placeholder="Wybierz opcje"
+        disabled={isDisabled}
         {...register(id, validators)}
       >
         <StyledOption>Wybierz opcje</StyledOption>
