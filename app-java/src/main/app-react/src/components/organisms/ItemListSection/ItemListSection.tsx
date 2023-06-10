@@ -18,7 +18,8 @@ interface ItemListSectionProps {
     | 'knowledgeBase'
     | 'fishType'
     | 'accessoryType'
-    | 'decoratorType';
+    | 'decoratorType'
+    | 'aquarium';
   data: any;
 }
 
@@ -32,6 +33,7 @@ const ItemListSection = ({
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 576);
 
   const isDataEmpty = !data || !data.length;
+  const isUserView = itemVariant === 'aquarium';
 
   const handleResize = () => {
     setIsMobileView(window.innerWidth < 576);
@@ -49,7 +51,11 @@ const ItemListSection = ({
     <ItemListSectionWrapper>
       <ItemListSectionHeader>
         <ItemListSectionHeaderTitle>
-          {isDataEmpty ? 'Brak rekordów' : 'Lista rekordów'}
+          {isDataEmpty
+            ? 'Brak rekordów'
+            : isUserView
+            ? 'Twoje akwaria'
+            : 'Lista rekordów'}
         </ItemListSectionHeaderTitle>
         {isMobileView ? (
           <Link onClick={onCreateNewHandler}>
