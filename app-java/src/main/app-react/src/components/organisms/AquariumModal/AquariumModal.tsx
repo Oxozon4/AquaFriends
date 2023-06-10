@@ -49,6 +49,15 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   accessories,
   decorators,
 }: FormCreationModalProps) => {
+  const mappedAccessories = accessories.map(({ name, volume }) => {
+    return { label: name, value: `${volume}` };
+  });
+  // const defaultMappedAccessories = data?.accessories?.map(
+  //   ({ name, volume }) => {
+  //     return { label: name, value: `${volume}` };
+  //   }
+  // );
+
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
   const [isAllowSwipePrev, setIsAllowSwipePrev] = useState(false);
@@ -250,12 +259,8 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     id="sections.0.accessories"
                     register={register}
                     validators={{}}
-                    options={[
-                      { label: 'testt', value: '1' },
-                      { label: 'testt2', value: '2' },
-                      { label: 'testt3', value: 'test3' },
-                    ]}
-                    defaultValues={[{ label: 'testt', value: '1' }]}
+                    options={mappedAccessories}
+                    // defaultValues={[{ label: 'testt', value: '1' }]}
                   />
                 </AquariumContentWrapper>
               </SwiperSlide>
