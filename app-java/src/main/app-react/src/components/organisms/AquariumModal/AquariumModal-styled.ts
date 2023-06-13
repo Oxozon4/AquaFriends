@@ -18,7 +18,9 @@ export const AquariumContentWrapper = styled.div`
   padding: 17px 16% 35px;
 `;
 
-export const AquariumContentHeader = styled.h3``;
+export const AquariumContentHeader = styled.h3`
+  margin-top: 0;
+`;
 
 export const AquariumContentDescription = styled.p``;
 
