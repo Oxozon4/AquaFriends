@@ -16,41 +16,28 @@ import {
 interface ConfirmModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  data: any;
+  id: number;
 }
 
-const ConfirmModal = ({ showModal, setShowModal, data }: ConfirmModalProps) => {
+const ConfirmModal = ({ showModal, setShowModal, id }: ConfirmModalProps) => {
   const LinksCtx = useContext(LinksContext);
-
-  const isNewAccessory = !data || !data.id;
+  id ??= 0;
 
   const onSubmitHandler = async (data: any) => {
-    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveAquarium) {
       return;
     }
     data.id ??= 0;
-    if (isNewAccessory) {
-      try {
-        await axios.post(LinksCtx.admin.saveAccessoryType, data);
-        toast.success('Pomyślnie stworzono akcesorium!', {
-          toastId: 'ConfirmModal',
-        });
-      } catch {
-        toast.error('Wystąpił błąd podczas tworzenia akcesorium!', {
-          toastId: 'ConfirmModal',
-        });
-      }
-    } else {
-      try {
-        await axios.put(`${LinksCtx.admin.saveAccessoryType}/${data.id}`, data);
-        toast.success('Pomyślnie zaktualizowano akcesorium!', {
-          toastId: 'ConfirmModal',
-        });
-      } catch {
-        toast.error('Wystąpił błąd podczas aktualizacji akcesorium!', {
-          toastId: 'ConfirmModal',
-        });
-      }
+
+    try {
+      await axios.delete(`${LinksCtx.user.saveAquarium}/${id}`);
+      toast.success('Pomyślnie usunięto akwarium!', {
+        toastId: 'ConfirmModal',
+      });
+    } catch {
+      toast.error('Wystąpił błąd podczas usuwania akwarium!', {
+        toastId: 'ConfirmModal',
+      });
     }
 
     setShowModal(false);
@@ -60,15 +47,15 @@ const ConfirmModal = ({ showModal, setShowModal, data }: ConfirmModalProps) => {
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <ConfirmModalContainer>
         <ConfirmModalHeader>
-          Czy na pewno chcesz usunąć to
-          <ConfirmModalHeaderColor>akwarium?</ConfirmModalHeaderColor>
+          Czy na pewno chcesz usunąć
+          <ConfirmModalHeaderColor> akwarium?</ConfirmModalHeaderColor>
         </ConfirmModalHeader>
         <ConfirmModalParagraph>
           Tej akcji nie można cofnąć.
         </ConfirmModalParagraph>
         <ConfirmModalActions>
-          <Button text="Nie" />
-          <Button text="Tak" variant="danger" />
+          <Button text="Nie" onClick={() => setShowModal(false)} />
+          <Button text="Tak" variant="danger" onClick={onSubmitHandler} />
         </ConfirmModalActions>
       </ConfirmModalContainer>
     </Modal>

@@ -14,7 +14,7 @@ import {
 interface ItemListSectionProps {
   onEditHandler: (arg0: number) => void;
   onCreateNewHandler: () => void;
-  onDeleteHandler: () => void;
+  onDeleteHandler: (arg0: number) => void;
   itemVariant:
     | 'aquariumTemplate'
     | 'knowledgeBase'
@@ -79,7 +79,7 @@ const ItemListSection = ({
                 onEditClick={() => {
                   onEditHandler(item.id);
                 }}
-                onDeleteHandler={onDeleteHandler}
+                onDeleteHandler={() => onDeleteHandler(item.id)}
               />
             );
           })}

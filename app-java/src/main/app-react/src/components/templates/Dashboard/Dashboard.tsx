@@ -9,6 +9,7 @@ import Header from '../../molecules/Headers/Header/Header';
 import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
+import ConfirmModal from '../../organisms/ConfirmModal/ConfirmModal';
 
 export type AquariumType = {
   accessories: any[];
@@ -74,8 +75,9 @@ const Dashboard: React.FC = () => {
     setShowModal(true);
   };
 
-  const onDeleteHandler = () => {
+  const onDeleteHandler = (id: number) => {
     modalVariantRef.current = 'delete';
+    itemIdRef.current = id;
     setShowModal(true);
   };
 
@@ -84,6 +86,16 @@ const Dashboard: React.FC = () => {
       modalVariantRef.current === 'create'
         ? []
         : allAquariums?.find((item) => item.id === itemIdRef.current);
+
+    if (modalVariantRef.current === 'delete') {
+      return (
+        <ConfirmModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          id={itemIdRef.current}
+        />
+      );
+    }
     return (
       <AquariumModal
         showModal={showModal}
