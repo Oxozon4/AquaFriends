@@ -86,18 +86,12 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           height: '',
         },
         {
-          decorators: [
-            {
-              id: 0,
-              name: '',
-              volume: 0,
-            },
-          ],
+          decorators: ['Wybierz dekoracje'],
         },
         {
           fishes: [
             {
-              fishType: {},
+              fishType: 'Wybierz gatunek ryby',
               birthDay: '',
               healthStatus: 'HEALTHY',
               id: 0,
