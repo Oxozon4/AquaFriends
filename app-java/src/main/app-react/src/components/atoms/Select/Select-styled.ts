@@ -10,12 +10,17 @@ export const StyledWrapper = styled.div`
   position: relative;
 `;
 
-export const StyledSelect = styled.select`
+interface StyledSelectProps {
+  error?: any;
+}
+
+export const StyledSelect = styled.select<StyledSelectProps>`
   appearance: none;
   min-width: 100%;
   font-size: ${({ theme }) => theme.fontSize.l};
   padding: 7px 22px 7px 5px;
-  border: 1px solid ${({ theme }) => theme.colors.grey};
+  border: 1px solid
+    ${({ theme, error }) => (error ? theme.colors.danger : theme.colors.black)};
   -webkit-appearance: none;
 
   @media ${({ theme }) => theme.breakpoints.sm} {
@@ -38,4 +43,9 @@ export const StyledIconWrapper = styled.div`
   @media ${({ theme }) => theme.breakpoints.sm} {
     right: 23%;
   }
+`;
+
+export const StyledErrorMesssage = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.red};
 `;
