@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { useForm, FormProvider, useFieldArray, Form } from 'react-hook-form';
+import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import {
   FishType,
@@ -31,6 +32,7 @@ import {
 } from './AquariumModal-styled';
 import Link from '../../atoms/Link/Link';
 import Icon from '../../atoms/Icon/Icon';
+import axios from 'axios';
 
 interface FormCreationModalProps {
   showModal: boolean;
@@ -67,6 +69,8 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
     return { label: name, value: `${name}` };
   });
+
+  const LinksCtx = useContext(LinksContext);
 
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
@@ -154,16 +158,30 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       const selectedDecorators = decorators.filter((decorator) => {
         return decorator.name === aquariumData.decorators;
       })[0];
-      aquariumData.decorators = selectedDecorators;
+      aquariumData.decorators = [selectedDecorators];
 
       const selectedAccessories = accessories.filter((accessory) => {
         return accessory.volume === aquariumData.accessories;
       })[0];
-      aquariumData.accessories = selectedAccessories;
+      aquariumData.accessories = [selectedAccessories];
 
       delete aquariumData.aquariumTemplate;
 
+      aquariumData.fishes.forEach((fish: any, index: number) => {
+        const fishObj = fishTypes.find((fishType) => {
+          return fishType.name === fish.fishType;
+        });
+        aquariumData.fishes[index].fishType = fishObj;
+      });
+
       console.log(aquariumData);
+      console.log(fishTypes);
+
+      if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveAquarium) {
+        return;
+      }
+
+      await axios.post(LinksCtx.user.saveAquarium, aquariumData);
 
       toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
       setShowModal(false);
