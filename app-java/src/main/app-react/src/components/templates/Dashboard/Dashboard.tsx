@@ -229,6 +229,23 @@ const Dashboard: React.FC = () => {
     getAllFishTypes,
   ]);
 
+  useEffect(() => {
+    if (!showModal) {
+      getAllAquariums();
+      getAllFishTypes();
+      getAllDecoratorTypes();
+      getAllAccessoryTypes();
+      getAllAquariumTemplates();
+    }
+  }, [
+    getAllAccessoryTypes,
+    getAllAquariumTemplates,
+    getAllAquariums,
+    getAllDecoratorTypes,
+    getAllFishTypes,
+    showModal,
+  ]);
+
   return (
     <>
       <DashboardWrapper>
