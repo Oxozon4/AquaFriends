@@ -66,7 +66,6 @@ const Dashboard: React.FC = () => {
   };
 
   const onEditHandler = () => {
-    modalVariantRef.current = 'edit';
     setShowModal(true);
   };
 
