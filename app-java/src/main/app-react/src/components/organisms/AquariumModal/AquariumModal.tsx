@@ -92,7 +92,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           fishes: [
             {
               fishType: 'Wybierz gatunek ryby',
-              birthDay: '',
+              birthDay: 123,
               healthStatus: 'HEALTHY',
               id: 0,
             },
@@ -146,10 +146,25 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
 
     if (activeStep + 1 === 3) {
       const formData = getValues();
-      let aquariumData = {};
+      let aquariumData: any = {};
       getValues().sections.forEach((section: any) => {
         aquariumData = { ...aquariumData, ...section };
       });
+
+      const selectedDecorators = decorators.filter((decorator) => {
+        return decorator.name === aquariumData.decorators;
+      })[0];
+      aquariumData.decorators = selectedDecorators;
+
+      const selectedAccessories = accessories.filter((accessory) => {
+        return accessory.volume === aquariumData.accessories;
+      })[0];
+      aquariumData.accessories = selectedAccessories;
+
+      delete aquariumData.aquariumTemplate;
+
+      console.log(aquariumData);
+
       toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
       setShowModal(false);
       return;
@@ -247,7 +262,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const onFishAppend = () => {
     append({
       fishType: 'Wybierz gatunek ryby',
-      birthDay: '',
+      birthDay: 123,
       healthStatus: 'HEALTHY',
       id: 0,
     });
