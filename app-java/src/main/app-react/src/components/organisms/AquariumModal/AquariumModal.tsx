@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useForm, FormProvider, set } from 'react-hook-form';
+import { useForm, FormProvider, useFieldArray, Form } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import {
+  FishType,
+  AccessoryType,
+  DecoratorType,
+  AquariumType,
+} from '../../templates/Dashboard/Dashboard';
 
 import Select from '../../atoms/Select/Select';
 import { DevTool } from '@hookform/devtools';
@@ -18,14 +25,12 @@ import {
   AquariumContentHeader,
   AquariumContentDescription,
   AquariumForm,
+  FishItemBox,
+  FishItemTitle,
+  FishItemDeleteIconWrapper,
 } from './AquariumModal-styled';
-import { toast } from 'react-toastify';
-import {
-  FishType,
-  AccessoryType,
-  DecoratorType,
-  AquariumType,
-} from '../../templates/Dashboard/Dashboard';
+import Link from '../../atoms/Link/Link';
+import Icon from '../../atoms/Icon/Icon';
 
 interface FormCreationModalProps {
   showModal: boolean;
@@ -53,6 +58,12 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const mappedAccessories = accessories.map(({ name, volume }) => {
     return { label: name, value: `${volume}` };
   });
+  const mappedDecorators = decorators.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
+  const mappedFishTypes = fishTypes.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
   const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
     return { label: name, value: `${name}` };
   });
@@ -74,7 +85,25 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           width: '',
           height: '',
         },
-        {},
+        {
+          decorators: [
+            {
+              id: 0,
+              name: '',
+              volume: 0,
+            },
+          ],
+        },
+        {
+          fishes: [
+            {
+              fishType: {},
+              birthDay: '',
+              healthStatus: 'HEALTHY',
+              id: 0,
+            },
+          ],
+        },
       ],
     },
   });
@@ -89,10 +118,16 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     setFocus,
     formState: { errors },
   } = formMethods;
+  const {
+    fields: fishesFields,
+    append,
+    remove,
+  } = useFieldArray({
+    name: 'sections.2.fishes',
+    control,
+  });
 
   const activeTemplate = watch('sections.0.aquariumTemplate');
-
-  console.log(activeTemplate);
 
   const validateStep = async () => {
     if (!formData) {
@@ -116,8 +151,11 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }
 
     if (activeStep + 1 === 3) {
-      console.log(getValues());
-
+      const formData = getValues();
+      let aquariumData = {};
+      getValues().sections.forEach((section: any) => {
+        aquariumData = { ...aquariumData, ...section };
+      });
       toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
       setShowModal(false);
       return;
@@ -212,6 +250,25 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }
   }, [activeTemplate, aquariumTemplates, setFocus, setValue]);
 
+  const onFishAppend = () => {
+    append({
+      fishType: 'Wybierz gatunek ryby',
+      birthDay: '',
+      healthStatus: 'HEALTHY',
+      id: 0,
+    });
+    setTimeout(() => {
+      swiperRef.current.updateAutoHeight(0);
+    }, 10);
+  };
+
+  const onFishRemove = (index: number) => {
+    remove(index);
+    setTimeout(() => {
+      swiperRef.current.updateAutoHeight(0);
+    }, 10);
+  };
+
   if (!formData) return null;
 
   return (
@@ -240,7 +297,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     register={register}
                     validators={{}}
                     options={mappedAquariumTemplates}
-                    error={{}}
                     title="Wybierz szablon"
                     defaultValue="Wybierz szablon"
                   />
@@ -317,10 +373,10 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     register={register}
                     validators={{}}
                     options={mappedAccessories}
-                    error={{}}
                     title="Wybierz akcesoria"
                     isDisabled={isSelectedTemplate}
                   />
+
                   {/* <FormField
                     type="select"
                     title="Akcesoria"
@@ -337,11 +393,64 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Dekoracje akwarium
                   </AquariumContentHeader>
+                  <Select
+                    id="sections.1.decorators"
+                    register={register}
+                    validators={{
+                      required: {
+                        value: true,
+                        message: 'To pole jest wymagane!',
+                      },
+                      validate: (value: string) =>
+                        value !== 'Wybierz dekoracje' ||
+                        'Rodzaj dekoracji jest wymagany!',
+                    }}
+                    options={mappedDecorators}
+                    title="Wybierz dekoracje"
+                  />
                 </AquariumContentWrapper>
               </SwiperSlide>
               <SwiperSlide>
                 <AquariumContentWrapper>
                   <AquariumContentHeader>Ryby w akwarium</AquariumContentHeader>
+                  {fishesFields.map((fish, index) => {
+                    return (
+                      <FishItemBox key={index}>
+                        {index > 0 && (
+                          <FishItemDeleteIconWrapper>
+                            <Link
+                              onClick={() => onFishRemove(index)}
+                              title={`Usuń rybę nr ${index + 1}`}
+                            >
+                              <Icon variant="Close" size="24px" />
+                            </Link>
+                          </FishItemDeleteIconWrapper>
+                        )}
+                        <FishItemTitle>Ryba nr {index}</FishItemTitle>
+
+                        <Select
+                          id={`sections.2.fishes.${index}.fishType`}
+                          register={register}
+                          validators={{
+                            required: {
+                              value: true,
+                              message: 'To pole jest wymagane!',
+                            },
+                            validate: (value: string) =>
+                              value !== 'Wybierz gatunek ryby' ||
+                              'Gatunek ryby jest wymagany!',
+                          }}
+                          options={mappedFishTypes}
+                          title="Wybierz gatunek ryby"
+                        />
+                      </FishItemBox>
+                    );
+                  })}
+                  <Button
+                    type="button"
+                    text="Dodaj rybę"
+                    onClick={onFishAppend}
+                  />
                 </AquariumContentWrapper>
               </SwiperSlide>
             </Swiper>
