@@ -35,11 +35,16 @@ const Select = ({
   isDisabled,
   title,
 }: SelectProps) => {
-  const { trigger, getValues, getFieldState, formState } = useFormContext();
-  const { error } = getFieldState(id, formState);
+  const methods = useFormContext();
+  const { trigger, getValues, getFieldState, formState } = methods || {};
+  let error: any;
+
+  if (getFieldState) {
+    error = getFieldState(id, formState).error;
+  }
 
   const onBlurHandler = () => {
-    if (error?.message) {
+    if (error?.message && trigger) {
       trigger(id);
     }
   };
