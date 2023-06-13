@@ -57,7 +57,7 @@ const Dashboard: React.FC = () => {
   const [accessories, setAccessories] = useState<AccessoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const modalVariantRef = useRef<'create' | 'edit'>('create');
+  const modalVariantRef = useRef<'create' | 'edit' | 'delete'>('create');
   const itemIdRef = useRef<number>(0);
 
   const onLogoutHandler = async () => {
@@ -65,10 +65,17 @@ const Dashboard: React.FC = () => {
   };
 
   const onEditHandler = () => {
+    modalVariantRef.current = 'edit';
     setShowModal(true);
   };
 
   const onCreateNewHandler = () => {
+    modalVariantRef.current = 'create';
+    setShowModal(true);
+  };
+
+  const onDeleteHandler = () => {
+    modalVariantRef.current = 'delete';
     setShowModal(true);
   };
 
@@ -221,6 +228,7 @@ const Dashboard: React.FC = () => {
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
+          onDeleteHandler={onDeleteHandler}
           itemVariant={'aquarium'}
           data={allAquariums}
         />

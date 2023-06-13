@@ -21,10 +21,16 @@ interface ListItemProps {
     | 'decoratorType'
     | 'aquarium';
   onEditClick: any;
+  onDeleteHandler: any;
   data: any;
 }
 
-const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
+const ListItem = ({
+  variant,
+  onEditClick,
+  onDeleteHandler,
+  data,
+}: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
@@ -63,6 +69,7 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
         </ListItemActionsDescriptionWrapper> */}
 
         <ListItemActionsButtonWrapper>
+          <Button text="Usuń" onClick={onDeleteHandler} variant="danger" />
           <Button text="Edytuj" onClick={onEditClick} />
         </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper

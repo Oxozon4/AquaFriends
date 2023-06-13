@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect } from 'react';
 import Button from '../../atoms/Button/Button';
 import ListItem from '../../molecules/ListItem/ListItem';
@@ -13,6 +14,7 @@ import {
 interface ItemListSectionProps {
   onEditHandler: (arg0: number) => void;
   onCreateNewHandler: () => void;
+  onDeleteHandler: () => void;
   itemVariant:
     | 'aquariumTemplate'
     | 'knowledgeBase'
@@ -29,6 +31,7 @@ const ItemListSection = ({
   onCreateNewHandler,
   itemVariant,
   data,
+  onDeleteHandler,
 }: ItemListSectionProps) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 576);
 
@@ -76,6 +79,7 @@ const ItemListSection = ({
                 onEditClick={() => {
                   onEditHandler(item.id);
                 }}
+                onDeleteHandler={onDeleteHandler}
               />
             );
           })}
