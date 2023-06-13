@@ -1,9 +1,15 @@
-import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  useFormContext,
+} from 'react-hook-form';
 import {
   StyledSelect,
   StyledOption,
   StyledWrapper,
   StyledIconWrapper,
+  StyledErrorMesssage,
 } from './Select-styled';
 import Icon from '../Icon/Icon';
 
@@ -14,7 +20,6 @@ interface SelectProps {
   }[];
   register: any;
   validators: any;
-  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   id: string;
   title?: string;
   defaultValue?: any;
@@ -25,36 +30,50 @@ const Select = ({
   options,
   register,
   validators,
-  error,
   id,
   defaultValue,
   isDisabled,
   title,
 }: SelectProps) => {
+  const { trigger, getValues, getFieldState, formState } = useFormContext();
+  const { error } = getFieldState(id, formState);
+
+  const onBlurHandler = () => {
+    if (error?.message) {
+      trigger(id);
+    }
+  };
+
   return (
-    <StyledWrapper>
-      <StyledSelect
-        id={id}
-        name="selectInput"
-        error={error}
-        defaultValue={defaultValue}
-        placeholder={title || 'Wybierz opcje'}
-        disabled={isDisabled}
-        {...register(id, validators)}
-      >
-        <StyledOption>{title || 'Wybierz opcje'}</StyledOption>
-        {options.map(({ value, label }) => {
-          return (
-            <StyledOption key={value} value={value}>
-              {label}
-            </StyledOption>
-          );
-        })}
-      </StyledSelect>
-      <StyledIconWrapper>
-        <Icon variant="ArrowDown" withhover="false" size="32px" />
-      </StyledIconWrapper>
-    </StyledWrapper>
+    <>
+      <StyledWrapper>
+        <StyledSelect
+          id={id}
+          name="selectInput"
+          defaultValue={defaultValue}
+          placeholder={title || 'Wybierz opcje'}
+          disabled={isDisabled}
+          {...register(id, validators)}
+          error={error?.message}
+          onBlur={onBlurHandler}
+        >
+          <StyledOption>{title || 'Wybierz opcje'}</StyledOption>
+          {options.map(({ value, label }) => {
+            return (
+              <StyledOption key={value} value={value}>
+                {label}
+              </StyledOption>
+            );
+          })}
+        </StyledSelect>
+        <StyledIconWrapper>
+          <Icon variant="ArrowDown" withhover="false" size="32px" />
+        </StyledIconWrapper>
+      </StyledWrapper>
+      {error?.message && (
+        <StyledErrorMesssage>{error.message}</StyledErrorMesssage>
+      )}
+    </>
   );
 };
 

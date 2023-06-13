@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { useForm, FormProvider, set } from 'react-hook-form';
+import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { useForm, FormProvider, useFieldArray, Form } from 'react-hook-form';
+import { LinksContext } from '../../../providers/LinksProvider';
+import { toast } from 'react-toastify';
+import {
+  FishType,
+  AccessoryType,
+  DecoratorType,
+  AquariumType,
+} from '../../templates/Dashboard/Dashboard';
 
 import Select from '../../atoms/Select/Select';
 import { DevTool } from '@hookform/devtools';
@@ -18,14 +26,13 @@ import {
   AquariumContentHeader,
   AquariumContentDescription,
   AquariumForm,
+  FishItemBox,
+  FishItemTitle,
+  FishItemDeleteIconWrapper,
 } from './AquariumModal-styled';
-import { toast } from 'react-toastify';
-import {
-  FishType,
-  AccessoryType,
-  DecoratorType,
-  AquariumType,
-} from '../../templates/Dashboard/Dashboard';
+import Link from '../../atoms/Link/Link';
+import Icon from '../../atoms/Icon/Icon';
+import axios from 'axios';
 
 interface FormCreationModalProps {
   showModal: boolean;
@@ -53,9 +60,17 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const mappedAccessories = accessories.map(({ name, volume }) => {
     return { label: name, value: `${volume}` };
   });
+  const mappedDecorators = decorators.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
+  const mappedFishTypes = fishTypes.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
   const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
     return { label: name, value: `${name}` };
   });
+
+  const LinksCtx = useContext(LinksContext);
 
   const [activeStep, setActiveStep] = useState(0);
   const [isAllowSwipeNext, setIsAllowSwipeNext] = useState(false);
@@ -74,7 +89,19 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
           width: '',
           height: '',
         },
-        {},
+        {
+          decorators: ['Wybierz dekoracje'],
+        },
+        {
+          fishes: [
+            {
+              fishType: 'Wybierz gatunek ryby',
+              birthDay: 123,
+              healthStatus: 'HEALTHY',
+              id: 0,
+            },
+          ],
+        },
       ],
     },
   });
@@ -89,10 +116,16 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     setFocus,
     formState: { errors },
   } = formMethods;
+  const {
+    fields: fishesFields,
+    append,
+    remove,
+  } = useFieldArray({
+    name: 'sections.2.fishes',
+    control,
+  });
 
   const activeTemplate = watch('sections.0.aquariumTemplate');
-
-  console.log(activeTemplate);
 
   const validateStep = async () => {
     if (!formData) {
@@ -116,7 +149,39 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }
 
     if (activeStep + 1 === 3) {
-      console.log(getValues());
+      const formData = getValues();
+      let aquariumData: any = {};
+      getValues().sections.forEach((section: any) => {
+        aquariumData = { ...aquariumData, ...section };
+      });
+
+      const selectedDecorators = decorators.filter((decorator) => {
+        return decorator.name === aquariumData.decorators;
+      })[0];
+      aquariumData.decorators = [selectedDecorators];
+
+      const selectedAccessories = accessories.filter((accessory) => {
+        return accessory.volume === aquariumData.accessories;
+      })[0];
+      aquariumData.accessories = [selectedAccessories];
+
+      delete aquariumData.aquariumTemplate;
+
+      aquariumData.fishes.forEach((fish: any, index: number) => {
+        const fishObj = fishTypes.find((fishType) => {
+          return fishType.name === fish.fishType;
+        });
+        aquariumData.fishes[index].fishType = fishObj;
+      });
+
+      console.log(aquariumData);
+      console.log(fishTypes);
+
+      if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveAquarium) {
+        return;
+      }
+
+      await axios.post(LinksCtx.user.saveAquarium, aquariumData);
 
       toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
       setShowModal(false);
@@ -182,7 +247,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       activeTemplate.includes('Wybierz')
     ) {
       setIsSelectedTemplate(false);
-      setValue('sections.0.name', '');
       setValue('sections.0.length', '');
       setValue('sections.0.width', '');
       setValue('sections.0.height', '');
@@ -193,8 +257,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       ({ name }) => name === activeTemplate
     );
     if (activeAquariumTemplate) {
-      setFocus('sections.0.name');
-      setValue('sections.0.name', activeAquariumTemplate.name);
       setFocus('sections.0.length');
       setValue('sections.0.length', activeAquariumTemplate.length);
       setFocus('sections.0.width');
@@ -211,6 +273,25 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       setIsSelectedTemplate(true);
     }
   }, [activeTemplate, aquariumTemplates, setFocus, setValue]);
+
+  const onFishAppend = () => {
+    append({
+      fishType: 'Wybierz gatunek ryby',
+      birthDay: 123,
+      healthStatus: 'HEALTHY',
+      id: 0,
+    });
+    setTimeout(() => {
+      swiperRef.current.updateAutoHeight(0);
+    }, 10);
+  };
+
+  const onFishRemove = (index: number) => {
+    remove(index);
+    setTimeout(() => {
+      swiperRef.current.updateAutoHeight(0);
+    }, 10);
+  };
 
   if (!formData) return null;
 
@@ -240,7 +321,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     register={register}
                     validators={{}}
                     options={mappedAquariumTemplates}
-                    error={{}}
                     title="Wybierz szablon"
                     defaultValue="Wybierz szablon"
                   />
@@ -259,7 +339,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole może zawierać maksymalnie 35 znaków!',
                       },
                     }}
-                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
@@ -317,10 +396,10 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     register={register}
                     validators={{}}
                     options={mappedAccessories}
-                    error={{}}
                     title="Wybierz akcesoria"
                     isDisabled={isSelectedTemplate}
                   />
+
                   {/* <FormField
                     type="select"
                     title="Akcesoria"
@@ -337,11 +416,64 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Dekoracje akwarium
                   </AquariumContentHeader>
+                  <Select
+                    id="sections.1.decorators"
+                    register={register}
+                    validators={{
+                      required: {
+                        value: true,
+                        message: 'To pole jest wymagane!',
+                      },
+                      validate: (value: string) =>
+                        value !== 'Wybierz dekoracje' ||
+                        'Rodzaj dekoracji jest wymagany!',
+                    }}
+                    options={mappedDecorators}
+                    title="Wybierz dekoracje"
+                  />
                 </AquariumContentWrapper>
               </SwiperSlide>
               <SwiperSlide>
                 <AquariumContentWrapper>
                   <AquariumContentHeader>Ryby w akwarium</AquariumContentHeader>
+                  {fishesFields.map((fish, index) => {
+                    return (
+                      <FishItemBox key={index}>
+                        {index > 0 && (
+                          <FishItemDeleteIconWrapper>
+                            <Link
+                              onClick={() => onFishRemove(index)}
+                              title={`Usuń rybę nr ${index + 1}`}
+                            >
+                              <Icon variant="Close" size="24px" />
+                            </Link>
+                          </FishItemDeleteIconWrapper>
+                        )}
+                        <FishItemTitle>Ryba nr {index}</FishItemTitle>
+
+                        <Select
+                          id={`sections.2.fishes.${index}.fishType`}
+                          register={register}
+                          validators={{
+                            required: {
+                              value: true,
+                              message: 'To pole jest wymagane!',
+                            },
+                            validate: (value: string) =>
+                              value !== 'Wybierz gatunek ryby' ||
+                              'Gatunek ryby jest wymagany!',
+                          }}
+                          options={mappedFishTypes}
+                          title="Wybierz gatunek ryby"
+                        />
+                      </FishItemBox>
+                    );
+                  })}
+                  <Button
+                    type="button"
+                    text="Dodaj rybę"
+                    onClick={onFishAppend}
+                  />
                 </AquariumContentWrapper>
               </SwiperSlide>
             </Swiper>

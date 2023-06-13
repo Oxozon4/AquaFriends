@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createPortal } from 'react-dom';
 import { useState, useRef, useEffect, useContext, useCallback } from 'react';
 import { set, useForm } from 'react-hook-form';
@@ -313,7 +314,6 @@ const AdminPanel = () => {
             <Select
               options={selectComponentOptions}
               register={register}
-              error={errors}
               id="dataType"
               validators={{}}
             />
@@ -323,6 +323,7 @@ const AdminPanel = () => {
               data={getActiveDataType()}
               onEditHandler={onItemEditHandler}
               onCreateNewHandler={onItemCreateClickHandler}
+              onDeleteHandler={() => {}}
               itemVariant={selectedDataType}
             />
           </AdminPanelContentList>

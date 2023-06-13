@@ -9,6 +9,7 @@ export const ProgressBarContainer = styled.div`
   width: 100%;
   height: 3px;
   background: ${({ theme }) => theme.colors.tertiary};
+  margin-bottom: 15px;
 `;
 
 export const StyledProgressBar = styled.div<StyledProgressBarProps>`

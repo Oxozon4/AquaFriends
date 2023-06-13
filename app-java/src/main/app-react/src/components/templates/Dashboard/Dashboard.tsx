@@ -9,6 +9,7 @@ import Header from '../../molecules/Headers/Header/Header';
 import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
 import { DashboardWrapper } from './Dashboard-styled';
+import ConfirmModal from '../../organisms/ConfirmModal/ConfirmModal';
 
 export type AquariumType = {
   accessories: any[];
@@ -57,7 +58,7 @@ const Dashboard: React.FC = () => {
   const [accessories, setAccessories] = useState<AccessoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const modalVariantRef = useRef<'create' | 'edit'>('create');
+  const modalVariantRef = useRef<'create' | 'edit' | 'delete'>('create');
   const itemIdRef = useRef<number>(0);
 
   const onLogoutHandler = async () => {
@@ -65,10 +66,18 @@ const Dashboard: React.FC = () => {
   };
 
   const onEditHandler = () => {
+    modalVariantRef.current = 'edit';
     setShowModal(true);
   };
 
   const onCreateNewHandler = () => {
+    modalVariantRef.current = 'create';
+    setShowModal(true);
+  };
+
+  const onDeleteHandler = (id: number) => {
+    modalVariantRef.current = 'delete';
+    itemIdRef.current = id;
     setShowModal(true);
   };
 
@@ -77,6 +86,16 @@ const Dashboard: React.FC = () => {
       modalVariantRef.current === 'create'
         ? []
         : allAquariums?.find((item) => item.id === itemIdRef.current);
+
+    if (modalVariantRef.current === 'delete') {
+      return (
+        <ConfirmModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          id={itemIdRef.current}
+        />
+      );
+    }
     return (
       <AquariumModal
         showModal={showModal}
@@ -210,6 +229,23 @@ const Dashboard: React.FC = () => {
     getAllFishTypes,
   ]);
 
+  useEffect(() => {
+    if (!showModal) {
+      getAllAquariums();
+      getAllFishTypes();
+      getAllDecoratorTypes();
+      getAllAccessoryTypes();
+      getAllAquariumTemplates();
+    }
+  }, [
+    getAllAccessoryTypes,
+    getAllAquariumTemplates,
+    getAllAquariums,
+    getAllDecoratorTypes,
+    getAllFishTypes,
+    showModal,
+  ]);
+
   return (
     <>
       <DashboardWrapper>
@@ -221,6 +257,7 @@ const Dashboard: React.FC = () => {
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
+          onDeleteHandler={onDeleteHandler}
           itemVariant={'aquarium'}
           data={allAquariums}
         />

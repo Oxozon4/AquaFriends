@@ -21,10 +21,16 @@ interface ListItemProps {
     | 'decoratorType'
     | 'aquarium';
   onEditClick: any;
+  onDeleteHandler: any;
   data: any;
 }
 
-const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
+const ListItem = ({
+  variant,
+  onEditClick,
+  onDeleteHandler,
+  data,
+}: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
@@ -37,17 +43,17 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
               {data.info}
             </ListItemContentDescriptionItem>
           )}
-          {data.accessories && data.accessories.length && (
+          {!!(data.accessories && data.accessories.length) && (
             <ListItemContentDescriptionItem>
               Liczba akcesoriów: {data.accessories.length}
             </ListItemContentDescriptionItem>
           )}
-          {data.decorators && data.decorators.length && (
+          {!!(data.decorators && data.decorators.length) && (
             <ListItemContentDescriptionItem>
               Liczba dekoracji: {data.decorators.length}
             </ListItemContentDescriptionItem>
           )}
-          {data.fishes && data.fishes.length && (
+          {!!(data.fishes && data.fishes.length) && (
             <ListItemContentDescriptionItem>
               Liczba ryb: {data.fishes.length}
             </ListItemContentDescriptionItem>
@@ -63,6 +69,7 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
         </ListItemActionsDescriptionWrapper> */}
 
         <ListItemActionsButtonWrapper>
+          <Button text="Usuń" onClick={onDeleteHandler} variant="danger" />
           <Button text="Edytuj" onClick={onEditClick} />
         </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper
