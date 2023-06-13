@@ -110,7 +110,7 @@ const DecoratorModal = ({
             <DecoratorModalInputs>
               <FormField
                 type="text"
-                title="Nazwa dekoratora"
+                title="Nazwa dekoracji"
                 id="name"
                 register={register}
                 validators={{
