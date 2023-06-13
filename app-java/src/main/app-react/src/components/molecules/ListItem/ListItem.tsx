@@ -37,17 +37,17 @@ const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
               {data.info}
             </ListItemContentDescriptionItem>
           )}
-          {data.accessories && data.accessories.length && (
+          {!!(data.accessories && data.accessories.length) && (
             <ListItemContentDescriptionItem>
               Liczba akcesoriów: {data.accessories.length}
             </ListItemContentDescriptionItem>
           )}
-          {data.decorators && data.decorators.length && (
+          {!!(data.decorators && data.decorators.length) && (
             <ListItemContentDescriptionItem>
               Liczba dekoracji: {data.decorators.length}
             </ListItemContentDescriptionItem>
           )}
-          {data.fishes && data.fishes.length && (
+          {!!(data.fishes && data.fishes.length) && (
             <ListItemContentDescriptionItem>
               Liczba ryb: {data.fishes.length}
             </ListItemContentDescriptionItem>
