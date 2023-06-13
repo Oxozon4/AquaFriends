@@ -247,7 +247,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       activeTemplate.includes('Wybierz')
     ) {
       setIsSelectedTemplate(false);
-      setValue('sections.0.name', '');
       setValue('sections.0.length', '');
       setValue('sections.0.width', '');
       setValue('sections.0.height', '');
@@ -258,8 +257,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       ({ name }) => name === activeTemplate
     );
     if (activeAquariumTemplate) {
-      setFocus('sections.0.name');
-      setValue('sections.0.name', activeAquariumTemplate.name);
       setFocus('sections.0.length');
       setValue('sections.0.length', activeAquariumTemplate.length);
       setFocus('sections.0.width');
@@ -342,7 +339,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole może zawierać maksymalnie 35 znaków!',
                       },
                     }}
-                    isDisabled={isSelectedTemplate}
                   />
                   <FormField
                     type="text"
