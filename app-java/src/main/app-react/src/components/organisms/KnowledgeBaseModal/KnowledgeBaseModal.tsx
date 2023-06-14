@@ -156,7 +156,6 @@ const KnowledgeBaseModal = ({
                 register={register}
                 id="problemType"
                 validators={{}}
-                error={errors}
               />
               <KnowledgeBaseModalTwoInputs>
                 <FormField
