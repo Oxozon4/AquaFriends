@@ -34,11 +34,7 @@ const KnowledgeBaseModal = ({
       name: '',
     },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = formMethods;
+  const { register, handleSubmit } = formMethods;
   const LinksCtx = useContext(LinksContext);
 
   const isNewKnowledgeBase = !data || !data.id;

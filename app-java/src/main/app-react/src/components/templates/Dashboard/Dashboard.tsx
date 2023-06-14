@@ -65,7 +65,9 @@ const Dashboard: React.FC = () => {
     window.location.href = '/';
   };
 
-  const onEditHandler = () => {
+  const onEditHandler = (id: number) => {
+    itemIdRef.current = id;
+    modalVariantRef.current = 'edit';
     setShowModal(true);
   };
 
