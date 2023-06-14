@@ -60,3 +60,11 @@ export const FishItemDeleteIconWrapper = styled.div`
   top: 15px;
   right: 15px;
 `;
+
+export const DecoratorInputContainer = styled.div`
+  position: relative;
+
+  @media ${({ theme }) => theme.breakpoints.sm} {
+    left: -25%;
+  }
+`;

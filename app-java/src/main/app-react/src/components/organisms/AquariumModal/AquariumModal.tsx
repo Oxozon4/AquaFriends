@@ -29,6 +29,7 @@ import {
   FishItemBox,
   FishItemTitle,
   FishItemDeleteIconWrapper,
+  DecoratorInputContainer,
 } from './AquariumModal-styled';
 import Link from '../../atoms/Link/Link';
 import Icon from '../../atoms/Icon/Icon';
@@ -87,7 +88,13 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
             },
             {
               fishes: formData.fishes.map((fish: any) => {
-                return { fishType: fish.fishType?.name };
+                return {
+                  fishType: fish.fishType?.name,
+                  id: fish.id,
+                  _id: fish.id,
+                  birthDay: fish.birthDay,
+                  healthStatus: fish.healthStatus,
+                };
               }),
             },
           ],
@@ -174,7 +181,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }
 
     if (activeStep + 1 === 3) {
-      const formData = getValues();
+      const filledFormData = getValues();
       let aquariumData: any = {};
       getValues().sections.forEach((section: any) => {
         aquariumData = { ...aquariumData, ...section };
@@ -203,29 +210,61 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
         return;
       }
 
-      const newAquariumData: any = await axios.post(
-        LinksCtx.user.saveAquarium,
-        aquariumData
-      );
+      if (isEditVariant) {
+        const newAquariumData: any = await axios.put(
+          `${LinksCtx.user.saveAquarium}/${formData.id}`,
+          aquariumData
+        );
+        const { fishes } = aquariumData;
+        const aquariumIdData = { id: newAquariumData.data.id };
 
-      const { fishes } = aquariumData;
-      const aquariumIdData = { id: newAquariumData.data.id };
-
-      await fishes.forEach(async (fish: any) => {
-        await axios.post(LinksCtx.user.saveFish, {
-          aquarium: aquariumIdData,
-          ...fish,
+        await fishes.forEach(async (fish: any) => {
+          console.log(filledFormData);
+          if (!fish.id || fish.id === 0) {
+            await axios.post(`${LinksCtx.user.saveFish}`, {
+              aquarium: aquariumIdData,
+              ...fish,
+            });
+          } else {
+            await axios.put(`${LinksCtx.user.saveFish}/${fish.id}`, {
+              aquarium: aquariumIdData,
+              ...fish,
+            });
+          }
         });
-      });
+        setTimeout(() => {
+          toast.success('Akwarium zaktualizowane pomyślnie!', {
+            toastId: 'status',
+          });
+          setShowModal(false);
+        }, 50);
 
-      setTimeout(() => {
-        toast.success('Formularz wypełniony pomyślnie!', {
-          toastId: 'status',
+        return;
+      } else {
+        const newAquariumData: any = await axios.post(
+          LinksCtx.user.saveAquarium,
+          aquariumData
+        );
+
+        const { fishes } = aquariumData;
+        const aquariumIdData = { id: newAquariumData.data.id };
+
+        await fishes.forEach(async (fish: any) => {
+          await axios.post(LinksCtx.user.saveFish, {
+            aquarium: aquariumIdData,
+            ...fish,
+          });
         });
-        setShowModal(false);
-      }, 50);
 
-      return;
+        setTimeout(() => {
+          toast.success('Akwarium stworzone pomyślnie!', {
+            toastId: 'status',
+          });
+          setShowModal(false);
+        }, 50);
+
+        return;
+      }
     }
     setActiveStep((prevActiveStep) => (prevActiveStep += 1));
     setIsAllowSwipeNext(true);
@@ -326,7 +365,13 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }, 10);
   };
 
-  const onFishRemove = (index: number) => {
+  const onFishRemove = (index: number, fishData: any) => {
+    if (LinksCtx && LinksCtx.user && LinksCtx.user.saveFish) {
+      if (fishData._id && fishData._id !== 0) {
+        axios.delete(`${LinksCtx.user.saveFish}/${fishData._id}`);
+      }
+    }
+
     remove(index);
     setTimeout(() => {
       swiperRef.current.updateAutoHeight(0);
@@ -494,21 +539,23 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Dekoracje akwarium
                   </AquariumContentHeader>
-                  <Select
-                    id="sections.1.decorators"
-                    register={register}
-                    validators={{
-                      required: {
-                        value: true,
-                        message: 'To pole jest wymagane!',
-                      },
-                      validate: (value: string) =>
-                        value !== 'Wybierz dekoracje' ||
-                        'Rodzaj dekoracji jest wymagany!',
-                    }}
-                    options={mappedDecorators}
-                    title="Wybierz dekoracje"
-                  />
+                  <DecoratorInputContainer>
+                    <Select
+                      id="sections.1.decorators"
+                      register={register}
+                      validators={{
+                        required: {
+                          value: true,
+                          message: 'To pole jest wymagane!',
+                        },
+                        validate: (value: string) =>
+                          value !== 'Wybierz dekoracje' ||
+                          'Rodzaj dekoracji jest wymagany!',
+                      }}
+                      options={mappedDecorators}
+                      title="Wybierz dekoracje"
+                    />
+                  </DecoratorInputContainer>
                 </AquariumContentWrapper>
               </SwiperSlide>
               <SwiperSlide>
@@ -520,14 +567,14 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         {index > 0 && (
                           <FishItemDeleteIconWrapper>
                             <Link
-                              onClick={() => onFishRemove(index)}
+                              onClick={() => onFishRemove(index, fish)}
                               title={`Usuń rybę nr ${index + 1}`}
                             >
                               <Icon variant="Close" size="24px" />
                             </Link>
                           </FishItemDeleteIconWrapper>
                         )}
-                        <FishItemTitle>Ryba nr {index}</FishItemTitle>
+                        <FishItemTitle>Ryba nr {index + 1}</FishItemTitle>
 
                         <Select
                           id={`sections.2.fishes.${index}.fishType`}
