@@ -62,6 +62,7 @@ export interface LinksContextInterface {
     getAllFish: string;
     getFish: string;
     updateFish: string;
+    saveFish: string;
     deleteFish: string;
     getAllFishType: string;
     getFishType: string;
@@ -144,6 +145,7 @@ const linkNames: LinksContextInterface = {
     getAllFish: 'GET_ALL_FISH',
     getFish: 'GET_FISH',
     updateFish: 'UPDATE_FISH',
+    saveFish: 'SAVE_FISH',
     deleteFish: 'DELETE_FISH',
     getAllFishType: 'GET_ALL_FISH_TYPE',
     getFishType: 'GET_FISH_TYPE',
@@ -218,6 +220,7 @@ const defaultLinksValue: LinksContextInterface = {
     getAllFish: '',
     getFish: '',
     updateFish: '',
+    saveFish: '',
     deleteFish: '',
     getAllFishType: '',
     getFishType: '',
@@ -390,6 +393,9 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
             break;
           case linkNames.user.getFish:
             newLinksContext.user.getFish = href;
+            break;
+          case linkNames.user.saveFish:
+            newLinksContext.user.saveFish = href;
             break;
           case linkNames.user.updateFish:
             newLinksContext.user.updateFish = href;
