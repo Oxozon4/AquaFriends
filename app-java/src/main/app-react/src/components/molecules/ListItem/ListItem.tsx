@@ -6,9 +6,7 @@ import {
   ListItemContentDescription,
   ListItemContentDescriptionItem,
   ListItemActions,
-  ListItemActionsDescription,
   ListItemActionsButtonWrapper,
-  ListItemActionsDescriptionWrapper,
 } from './ListItem-styled';
 import Button from '../../atoms/Button/Button';
 
@@ -22,6 +20,7 @@ interface ListItemProps {
     | 'aquarium';
   onEditClick: any;
   onDeleteHandler: any;
+  onMonitorHandler: any;
   data: any;
 }
 
@@ -29,6 +28,7 @@ const ListItem = ({
   variant,
   onEditClick,
   onDeleteHandler,
+  onMonitorHandler,
   data,
 }: ListItemProps) => {
   return (
@@ -61,13 +61,17 @@ const ListItem = ({
         </ListItemContentDescription>
       </ListItemContent>
       <ListItemActions>
-        {/* <ListItemActionsDescriptionWrapper>
-          <ListItemActionsDescription>
-            Ostatnia edycja
-          </ListItemActionsDescription>
-          <ListItemActionsDescription>data</ListItemActionsDescription>
-        </ListItemActionsDescriptionWrapper> */}
-
+        <ListItemActionsButtonWrapper
+          style={{
+            marginBottom: '10px',
+          }}
+        >
+          <Button
+            text="Monitor"
+            variant="secondary"
+            onClick={onMonitorHandler}
+          />
+        </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper>
           <Button text="Usuń" onClick={onDeleteHandler} variant="danger" />
           <Button text="Edytuj" onClick={onEditClick} />

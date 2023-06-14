@@ -89,6 +89,8 @@ const AdminPanel = () => {
     setShowModal(true);
   };
 
+  const onMonitorHandler = () => {};
+
   const getActiveDataType = useCallback(() => {
     if (selectedDataType === 'aquariumTemplate') {
       return aquariumTemplates;
@@ -325,6 +327,7 @@ const AdminPanel = () => {
               onCreateNewHandler={onItemCreateClickHandler}
               onDeleteHandler={() => {}}
               itemVariant={selectedDataType}
+              onMonitorHandler={onMonitorHandler}
             />
           </AdminPanelContentList>
         </AdminPanelContent>

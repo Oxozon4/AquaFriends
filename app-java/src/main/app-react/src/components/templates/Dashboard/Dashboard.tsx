@@ -8,8 +8,14 @@ import AquariumModal from '../../organisms/AquariumModal/AquariumModal';
 import Header from '../../molecules/Headers/Header/Header';
 import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
-import { DashboardContentHeader, DashboardContentHeaderDescription, DashboardContentHeaderTitle, DashboardWrapper } from './Dashboard-styled';
+import {
+  DashboardContentHeader,
+  DashboardContentHeaderDescription,
+  DashboardContentHeaderTitle,
+  DashboardWrapper,
+} from './Dashboard-styled';
 import ConfirmModal from '../../organisms/ConfirmModal/ConfirmModal';
+import MonitorModal from '../../organisms/MonitorModal/MonitorModal';
 
 export type AquariumType = {
   accessories: any[];
@@ -58,7 +64,9 @@ const Dashboard: React.FC = () => {
   const [accessories, setAccessories] = useState<AccessoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const modalVariantRef = useRef<'create' | 'edit' | 'delete'>('create');
+  const modalVariantRef = useRef<'create' | 'edit' | 'delete' | 'monitor'>(
+    'create'
+  );
   const itemIdRef = useRef<number>(0);
 
   const onLogoutHandler = async () => {
@@ -82,6 +90,12 @@ const Dashboard: React.FC = () => {
     setShowModal(true);
   };
 
+  const onMonitorHandler = (data: any) => {
+    modalVariantRef.current = 'monitor';
+    itemIdRef.current = data.id;
+    setShowModal(true);
+  };
+
   const renderModal = () => {
     const mappedAquariumData =
       modalVariantRef.current === 'create'
@@ -94,6 +108,15 @@ const Dashboard: React.FC = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           id={itemIdRef.current}
+        />
+      );
+    }
+    if (modalVariantRef.current === 'monitor') {
+      return (
+        <MonitorModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          data={{}}
         />
       );
     }
@@ -260,13 +283,15 @@ const Dashboard: React.FC = () => {
             Witaj w AquaFriends!
           </DashboardContentHeaderTitle>
           <DashboardContentHeaderDescription>
-            Najlepsza i jedyna w swoim rodzaju aplikacja do zarządzania akwariami!
+            Najlepsza i jedyna w swoim rodzaju aplikacja do zarządzania
+            akwariami!
           </DashboardContentHeaderDescription>
         </DashboardContentHeader>
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
           onDeleteHandler={onDeleteHandler}
+          onMonitorHandler={onMonitorHandler}
           itemVariant={'aquarium'}
           data={allAquariums}
         />
