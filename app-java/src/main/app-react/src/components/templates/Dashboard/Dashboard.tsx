@@ -8,7 +8,7 @@ import AquariumModal from '../../organisms/AquariumModal/AquariumModal';
 import Header from '../../molecules/Headers/Header/Header';
 import FormsListSection from '../../organisms/ItemListSection/ItemListSection';
 import Footer from '../../molecules/Footer/Footer';
-import { DashboardWrapper } from './Dashboard-styled';
+import { DashboardContentHeader, DashboardContentHeaderDescription, DashboardContentHeaderTitle, DashboardWrapper } from './Dashboard-styled';
 import ConfirmModal from '../../organisms/ConfirmModal/ConfirmModal';
 
 export type AquariumType = {
@@ -253,6 +253,14 @@ const Dashboard: React.FC = () => {
           logoHref="/dashboard"
           text="wyloguj się"
         />
+        <DashboardContentHeader>
+          <DashboardContentHeaderTitle>
+            Witaj w AquaFriends!
+          </DashboardContentHeaderTitle>
+          <DashboardContentHeaderDescription>
+            Najlepsza i jedyna w swoim rodzaju aplikacja do zarządzania akwariami!
+          </DashboardContentHeaderDescription>
+        </DashboardContentHeader>
         <FormsListSection
           onEditHandler={onEditHandler}
           onCreateNewHandler={onCreateNewHandler}
