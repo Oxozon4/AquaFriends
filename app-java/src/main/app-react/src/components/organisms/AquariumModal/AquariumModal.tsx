@@ -186,15 +186,20 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
       const { fishes } = aquariumData;
       const aquariumIdData = { id: newAquariumData.data.id };
 
-      fishes.forEach(async (fish: any) => {
+      await fishes.forEach(async (fish: any) => {
         await axios.post(LinksCtx.user.saveFish, {
           aquarium: aquariumIdData,
           ...fish,
         });
       });
 
-      toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
-      setShowModal(false);
+      setTimeout(() => {
+        toast.success('Formularz wypełniony pomyślnie!', {
+          toastId: 'status',
+        });
+        setShowModal(false);
+      }, 50);
+
       return;
     }
     setActiveStep((prevActiveStep) => (prevActiveStep += 1));
