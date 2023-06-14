@@ -174,14 +174,24 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
         aquariumData.fishes[index].fishType = fishObj;
       });
 
-      console.log(aquariumData);
-      console.log(fishTypes);
-
       if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveAquarium) {
         return;
       }
 
-      await axios.post(LinksCtx.user.saveAquarium, aquariumData);
+      const newAquariumData: any = await axios.post(
+        LinksCtx.user.saveAquarium,
+        aquariumData
+      );
+
+      const { fishes } = aquariumData;
+      const aquariumIdData = { id: newAquariumData.data.id };
+
+      fishes.forEach(async (fish: any) => {
+        await axios.post(LinksCtx.user.saveFish, {
+          aquarium: aquariumIdData,
+          ...fish,
+        });
+      });
 
       toast.success('Formularz wypełniony pomyślnie!', { toastId: 'status' });
       setShowModal(false);
