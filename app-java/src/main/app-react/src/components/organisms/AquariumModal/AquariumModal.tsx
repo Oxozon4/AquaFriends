@@ -57,19 +57,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   accessories,
   decorators,
 }: FormCreationModalProps) => {
-  const mappedAccessories = accessories.map(({ name, volume }) => {
-    return { label: name, value: `${volume}` };
-  });
-  const mappedDecorators = decorators.map(({ name }) => {
-    return { label: name, value: `${name}` };
-  });
-  const mappedFishTypes = fishTypes.map(({ name }) => {
-    return { label: name, value: `${name}` };
-  });
-  const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
-    return { label: name, value: `${name}` };
-  });
-
   const LinksCtx = useContext(LinksContext);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -80,30 +67,55 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   const swiperRef = useRef<any>(null);
   const modalContainerRef = useRef<HTMLDivElement | null>(null);
 
+  const isEditVariant = !!formData.id;
+
   const formMethods = useForm<any>({
-    defaultValues: {
-      sections: [
-        {
-          name: '',
-          length: '',
-          width: '',
-          height: '',
-        },
-        {
-          decorators: ['Wybierz dekoracje'],
-        },
-        {
-          fishes: [
+    defaultValues: isEditVariant
+      ? {
+          sections: [
             {
-              fishType: 'Wybierz gatunek ryby',
-              birthDay: 123,
-              healthStatus: 'HEALTHY',
-              id: 0,
+              name: formData.name,
+              length: formData.length,
+              width: formData.width,
+              height: formData.height,
+              accessories: formData.accessories,
+            },
+            {
+              decorators: formData.decorators.map(({ name }: any) => {
+                return name;
+              })[0],
+            },
+            {
+              fishes: formData.fishes.map((fish: any) => {
+                return { fishType: fish.fishType?.name };
+              }),
+            },
+          ],
+        }
+      : {
+          sections: [
+            {
+              name: '',
+              length: '',
+              width: '',
+              height: '',
+              accessories: ['Wybierz akcesoria'],
+            },
+            {
+              decorators: ['Wybierz dekoracje'],
+            },
+            {
+              fishes: [
+                {
+                  fishType: 'Wybierz gatunek ryby',
+                  birthDay: 123,
+                  healthStatus: 'HEALTHY',
+                  id: 0,
+                },
+              ],
             },
           ],
         },
-      ],
-    },
   });
   const {
     control,
@@ -123,6 +135,19 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
   } = useFieldArray({
     name: 'sections.2.fishes',
     control,
+  });
+
+  const mappedAccessories = accessories.map(({ name, volume }) => {
+    return { label: name, value: `${volume}` };
+  });
+  const mappedDecorators = decorators.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
+  const mappedFishTypes = fishTypes.map(({ name }) => {
+    return { label: name, value: `${name}` };
+  });
+  const mappedAquariumTemplates = aquariumTemplates.map(({ name }) => {
+    return { label: name, value: `${name}` };
   });
 
   const activeTemplate = watch('sections.0.aquariumTemplate');
@@ -308,12 +333,47 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     }, 10);
   };
 
+  useEffect(() => {
+    const setDefaultTextInputs = () => {
+      if (isEditVariant && formData.id) {
+        setFocus('sections.0.length');
+        setValue('sections.0.length', formData.length);
+        setFocus('sections.0.width');
+        setValue('sections.0.width', formData.width);
+        setFocus('sections.0.height');
+        setValue('sections.0.height', formData.height);
+        setFocus('sections.0.accessories');
+        setValue(
+          'sections.0.accessories',
+          formData.accessories.map(({ volume }: any) => {
+            return volume;
+          })[0]
+        );
+      }
+    };
+
+    setDefaultTextInputs();
+  }, [
+    formData.accessories,
+    formData.height,
+    formData.id,
+    formData.length,
+    formData.width,
+    isEditVariant,
+    setFocus,
+    setValue,
+  ]);
+
   if (!formData) return null;
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
       <AquariumModalContainer ref={modalContainerRef}>
-        <AquariumModalHeader>Stwórz nowe akwarium</AquariumModalHeader>
+        <AquariumModalHeader>
+          {isEditVariant
+            ? 'Edytuj istniejące akwarium'
+            : 'Stwórz nowe akwarium'}
+        </AquariumModalHeader>
         <ProgressBar activeStep={activeStep} stepsNumber={3} />
         <AquariumForm onSubmit={handleSubmit(() => {})}>
           <FormProvider {...formMethods}>
@@ -331,14 +391,17 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                   <AquariumContentHeader>
                     Wymiary akwarium
                   </AquariumContentHeader>
-                  <Select
-                    id="sections.0.aquariumTemplate"
-                    register={register}
-                    validators={{}}
-                    options={mappedAquariumTemplates}
-                    title="Wybierz szablon"
-                    defaultValue="Wybierz szablon"
-                  />
+                  {!isEditVariant && (
+                    <Select
+                      id="sections.0.aquariumTemplate"
+                      register={register}
+                      validators={{}}
+                      options={mappedAquariumTemplates}
+                      title="Wybierz szablon"
+                      defaultValue="Wybierz szablon"
+                    />
+                  )}
+
                   <FormField
                     title="Nazwa akwarium"
                     type="text"
@@ -370,7 +433,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
-                    isDisabled={isSelectedTemplate}
+                    isDisabled={isSelectedTemplate || isEditVariant}
                   />
                   <FormField
                     type="text"
@@ -387,7 +450,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
-                    isDisabled={isSelectedTemplate}
+                    isDisabled={isSelectedTemplate || isEditVariant}
                   />
                   <FormField
                     type="text"
@@ -404,7 +467,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                         message: 'To pole musi być liczbą!',
                       },
                     }}
-                    isDisabled={isSelectedTemplate}
+                    isDisabled={isSelectedTemplate || isEditVariant}
                   />
                   <Select
                     id="sections.0.accessories"
@@ -412,7 +475,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                     validators={{}}
                     options={mappedAccessories}
                     title="Wybierz akcesoria"
-                    isDisabled={isSelectedTemplate}
+                    isDisabled={isSelectedTemplate || isEditVariant}
                   />
 
                   {/* <FormField
