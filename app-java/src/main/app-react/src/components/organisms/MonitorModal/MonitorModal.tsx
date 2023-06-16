@@ -33,7 +33,8 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
       ph: '',
     },
   });
-  const { register, handleSubmit, setFocus, setValue, watch } = formMethods;
+  const { register, handleSubmit, setFocus, setValue, watch, trigger } =
+    formMethods;
   const LinksCtx = useContext(LinksContext);
 
   const [isAnalysisMode, setIsAnalysisMode] = useState(false);
@@ -59,6 +60,10 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.user.getAllKnowledge) {
       return;
     }
+    const isValid = await trigger();
+    if (!isValid) {
+      return;
+    }
 
     const response = await axios.get(LinksCtx.user.getAllKnowledge);
 
@@ -75,7 +80,6 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
     setAllKnowledge(knowledgeList);
     knowledgeList.forEach(
       ({
-        id,
         info,
         min,
         max,
