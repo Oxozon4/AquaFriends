@@ -43,7 +43,7 @@ export interface LinksContextInterface {
     isSet: boolean;
   };
   user: {
-    getAllAccesoryType: string;
+    getAllAccessoryType: string;
     getAccesoryType: string;
 
     getAllAquarium: string;
@@ -62,6 +62,7 @@ export interface LinksContextInterface {
     getAllFish: string;
     getFish: string;
     updateFish: string;
+    saveFish: string;
     deleteFish: string;
     getAllFishType: string;
     getFishType: string;
@@ -125,7 +126,7 @@ const linkNames: LinksContextInterface = {
     isSet: false,
   },
   user: {
-    getAllAccesoryType: 'GET_ALL_ACCESSORY_TYPE',
+    getAllAccessoryType: 'GET_ALL_ACCESSORY_TYPE',
     getAccesoryType: 'GET_ACCESSORY_TYPE',
 
     getAllAquarium: 'GET_ALL_AQUARIUM',
@@ -144,6 +145,7 @@ const linkNames: LinksContextInterface = {
     getAllFish: 'GET_ALL_FISH',
     getFish: 'GET_FISH',
     updateFish: 'UPDATE_FISH',
+    saveFish: 'SAVE_FISH',
     deleteFish: 'DELETE_FISH',
     getAllFishType: 'GET_ALL_FISH_TYPE',
     getFishType: 'GET_FISH_TYPE',
@@ -203,7 +205,7 @@ const defaultLinksValue: LinksContextInterface = {
     isSet: false,
   },
   user: {
-    getAllAccesoryType: '',
+    getAllAccessoryType: '',
     getAccesoryType: '',
     getAllAquarium: '',
     getAquarium: '',
@@ -218,6 +220,7 @@ const defaultLinksValue: LinksContextInterface = {
     getAllFish: '',
     getFish: '',
     updateFish: '',
+    saveFish: '',
     deleteFish: '',
     getAllFishType: '',
     getFishType: '',
@@ -391,6 +394,9 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
           case linkNames.user.getFish:
             newLinksContext.user.getFish = href;
             break;
+          case linkNames.user.saveFish:
+            newLinksContext.user.saveFish = href;
+            break;
           case linkNames.user.updateFish:
             newLinksContext.user.updateFish = href;
             break;
@@ -402,6 +408,21 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
             break;
           case linkNames.user.getKnowledge:
             newLinksContext.user.getKnowledge = href;
+            break;
+          case linkNames.user.getAllFishType:
+            newLinksContext.user.getAllFishType = href;
+            break;
+          case linkNames.user.getAllDecoratorType:
+            newLinksContext.user.getAllDecoratorType = href;
+            break;
+          case linkNames.user.getAllAccessoryType:
+            newLinksContext.user.getAllAccessoryType = href;
+            break;
+          case linkNames.user.getAllParametersHistory:
+            newLinksContext.user.getAllParametersHistory = href;
+            break;
+          case linkNames.user.saveParametersHistory:
+            newLinksContext.user.saveParametersHistory = href;
             break;
           default:
             break;

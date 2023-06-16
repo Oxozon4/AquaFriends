@@ -1,4 +1,5 @@
 import TextInput from '../../atoms/TextInput/TextInput';
+import MultiSelect from '../../atoms/MultiSelect/MultiSelect';
 
 interface FormFieldProps {
   type: string;
@@ -8,6 +9,9 @@ interface FormFieldProps {
   validators: any;
   autocomplete?: string;
   variant?: string;
+  options?: { value: string; label: string }[];
+  defaultValues?: any;
+  isDisabled?: boolean;
 }
 
 const FormField = ({
@@ -17,6 +21,9 @@ const FormField = ({
   register,
   validators,
   autocomplete,
+  options,
+  defaultValues,
+  isDisabled,
 }: FormFieldProps) => {
   const formattedLabel = title + (validators?.required?.value ? ' *' : '');
   return (
@@ -32,6 +39,15 @@ const FormField = ({
           validators={validators}
           autocomplete={autocomplete}
           type={type}
+          isDisabled={isDisabled}
+        />
+      )}
+      {type === 'select' && (
+        <MultiSelect
+          options={options}
+          id={id}
+          defaultValues={defaultValues}
+          label={formattedLabel}
         />
       )}
     </>

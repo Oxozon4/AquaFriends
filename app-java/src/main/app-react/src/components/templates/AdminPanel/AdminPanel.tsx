@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createPortal } from 'react-dom';
 import { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -42,11 +43,7 @@ const AdminPanel = () => {
   const modalVariantRef = useRef<'create' | 'edit'>('create');
   const itemIdRef = useRef<number>(0);
 
-  const {
-    register,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, watch } = useForm();
 
   const selectedDataType: SelectOptionType = watch('dataType');
   const selectComponentOptions = [
@@ -88,6 +85,8 @@ const AdminPanel = () => {
     setShowModal(true);
   };
 
+  const onMonitorHandler = () => {};
+
   const getActiveDataType = useCallback(() => {
     if (selectedDataType === 'aquariumTemplate') {
       return aquariumTemplates;
@@ -125,7 +124,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
-          allData={aquariumTemplates}
+          accessories={accessoryTypes}
         />
       );
     }
@@ -144,6 +143,7 @@ const AdminPanel = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           data={mappedData}
+          allFishTypes={fishTypes}
         />
       );
     }
@@ -166,6 +166,7 @@ const AdminPanel = () => {
       );
     }
     return [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getActiveDataType, selectedDataType, showModal]);
 
   const getAllAquariumTemplates = useCallback(async () => {
@@ -312,7 +313,6 @@ const AdminPanel = () => {
             <Select
               options={selectComponentOptions}
               register={register}
-              error={errors}
               id="dataType"
               validators={{}}
             />
@@ -322,7 +322,9 @@ const AdminPanel = () => {
               data={getActiveDataType()}
               onEditHandler={onItemEditHandler}
               onCreateNewHandler={onItemCreateClickHandler}
+              onDeleteHandler={() => {}}
               itemVariant={selectedDataType}
+              onMonitorHandler={onMonitorHandler}
             />
           </AdminPanelContentList>
         </AdminPanelContent>

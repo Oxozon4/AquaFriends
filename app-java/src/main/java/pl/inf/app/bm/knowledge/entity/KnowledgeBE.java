@@ -28,9 +28,15 @@ public class KnowledgeBE {
 	@Enumerated(EnumType.STRING)
 	private ProblemType problemType;
 	private String info;
+	private float min;
+	private float max;
 
 	public enum ProblemType {
 		WATER,
-		NO2
+		NO2,
+		NO3,
+		PH,
+		GH,
+		KH
 	}
 }

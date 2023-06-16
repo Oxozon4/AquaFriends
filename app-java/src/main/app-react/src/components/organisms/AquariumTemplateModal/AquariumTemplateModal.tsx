@@ -15,6 +15,13 @@ import {
   AquariumTemplateModalActions,
   AquariumTemplateModalInputs,
 } from './AquariumTemplateModal-styled';
+import { DevTool } from '@hookform/devtools';
+
+type accessoriesData = {
+  id: number;
+  name: string;
+  volume: number;
+};
 
 type aquariumTemplateData = {
   id: number;
@@ -22,21 +29,30 @@ type aquariumTemplateData = {
   height: number;
   length: number;
   width: number;
-  accessories?: any[];
+  accessories: accessoriesData[];
 };
 
 interface AquariumTemplateModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
   data: aquariumTemplateData;
-  allData: aquariumTemplateData[];
+  accessories: accessoriesData[];
 }
 
 const AquariumTemplateModal = ({
   showModal,
   setShowModal,
   data,
+  accessories,
 }: AquariumTemplateModalProps) => {
+  const mappedAccessories = accessories.map(({ name, volume }) => {
+    return { label: name, value: `${volume}` };
+  });
+  const defaultMappedAccessories = data?.accessories?.map(
+    ({ name, volume }) => {
+      return { label: name, value: `${volume}` };
+    }
+  );
   const formMethods = useForm({
     defaultValues: data || {
       name: '',
@@ -47,20 +63,25 @@ const AquariumTemplateModal = ({
       id: 0,
     },
   });
-  const { register, handleSubmit } = formMethods;
+  const { register, handleSubmit, control } = formMethods;
   const LinksCtx = useContext(LinksContext);
 
   const isNewAquariumTemplate = !data || !data.id;
 
-  const onSubmitHandler = async (data: any) => {
+  const onSubmitHandler = async (formData: any) => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
       return;
     }
-    data.id ??= 0;
-    data.accessories ??= [];
+    console.log(accessories);
+    formData.id ??= 0;
+    formData.accessories ??= [];
+    formData.accessories = accessories.filter(({ volume }) =>
+      formData.accessories.includes(`${volume}`)
+    );
+
     if (isNewAquariumTemplate) {
       try {
-        await axios.post(LinksCtx.admin.saveAquariumTemplate, data);
+        await axios.post(LinksCtx.admin.saveAquariumTemplate, formData);
         toast.success('Pomyślnie stworzono szablon akwarium!', {
           toastId: 'AquariumTemplateModal',
         });
@@ -72,8 +93,8 @@ const AquariumTemplateModal = ({
     } else {
       try {
         await axios.put(
-          `${LinksCtx.admin.saveAquariumTemplate}/${data.id}`,
-          data
+          `${LinksCtx.admin.saveAquariumTemplate}/${formData.id}`,
+          formData
         );
         toast.success('Pomyślnie zaktualizowano szablon akwarium!', {
           toastId: 'AquariumTemplateModal',
@@ -190,6 +211,15 @@ const AquariumTemplateModal = ({
                   },
                 }}
               />
+              <FormField
+                title="Akcesoria"
+                type="select"
+                id="accessories"
+                register={register}
+                validators={{}}
+                defaultValues={defaultMappedAccessories || []}
+                options={mappedAccessories}
+              />
             </AquariumTemplateModalInputs>
             <AquariumTemplateModalActions>
               {!isNewAquariumTemplate && (
@@ -208,6 +238,7 @@ const AquariumTemplateModal = ({
           </form>
         </FormProvider>
       </AquariumTemplateModalContainer>
+      <DevTool control={control} />
     </Modal>
   );
 };

@@ -29,7 +29,8 @@ public class AccessoryTypeBF {
 	}
 
 	public <T> T save(UiAccessoryType accessoryType, final Mapper<AccessoryTypeBE, T> uiMapper) {
-		final AccessoryTypeBE accessoryTypeBE = AccessoryTypeBE.builder().name(accessoryType.getName()).build();
+		final AccessoryTypeBE accessoryTypeBE =
+				AccessoryTypeBE.builder().name(accessoryType.getName()).volume(accessoryType.getVolume()).build();
 		return uiMapper.map(accessoryTypeRepositoryBA.save(accessoryTypeBE));
 	}
 
@@ -37,6 +38,7 @@ public class AccessoryTypeBF {
 	public <T> T update(Integer id, UiAccessoryType accessoryType, Mapper<AccessoryTypeBE, T> uiMapper) {
 		return accessoryTypeRepositoryBA.findById(id).map(accessoryTypeBE -> {
 			accessoryTypeBE.setName(accessoryType.getName());
+			accessoryTypeBE.setVolume(accessoryType.getVolume());
 			return accessoryTypeBE;
 		}).map(uiMapper::map).orElseThrow(() -> new ProcessException(ErrorType.NOT_FOUND_ERROR));
 	}

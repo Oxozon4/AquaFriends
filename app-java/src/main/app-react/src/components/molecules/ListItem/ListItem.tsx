@@ -6,9 +6,7 @@ import {
   ListItemContentDescription,
   ListItemContentDescriptionItem,
   ListItemActions,
-  ListItemActionsDescription,
   ListItemActionsButtonWrapper,
-  ListItemActionsDescriptionWrapper,
 } from './ListItem-styled';
 import Button from '../../atoms/Button/Button';
 
@@ -18,35 +16,64 @@ interface ListItemProps {
     | 'knowledgeBase'
     | 'fishType'
     | 'accessoryType'
-    | 'decoratorType';
+    | 'decoratorType'
+    | 'aquarium';
   onEditClick: any;
+  onDeleteHandler: any;
+  onMonitorHandler: any;
   data: any;
 }
 
-const ListItem = ({ variant, onEditClick, data }: ListItemProps) => {
+const ListItem = ({
+  variant,
+  onEditClick,
+  onDeleteHandler,
+  onMonitorHandler,
+  data,
+}: ListItemProps) => {
   return (
     <ListItemWrapper>
       <ListItemContent>
         <ListItemContentTitle>
           {data.name || `${data.problemType}`}
         </ListItemContentTitle>
-        {data.info && (
-          <ListItemContentDescription>
+        <ListItemContentDescription>
+          {data.info && (
             <ListItemContentDescriptionItem>
               {data.info}
             </ListItemContentDescriptionItem>
-          </ListItemContentDescription>
-        )}
+          )}
+          {!!(data.accessories && data.accessories.length) && (
+            <ListItemContentDescriptionItem>
+              Liczba akcesoriów: {data.accessories.length}
+            </ListItemContentDescriptionItem>
+          )}
+          {!!(data.decorators && data.decorators.length) && (
+            <ListItemContentDescriptionItem>
+              Liczba dekoracji: {data.decorators.length}
+            </ListItemContentDescriptionItem>
+          )}
+          {!!(data.fishes && data.fishes.length) && (
+            <ListItemContentDescriptionItem>
+              Liczba ryb: {data.fishes.length}
+            </ListItemContentDescriptionItem>
+          )}
+        </ListItemContentDescription>
       </ListItemContent>
       <ListItemActions>
-        {/* <ListItemActionsDescriptionWrapper>
-          <ListItemActionsDescription>
-            Ostatnia edycja
-          </ListItemActionsDescription>
-          <ListItemActionsDescription>data</ListItemActionsDescription>
-        </ListItemActionsDescriptionWrapper> */}
-
+        <ListItemActionsButtonWrapper
+          style={{
+            marginBottom: '10px',
+          }}
+        >
+          <Button
+            text="Monitor"
+            variant="secondary"
+            onClick={onMonitorHandler}
+          />
+        </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper>
+          <Button text="Usuń" onClick={onDeleteHandler} variant="danger" />
           <Button text="Edytuj" onClick={onEditClick} />
         </ListItemActionsButtonWrapper>
         <ListItemActionsButtonWrapper

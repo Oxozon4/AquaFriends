@@ -14,6 +14,7 @@ interface TextInputProps {
   id: string;
   autocomplete?: string;
   type?: string;
+  isDisabled?: boolean;
 }
 
 const TextInput = ({
@@ -23,6 +24,7 @@ const TextInput = ({
   validators,
   type = 'text',
   autocomplete = 'off',
+  isDisabled,
 }: TextInputProps) => {
   const { trigger, getValues, getFieldState, formState } = useFormContext();
   const [isFocused, setIsFocused] = useState(getValues(id) ? true : false);
@@ -56,6 +58,7 @@ const TextInput = ({
         autoComplete={autocomplete}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
+        disabled={isDisabled}
       />
       {error?.message && (
         <TextInputErrorLabel>{error.message}</TextInputErrorLabel>

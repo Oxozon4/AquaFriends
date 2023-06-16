@@ -29,8 +29,12 @@ public class KnowledgeBF {
 	}
 
 	public <T> T save(UiKnowledge knowledge, final Mapper<KnowledgeBE, T> uiMapper) {
-		final KnowledgeBE knowledgeBE =
-				KnowledgeBE.builder().info(knowledge.getInfo()).problemType(knowledge.getProblemType()).build();
+		final KnowledgeBE knowledgeBE = KnowledgeBE.builder()
+				.info(knowledge.getInfo())
+				.problemType(knowledge.getProblemType())
+				.min(knowledge.getMin())
+				.max(knowledge.getMax())
+				.build();
 		return uiMapper.map(knowledgeRepositoryBA.save(knowledgeBE));
 	}
 
@@ -39,6 +43,8 @@ public class KnowledgeBF {
 		return knowledgeRepositoryBA.findById(id).map(knowledgeBE -> {
 			knowledgeBE.setInfo(knowledge.getInfo());
 			knowledgeBE.setProblemType(knowledge.getProblemType());
+			knowledgeBE.setMin(knowledge.getMin());
+			knowledgeBE.setMax(knowledge.getMax());
 			return knowledgeBE;
 		}).map(uiMapper::map).orElseThrow(() -> new ProcessException(ErrorType.NOT_FOUND_ERROR));
 	}
