@@ -20,12 +20,12 @@ import { toast } from 'react-toastify';
 interface MonitorModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
-  data: any;
+  id: any;
 }
 
-const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
+const MonitorModal = ({ showModal, setShowModal, id }: MonitorModalProps) => {
   const formMethods = useForm({
-    defaultValues: data || {
+    defaultValues: {
       gh: '',
       kh: '',
       no2: '',
@@ -38,6 +38,7 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
   const LinksCtx = useContext(LinksContext);
 
   const [isAnalysisMode, setIsAnalysisMode] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [allKnowledge, setAllKnowledge] = useState<any[]>([]);
 
   const warningsRef = useRef<
@@ -48,11 +49,32 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
     }[]
   >([]);
 
-  const onSubmitHandler = async (data: any) => {
-    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveParametersHistory) {
+  const onSubmitHandler = async (formData: any) => {
+    if (
+      !LinksCtx ||
+      !LinksCtx.user ||
+      !LinksCtx.user.saveParametersHistory ||
+      !formData
+    ) {
       return;
     }
-    // .replace("/{aquariumId}", "")
+
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
+    formData.id = id ? id : 0;
+    formData.timestamp ??= timestamp;
+    try {
+      await axios.post(
+        `${LinksCtx.user.saveParametersHistory.replace(
+          '/{aquariumId}',
+          ''
+        )}/${id}`,
+        formData
+      );
+      toast.success('Parametry zostały zapisane.');
+    } catch {
+      toast.error('Nie udało się zapisać parametrów.');
+    }
     setShowModal(false);
   };
 
@@ -91,10 +113,14 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
         min: number;
         problemType: string;
       }) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const problemTypeFieldValue = watch(problemType.toLowerCase());
         if (!problemTypeFieldValue) {
           return;
         }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (problemTypeFieldValue < min || problemTypeFieldValue > max) {
           warningsRef.current.push({
             message: info,
