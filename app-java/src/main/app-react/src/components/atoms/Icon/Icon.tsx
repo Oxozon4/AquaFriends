@@ -10,6 +10,7 @@ import {
   AddIcon,
   UserIcon,
   ArrowDropDownIcon,
+  WarnIcon,
 } from './Icon-styled';
 
 interface IconProps {
@@ -24,7 +25,8 @@ interface IconProps {
     | 'Github'
     | 'Add'
     | 'User'
-    | 'ArrowDown';
+    | 'ArrowDown'
+    | 'Warning';
   size?: string;
   withhover?: 'true' | 'false';
 }
@@ -51,6 +53,7 @@ const Icon = ({ variant, size = '128px', withhover = 'true' }: IconProps) => {
       {variant === 'ArrowDown' && (
         <ArrowDropDownIcon size={size} withhover={withhover} />
       )}
+      {variant === 'Warning' && <WarnIcon size={size} withhover={withhover} />}
     </>
   );
 };
