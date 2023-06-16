@@ -15,6 +15,7 @@ import {
   KnowledgeBaseModalParagraph,
   KnowledgeBaseModalActions,
   KnowledgeBaseModalInputs,
+  KnowledgeBaseModalTwoInputs,
 } from './KnowledgeBaseModal-styled';
 
 interface KnowledgeBaseModalProps {
@@ -33,11 +34,7 @@ const KnowledgeBaseModal = ({
       name: '',
     },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = formMethods;
+  const { register, handleSubmit } = formMethods;
   const LinksCtx = useContext(LinksContext);
 
   const isNewKnowledgeBase = !data || !data.id;
@@ -155,8 +152,41 @@ const KnowledgeBaseModal = ({
                 register={register}
                 id="problemType"
                 validators={{}}
-                error={errors}
               />
+              <KnowledgeBaseModalTwoInputs>
+                <FormField
+                  type="text"
+                  title="Minimalna wartość"
+                  id="min"
+                  register={register}
+                  validators={{
+                    required: {
+                      value: true,
+                      message: 'To pole jest wymagane!',
+                    },
+                    valueAsNumber: {
+                      value: true,
+                      message: 'To pole musi być liczbą!',
+                    },
+                  }}
+                />
+                <FormField
+                  type="text"
+                  title="Maksymalna wartość"
+                  id="max"
+                  register={register}
+                  validators={{
+                    required: {
+                      value: true,
+                      message: 'To pole jest wymagane!',
+                    },
+                    valueAsNumber: {
+                      value: true,
+                      message: 'To pole musi być liczbą!',
+                    },
+                  }}
+                />
+              </KnowledgeBaseModalTwoInputs>
             </KnowledgeBaseModalInputs>
             <KnowledgeBaseModalActions>
               {!isNewKnowledgeBase && (

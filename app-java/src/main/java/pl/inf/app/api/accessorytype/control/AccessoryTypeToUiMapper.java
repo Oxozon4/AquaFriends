@@ -12,6 +12,7 @@ public class AccessoryTypeToUiMapper implements Mapper<AccessoryTypeBE, UiAccess
 		final UiAccessoryType uiAccessoryType = new UiAccessoryType();
 		uiAccessoryType.setId(source.getId());
 		uiAccessoryType.setName(source.getName());
+		uiAccessoryType.setVolume(source.getVolume());
 		return uiAccessoryType;
 	}
 }

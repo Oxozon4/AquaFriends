@@ -8,6 +8,7 @@ import {
   MdOutlineSearch,
   MdAccountCircle,
   MdArrowDropDown,
+  MdOutlineWarning,
 } from 'react-icons/md';
 
 interface IconProps {
@@ -170,6 +171,22 @@ export const ArrowDropDownIcon = styled(MdArrowDropDown)<IconProps>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   color: ${({ theme }) => theme.colors.primary};
+  border: 2px solid transparent;
+  transition: all 300ms;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid
+      ${({ theme, withhover }) =>
+        withhover === 'true' ? theme.colors.primary : 'transparent'};
+  }
+`;
+
+export const WarnIcon = styled(MdOutlineWarning)<IconProps>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  color: ${({ theme }) => theme.colors.warning};
   border: 2px solid transparent;
   transition: all 300ms;
   border-radius: 50%;

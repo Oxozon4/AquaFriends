@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect } from 'react';
 import Button from '../../atoms/Button/Button';
 import ListItem from '../../molecules/ListItem/ListItem';
@@ -11,14 +12,17 @@ import {
 } from './ItemListSection-styled';
 
 interface ItemListSectionProps {
-  onEditHandler: any;
-  onCreateNewHandler: any;
+  onEditHandler: (arg0: number) => void;
+  onCreateNewHandler: () => void;
+  onDeleteHandler: (arg0: number) => void;
+  onMonitorHandler: any;
   itemVariant:
     | 'aquariumTemplate'
     | 'knowledgeBase'
     | 'fishType'
     | 'accessoryType'
-    | 'decoratorType';
+    | 'decoratorType'
+    | 'aquarium';
   data: any;
 }
 
@@ -28,10 +32,13 @@ const ItemListSection = ({
   onCreateNewHandler,
   itemVariant,
   data,
+  onDeleteHandler,
+  onMonitorHandler,
 }: ItemListSectionProps) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 576);
 
   const isDataEmpty = !data || !data.length;
+  const isUserView = itemVariant === 'aquarium';
 
   const handleResize = () => {
     setIsMobileView(window.innerWidth < 576);
@@ -49,7 +56,11 @@ const ItemListSection = ({
     <ItemListSectionWrapper>
       <ItemListSectionHeader>
         <ItemListSectionHeaderTitle>
-          {isDataEmpty ? 'Brak rekordów' : 'Lista rekordów'}
+          {isDataEmpty
+            ? 'Brak rekordów'
+            : isUserView
+            ? 'Twoje akwaria'
+            : 'Lista rekordów'}
         </ItemListSectionHeaderTitle>
         {isMobileView ? (
           <Link onClick={onCreateNewHandler}>
@@ -70,6 +81,8 @@ const ItemListSection = ({
                 onEditClick={() => {
                   onEditHandler(item.id);
                 }}
+                onDeleteHandler={() => onDeleteHandler(item.id)}
+                onMonitorHandler={() => onMonitorHandler(item)}
               />
             );
           })}

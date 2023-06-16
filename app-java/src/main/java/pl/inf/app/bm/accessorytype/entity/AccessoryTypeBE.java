@@ -29,6 +29,7 @@ public class AccessoryTypeBE {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	private float volume;
 	@ManyToMany(mappedBy = "accessories")
 	private Set<AquariumBE> aquariums = new HashSet<>();
 	@ManyToMany(mappedBy = "accessories")

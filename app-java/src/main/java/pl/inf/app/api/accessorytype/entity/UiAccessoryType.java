@@ -14,4 +14,5 @@ import lombok.Setter;
 public class UiAccessoryType {
 	private int id;
 	private String name;
+	private float volume;
 }

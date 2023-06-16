@@ -13,6 +13,8 @@ public class KnowledgeToUiMapper implements Mapper<KnowledgeBE, UiKnowledge> {
 		uiKnowledge.setId(source.getId());
 		uiKnowledge.setProblemType(source.getProblemType());
 		uiKnowledge.setInfo(source.getInfo());
+		uiKnowledge.setMin(source.getMin());
+		uiKnowledge.setMax(source.getMax());
 		return uiKnowledge;
 	}
 }
