@@ -116,7 +116,7 @@ const Dashboard: React.FC = () => {
         <MonitorModal
           showModal={showModal}
           setShowModal={setShowModal}
-          data={{}}
+          id={itemIdRef.current}
         />
       );
     }
