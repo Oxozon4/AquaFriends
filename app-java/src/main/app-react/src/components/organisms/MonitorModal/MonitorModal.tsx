@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -14,6 +14,8 @@ import {
   MonitorModalActions,
   MonitorModalInputs,
 } from './MonitorModal-styled';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface MonitorModalProps {
   showModal: boolean;
@@ -35,6 +37,7 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
   const LinksCtx = useContext(LinksContext);
 
   const [isAnalysisMode, setIsAnalysisMode] = useState(false);
+  const [allKnowledge, setAllKnowledge] = useState<any[]>([]);
 
   const warningsRef = useRef<
     {
@@ -45,23 +48,73 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
   >([]);
 
   const onSubmitHandler = async (data: any) => {
-    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
+    if (!LinksCtx || !LinksCtx.user || !LinksCtx.user.saveParametersHistory) {
       return;
     }
-
+    // .replace("/{aquariumId}", "")
     setShowModal(false);
   };
 
-  const onAnalyzeClickHandler = () => {
-    warningsRef.current.push({ message: 'test' });
+  const onAnalyzeClickHandler = async () => {
+    if (!LinksCtx || !LinksCtx.admin || !LinksCtx.user.getAllKnowledge) {
+      return;
+    }
+
+    const response = await axios.get(LinksCtx.user.getAllKnowledge);
+
+    if (
+      !response ||
+      !response.data ||
+      !response.data._embedded ||
+      !response.data._embedded.uiKnowledgeList
+    ) {
+      toast.error('Nie udało się pobrać porad z bazy danych.');
+      return;
+    }
+    const knowledgeList = response.data._embedded.uiKnowledgeList;
+    setAllKnowledge(knowledgeList);
+    knowledgeList.forEach(
+      ({
+        id,
+        info,
+        min,
+        max,
+        problemType,
+      }: {
+        id: number;
+        info: string;
+        max: number;
+        min: number;
+        problemType: string;
+      }) => {
+        const problemTypeFieldValue = watch(problemType.toLowerCase());
+        if (!problemTypeFieldValue) {
+          return;
+        }
+        if (problemTypeFieldValue < min || problemTypeFieldValue > max) {
+          warningsRef.current.push({
+            message: info,
+          });
+        }
+      }
+    );
+
     if (warningsRef.current.length) {
       setIsAnalysisMode(true);
+    } else {
+      toast.success('Wszystkie parametry w porządku!');
     }
   };
 
   const onCreateClickErrorHandler = (error: any) => {
     console.log(error);
   };
+
+  useEffect(() => {
+    if (!isAnalysisMode) {
+      warningsRef.current = [];
+    }
+  }, [isAnalysisMode]);
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
