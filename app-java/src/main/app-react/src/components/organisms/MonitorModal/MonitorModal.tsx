@@ -1,12 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { useForm, FormProvider } from 'react-hook-form';
-import axios from 'axios';
 
 import Button from '../../atoms/Button/Button';
 import Modal from '../../molecules/Modal/Modal';
 import FormField from '../../molecules/FormField/FormField';
-import { toast } from 'react-toastify';
+import ToastContent from '../../molecules/ToastContent/ToastContent';
 import {
   MonitorModalContainer,
   MonitorModalHeader,
@@ -32,14 +31,32 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
       ph: '',
     },
   });
-  const { register, handleSubmit } = formMethods;
+  const { register, handleSubmit, setFocus, setValue, watch } = formMethods;
   const LinksCtx = useContext(LinksContext);
+
+  const [isAnalysisMode, setIsAnalysisMode] = useState(false);
+
+  const warningsRef = useRef<
+    {
+      message: string;
+      target?: string;
+      action?: string;
+    }[]
+  >([]);
 
   const onSubmitHandler = async (data: any) => {
     if (!LinksCtx || !LinksCtx.admin || !LinksCtx.admin.saveAccessoryType) {
       return;
     }
+
     setShowModal(false);
+  };
+
+  const onAnalyzeClickHandler = () => {
+    warningsRef.current.push({ message: 'test' });
+    if (warningsRef.current.length) {
+      setIsAnalysisMode(true);
+    }
   };
 
   const onCreateClickErrorHandler = (error: any) => {
@@ -48,6 +65,15 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
+      {isAnalysisMode && (
+        <ToastContent
+          onFinish={() => setIsAnalysisMode(false)}
+          warnings={warningsRef.current}
+          setFocus={setFocus}
+          setValue={setValue}
+          watch={watch}
+        />
+      )}
       <MonitorModalContainer>
         <MonitorModalHeader>
           Dodaj nowy raport
@@ -141,6 +167,12 @@ const MonitorModal = ({ showModal, setShowModal, data }: MonitorModalProps) => {
               />
             </MonitorModalInputs>
             <MonitorModalActions>
+              <Button
+                text="Analizuj"
+                type="button"
+                variant="secondary"
+                onClick={onAnalyzeClickHandler}
+              />
               <Button text="Zapisz" type="submit" />
             </MonitorModalActions>
           </form>
