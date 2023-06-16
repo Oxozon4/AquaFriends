@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createPortal } from 'react-dom';
 import { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -43,11 +43,7 @@ const AdminPanel = () => {
   const modalVariantRef = useRef<'create' | 'edit'>('create');
   const itemIdRef = useRef<number>(0);
 
-  const {
-    register,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, watch } = useForm();
 
   const selectedDataType: SelectOptionType = watch('dataType');
   const selectComponentOptions = [
@@ -170,6 +166,7 @@ const AdminPanel = () => {
       );
     }
     return [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getActiveDataType, selectedDataType, showModal]);
 
   const getAllAquariumTemplates = useCallback(async () => {

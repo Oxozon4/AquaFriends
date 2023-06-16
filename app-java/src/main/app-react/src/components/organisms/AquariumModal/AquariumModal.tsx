@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { LinksContext } from '../../../providers/LinksProvider';
 import { toast } from 'react-toastify';
@@ -7,7 +7,6 @@ import {
   FishType,
   AccessoryType,
   DecoratorType,
-  AquariumType,
 } from '../../templates/Dashboard/Dashboard';
 
 import Select from '../../atoms/Select/Select';
@@ -24,7 +23,6 @@ import {
   AquariumContentWrapper,
   AquariumModalFooter,
   AquariumContentHeader,
-  AquariumContentDescription,
   AquariumForm,
   FishItemBox,
   FishItemTitle,
@@ -44,10 +42,6 @@ interface FormCreationModalProps {
   accessories: AccessoryType[];
   decorators: DecoratorType[];
 }
-
-type SectionValues = {
-  [key: string]: any;
-}[];
 
 const AquariumModal: React.FC<FormCreationModalProps> = ({
   showModal,
@@ -116,7 +110,7 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                 {
                   fishType: 'Wybierz gatunek ryby',
                   birthDay: 123,
-                  healthStatus: 'HEALTHY',
+                  healthStatus: 'Wybierz stan zdrowia ryby',
                   id: 0,
                 },
               ],
@@ -133,7 +127,6 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
     watch,
     setValue,
     setFocus,
-    formState: { errors },
   } = formMethods;
   const {
     fields: fishesFields,
@@ -590,6 +583,25 @@ const AquariumModal: React.FC<FormCreationModalProps> = ({
                           }}
                           options={mappedFishTypes}
                           title="Wybierz gatunek ryby"
+                        />
+                        <Select
+                          id={`sections.2.fishes.${index}.healthStatus`}
+                          register={register}
+                          validators={{
+                            required: {
+                              value: true,
+                              message: 'To pole jest wymagane!',
+                            },
+                            validate: (value: string) =>
+                              value !== 'Wybierz stan zdrowia ryby' ||
+                              'Stan zdrowia ryby jest wymagany!',
+                          }}
+                          options={[
+                            { label: 'Zdrowa', value: 'HEALTHY' },
+                            { label: 'Chora', value: 'SICK' },
+                            { label: 'Martwa', value: 'DEAD' },
+                          ]}
+                          title="Wybierz stan zdrowia ryby"
                         />
                       </FishItemBox>
                     );
