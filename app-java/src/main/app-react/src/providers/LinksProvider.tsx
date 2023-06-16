@@ -418,6 +418,12 @@ const LinksProvider = ({ children }: LinksProviderProps) => {
           case linkNames.user.getAllAccessoryType:
             newLinksContext.user.getAllAccessoryType = href;
             break;
+          case linkNames.user.getAllParametersHistory:
+            newLinksContext.user.getAllParametersHistory = href;
+            break;
+          case linkNames.user.saveParametersHistory:
+            newLinksContext.user.saveParametersHistory = href;
+            break;
           default:
             break;
         }
