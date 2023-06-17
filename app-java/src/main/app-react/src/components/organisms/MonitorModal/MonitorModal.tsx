@@ -21,9 +21,15 @@ interface MonitorModalProps {
   showModal: boolean;
   setShowModal: (prev: any) => void;
   id: any;
+  aquarium: any;
 }
 
-const MonitorModal = ({ showModal, setShowModal, id }: MonitorModalProps) => {
+const MonitorModal = ({
+  showModal,
+  setShowModal,
+  id,
+  aquarium,
+}: MonitorModalProps) => {
   const formMethods = useForm({
     defaultValues: {
       gh: '',
@@ -40,6 +46,7 @@ const MonitorModal = ({ showModal, setShowModal, id }: MonitorModalProps) => {
   const [isAnalysisMode, setIsAnalysisMode] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [allKnowledge, setAllKnowledge] = useState<any[]>([]);
+  console.log(aquarium, id);
 
   const warningsRef = useRef<
     {
@@ -121,13 +128,71 @@ const MonitorModal = ({ showModal, setShowModal, id }: MonitorModalProps) => {
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (problemTypeFieldValue < min || problemTypeFieldValue > max) {
+        if (problemTypeFieldValue >= min && problemTypeFieldValue <= max) {
           warningsRef.current.push({
             message: info,
           });
         }
       }
     );
+    aquarium?.fishes.forEach((fish: any) => {
+      const {
+        fishType: {
+          name,
+          maxGh,
+          maxKh,
+          maxNo2,
+          maxNo3,
+          maxPh,
+          minGh,
+          minKh,
+          minNo2,
+          minNo3,
+          minPh,
+        },
+      } = fish;
+      const ghFieldValue = watch('gh');
+      const khFieldValue = watch('kh');
+      const no2FieldValue = watch('no2');
+      const no3FieldValue = watch('no3');
+      const phFieldValue = watch('ph');
+
+      if (ghFieldValue < minGh || ghFieldValue > maxGh) {
+        warningsRef.current.push({
+          message: `Wartość GH jest za ${
+            ghFieldValue < minGh ? 'mała' : 'duża'
+          } dla gatunku: ${name}!`,
+        });
+      }
+      if (khFieldValue < minKh || khFieldValue > maxKh) {
+        warningsRef.current.push({
+          message: `Wartość KH jest za ${
+            khFieldValue < minKh ? 'mała' : 'duża'
+          } dla gatunku: ${name}!`,
+        });
+      }
+      if (no2FieldValue < minNo2 || no2FieldValue > maxNo2) {
+        warningsRef.current.push({
+          message: `Wartość NO2 jest za ${
+            no2FieldValue < minNo2 ? 'mała' : 'duża'
+          } dla gatunku: ${name}!`,
+        });
+      }
+      if (no3FieldValue < minNo3 || no3FieldValue > maxNo3) {
+        warningsRef.current.push({
+          message: `Wartość NO3 jest za ${
+            no3FieldValue < minNo3 ? 'mała' : 'duża'
+          } dla gatunku: ${name}!`,
+        });
+      }
+      if (phFieldValue < minPh || phFieldValue > maxPh) {
+        warningsRef.current.push({
+          message: `Wartość PH jest za ${
+            phFieldValue < minPh ? 'mała' : 'duża'
+          } dla gatunku: ${name}!`,
+        });
+      }
+    });
 
     if (warningsRef.current.length) {
       setIsAnalysisMode(true);
