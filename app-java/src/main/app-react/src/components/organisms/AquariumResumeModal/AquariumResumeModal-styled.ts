@@ -15,11 +15,6 @@ export const AquariumResumeModalHeaderColor = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const AquariumResumeModalParagraph = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.l};
-  text-align: center;
-`;
-
 export const AquariumResumeModalActions = styled.div`
   display: flex;
   flex-direction: row;

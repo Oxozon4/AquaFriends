@@ -123,6 +123,9 @@ const Dashboard: React.FC = () => {
         <MonitorModal
           showModal={showModal}
           setShowModal={setShowModal}
+          aquarium={allAquariums.find((item) => {
+            return item.id === itemIdRef.current;
+          })}
           id={itemIdRef.current}
         />
       );
