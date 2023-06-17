@@ -61,17 +61,20 @@ const ListItem = ({
         </ListItemContentDescription>
       </ListItemContent>
       <ListItemActions>
-        <ListItemActionsButtonWrapper
-          style={{
-            marginBottom: '10px',
-          }}
-        >
-          <Button
-            text="Monitor"
-            variant="secondary"
-            onClick={onMonitorHandler}
-          />
-        </ListItemActionsButtonWrapper>
+        {variant === 'aquarium' && (
+          <ListItemActionsButtonWrapper
+            style={{
+              marginBottom: '10px',
+            }}
+          >
+            <Button
+              text="Monitor"
+              variant="secondary"
+              onClick={onMonitorHandler}
+            />
+          </ListItemActionsButtonWrapper>
+        )}
+
         <ListItemActionsButtonWrapper>
           <Button text="Usuń" onClick={onDeleteHandler} variant="danger" />
           <Button text="Edytuj" onClick={onEditClick} />

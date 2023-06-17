@@ -121,7 +121,7 @@ const MonitorModal = ({ showModal, setShowModal, id }: MonitorModalProps) => {
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (problemTypeFieldValue < min || problemTypeFieldValue > max) {
+        if (problemTypeFieldValue >= min && problemTypeFieldValue <= max) {
           warningsRef.current.push({
             message: info,
           });
