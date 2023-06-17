@@ -15,6 +15,7 @@ interface ItemListSectionProps {
   onEditHandler: (arg0: number) => void;
   onCreateNewHandler: () => void;
   onDeleteHandler: (arg0: number) => void;
+  onResumeHandler: any;
   onMonitorHandler: any;
   itemVariant:
     | 'aquariumTemplate'
@@ -34,6 +35,7 @@ const ItemListSection = ({
   data,
   onDeleteHandler,
   onMonitorHandler,
+  onResumeHandler,
 }: ItemListSectionProps) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 576);
 
@@ -83,6 +85,7 @@ const ItemListSection = ({
                 }}
                 onDeleteHandler={() => onDeleteHandler(item.id)}
                 onMonitorHandler={() => onMonitorHandler(item)}
+                onResumeHandler={() => onResumeHandler(item.id)}
               />
             );
           })}

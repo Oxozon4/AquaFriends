@@ -21,6 +21,7 @@ interface ListItemProps {
   onEditClick: any;
   onDeleteHandler: any;
   onMonitorHandler: any;
+  onResumeHandler: any;
   data: any;
 }
 
@@ -29,6 +30,7 @@ const ListItem = ({
   onEditClick,
   onDeleteHandler,
   onMonitorHandler,
+  onResumeHandler,
   data,
 }: ListItemProps) => {
   return (
@@ -67,6 +69,12 @@ const ListItem = ({
               marginBottom: '10px',
             }}
           >
+            <Button
+              text="Podsumowanie"
+              variant="secondary"
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onClick={onResumeHandler}
+            />
             <Button
               text="Monitor"
               variant="secondary"

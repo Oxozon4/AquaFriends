@@ -16,6 +16,7 @@ import {
 } from './Dashboard-styled';
 import ConfirmModal from '../../organisms/ConfirmModal/ConfirmModal';
 import MonitorModal from '../../organisms/MonitorModal/MonitorModal';
+import AquariumResumeModal from '../../organisms/AquariumResumeModal/AquariumResumeModal';
 
 export type AquariumType = {
   accessories: any[];
@@ -64,9 +65,9 @@ const Dashboard: React.FC = () => {
   const [accessories, setAccessories] = useState<AccessoryType[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const modalVariantRef = useRef<'create' | 'edit' | 'delete' | 'monitor'>(
-    'create'
-  );
+  const modalVariantRef = useRef<
+    'create' | 'edit' | 'delete' | 'monitor' | 'resume'
+  >('create');
   const itemIdRef = useRef<number>(0);
 
   const onLogoutHandler = async () => {
@@ -96,6 +97,12 @@ const Dashboard: React.FC = () => {
     setShowModal(true);
   };
 
+  const onResumeHandler = (id: number) => {
+    modalVariantRef.current = 'resume';
+    itemIdRef.current = id;
+    setShowModal(true);
+  };
+
   const renderModal = () => {
     const mappedAquariumData =
       modalVariantRef.current === 'create'
@@ -116,6 +123,15 @@ const Dashboard: React.FC = () => {
         <MonitorModal
           showModal={showModal}
           setShowModal={setShowModal}
+          id={itemIdRef.current}
+        />
+      );
+    }
+    if (modalVariantRef.current === 'resume') {
+      return (
+        <AquariumResumeModal
+          setShowModal={setShowModal}
+          showModal={showModal}
           id={itemIdRef.current}
         />
       );
@@ -292,6 +308,7 @@ const Dashboard: React.FC = () => {
           onCreateNewHandler={onCreateNewHandler}
           onDeleteHandler={onDeleteHandler}
           onMonitorHandler={onMonitorHandler}
+          onResumeHandler={onResumeHandler}
           itemVariant={'aquarium'}
           data={allAquariums}
         />
