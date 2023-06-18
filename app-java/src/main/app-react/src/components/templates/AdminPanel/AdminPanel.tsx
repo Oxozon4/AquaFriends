@@ -325,6 +325,7 @@ const AdminPanel = () => {
               onDeleteHandler={() => {}}
               itemVariant={selectedDataType}
               onMonitorHandler={onMonitorHandler}
+              onResumeHandler={() => {}}
             />
           </AdminPanelContentList>
         </AdminPanelContent>
